@@ -37,20 +37,20 @@ public class EnemySpawnManager : MonoBehaviour {
         float EndPointY = EndPoint[1];
         float MidPointX = MidPoint[0];
         float MidPointY = MidPoint[1];
-        double NumberConstant;
-        float YConstant;
-        float XConstant;
+        float Radius;
+        float StartRadian;
+        float EndRadian;
         if (Math.Pow(StartPointX - MidPointX, 2) + Math.Pow(StartPointY - MidPointY, 2) != Math.Pow(EndPointX - MidPointX, 2) + Math.Pow(EndPointY - MidPointY, 2))
         {
             throw new ArgumentException("Length of StartPoint to MidPoint and EndPoint to MidPoint is not the same.");
         }
         else
         {
-            NumberConstant = Math.Pow(StartPointX - MidPointX, 2) + Math.Pow(StartPointY - MidPointY, 2) + Math.Pow(MidPointX, 2) + Math.Pow(MidPointY, 2);
-            YConstant = -2 * MidPointY;
-            XConstant = -2 * MidPointX;
+            Radius = Math.Sqrt(Math.Pow(StartPointX - MidPointX, 2) + Math.Pow(StartPointY - MidPointY, 2));
+            float LineBetween = Math.Sqrt(Math.Pow(StartPointX - MidPointX, 2) + Math.Pow(StartPointY - MidPointY + Radius, 2));
+            StartRadian = () * MathF.PI / 180;
         }
-        float[] Constant = new float[] {XConstant, YConstant, (float)NumberConstant};
+        float[] Constant = new float[] {Radius, StartRadian, EndRadian};
         return Constant;
     }
 }
