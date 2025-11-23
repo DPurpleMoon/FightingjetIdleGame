@@ -14,8 +14,8 @@ public class EnemySpawnController : MonoBehaviour {
         // Set EnemyType to selected EnemyName
         EnemyType = GameObject.Find(Data.EnemyName);
         Manager = GetComponent<EnemySpawnManager>();
-        List<float[]> Waypoints = PathFind("Line", new float[] {-50f, -50f}, new float[] {50f, 50f}, new float[] {0f, 0f}, 3f);
-        StartCoroutine(WaitPath(EnemyType, Waypoints, 3f));
+        List<float[]> Waypoints = PathFind(Data.MovementType, Data.StartPoint, Data.EndPoint, Data.MidPoint, Data.Speed);
+        StartCoroutine(WaitPath(EnemyType, Waypoints, Data.Speed));
     }
 
     IEnumerator WaitPath(GameObject enemy, List<float[]> waypoints, float speed)
