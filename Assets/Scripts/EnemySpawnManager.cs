@@ -57,6 +57,7 @@ public class EnemySpawnManager : MonoBehaviour {
             {
                 StartRadian = 2*Mathf.PI - StartRadian;
             }
+            
 
             // Find EndRadian
             float LineBetweenEnd = (float)Math.Sqrt(Math.Pow(EndPointX - MidPointX, 2) + Math.Pow(EndPointY - MidPointY + Radius, 2));
@@ -72,7 +73,7 @@ public class EnemySpawnManager : MonoBehaviour {
                 EndRadian += 2*Mathf.PI;
             }
             
-        float[] Constant = new float[] {Radius, StartRadian, EndRadian};
+        float[] Constant = new float[] {Radius, StartRadian + (Mathf.PI/2), EndRadian + (Mathf.PI/2)};
         return Constant;
         }
     }

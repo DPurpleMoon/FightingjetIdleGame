@@ -19,8 +19,8 @@ MonoBehaviour:
   - 0
   - 0
   MidPoint:
-  - 50
-  - 50
+  - 2
+  - 2
   EndPoint:
-  - 100
-  - 100
+  - 4
+  - 4
