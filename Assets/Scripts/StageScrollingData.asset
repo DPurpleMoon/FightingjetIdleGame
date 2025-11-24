@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b3a25275a9c1344a4a47851a911796, type: 3}
+  m_Name: StageScrollingData
+  m_EditorClassIdentifier: Assembly-CSharp::StageScrollingData
+  StageName: stagedummy_0
+  ScrollCoordinate: -500
+  inStage: 1
+  AccelerationConstant: 1.1
+  StartingVelocity: 0.6
+  MaxVelocity: 20
