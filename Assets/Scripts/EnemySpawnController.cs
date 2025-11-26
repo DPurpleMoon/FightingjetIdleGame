@@ -10,6 +10,7 @@ public class EnemySpawnController : MonoBehaviour {
     public EnemyData Data; 
     private GameObject DupeEnemy;
     public static EnemySpawnController Instance { get; private set; } 
+    public List<GameObject> activeEnemies = new List<GameObject>();
 
     void Awake()
     {
@@ -27,23 +28,26 @@ public class EnemySpawnController : MonoBehaviour {
         }
     }
 
-    public async Task SpawnEnemy(int enemyamount, float distance)
+    void Start()
     {
-        // Set EnemyType to selected EnemyName
-        EnemyType = GameObject.Find(Data.EnemyName);
-        Manager = GetComponent<EnemySpawnManager>();
         if (DupeEnemy != null) 
         {
             List<float[]> Waypoints = PathFind(Data.MovementType, Data.StartPoint, Data.EndPoint, Data.MidPoint, 0.05f);
             StartCoroutine(WaitPath(DupeEnemy, Waypoints, Data.Speed));
         }
-        else 
+    }
+
+    public async Task SpawnEnemy(int enemyamount, float distance)
+    {
+        // Set EnemyType to selected EnemyName
+        EnemyType = GameObject.Find(Data.EnemyName);
+        Manager = GetComponent<EnemySpawnManager>();
+        for (int i = 0; i < enemyamount; i++)
         {
-            for (int i = 0; i < enemyamount; i++)
-            {
-                DupeEnemy = Instantiate(EnemyType, new Vector3(0, 0, 100), Quaternion.identity);
-                await Task.Delay((int)(Time.deltaTime * distance * 1000f)); 
-            }
+            DupeEnemy = Instantiate(EnemyType, new Vector3(0, 0, 100), Quaternion.identity);
+            activeEnemies.Add(DupeEnemy);
+            await Task.Delay((int)(distance * 1000f)); 
+        }
         }
     }
 

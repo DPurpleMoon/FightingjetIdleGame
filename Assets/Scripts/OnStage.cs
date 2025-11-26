@@ -3,10 +3,10 @@ using UnityEngine.SceneManagement;
 public class OnStage : MonoBehaviour
 {
     public EnemyData Data; 
+    public StageScrollingData StageData;
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         // Subscribe to the event
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -19,15 +19,18 @@ public class OnStage : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log($"A scene change occurred! New scene is: {scene.name}");
         if (scene.name == "Stage0")
         {
-            Debug.Log("yes");
-            Data.EnemyName = "a";
+            Data.EnemyName = "enemydummy";
             Data.MovementType = "Line";
             Data.StartPoint = new Vector2(-300, -300); 
             Data.MidPoint = new Vector2(0, 0);
             Data.EndPoint = new Vector2(300, 300);
             Data.Speed = 10f;
+            StageData.ScrollCoordinate = -3000f;
+            StageData.AccelerationConstant = 5.0f;
+            StageData.MaxVelocity = 100f;
             EnemySpawnController.Instance.SpawnEnemy(10, 3f);
         }
     }
