@@ -73,7 +73,7 @@ public class EnemySpawnManager : MonoBehaviour {
                 EndRadian += 2*Mathf.PI;
             }
             
-        float[] Constant = new float[] {Radius, StartRadian + (Mathf.PI/2), EndRadian + (Mathf.PI/2)};
+        float[] Constant = new float[] {Radius, StartRadian + Mathf.PI, EndRadian + Mathf.PI};
         return Constant;
         }
     }

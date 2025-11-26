@@ -40,9 +40,6 @@ public class EnemySpawnController : MonoBehaviour {
         }
     }
 
-    private void Update()
-    {
-    }
 
     public List<float[]> PathFind(string type, float[] startpoint, float[] endpoint, float[] midpoint, float speed)
     {
@@ -101,8 +98,9 @@ public class EnemySpawnController : MonoBehaviour {
                 float[] constant = Manager.CircleFormula(startpoint, endpoint, midpoint);
                 for (float angle = constant[1]; angle < constant[2]; angle += Math.Abs(speed))
                 {
-                    float x = midpoint[0] + Mathf.Cos(angle) * constant[0];
-                    float y = midpoint[1] + Mathf.Sin(angle) * constant[0];
+                    float x = midpoint[0] + (Mathf.Cos(angle) * constant[0]);
+                    float y = midpoint[1] + (Mathf.Sin(angle) * constant[0]);
+                    Debug.Log(x);
                     Waypoints.Add(new float[] {x, y});
                 }
                 if (speed < 0)
