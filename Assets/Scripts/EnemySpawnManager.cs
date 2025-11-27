@@ -62,7 +62,7 @@ public class EnemySpawnManager : MonoBehaviour {
             // Find EndRadian
             float LineBetweenEnd = (float)Math.Sqrt(Math.Pow(EndPointX - MidPointX, 2) + Math.Pow(EndPointY - MidPointY + Radius, 2));
             EndRadian = (float)Math.Acos(((2 * Math.Pow(Radius, 2)) - Math.Pow(LineBetweenEnd, 2)) / (2 * Math.Pow(Radius, 2)));
-            // Correct quardrant
+            // Correct quardrant 
             if (EndPointX > MidPointX)
             {
                 EndRadian = 2*Mathf.PI - EndRadian;
