@@ -7,18 +7,16 @@ public class CurrencyUI : MonoBehaviour
 
     private void Start()
     {
-        //Make sure the Manager exists
+        // Initialize the display with current currency value
         if (CurrencyManager.Instance != null)
         {
-            //Update the text immediately when the game starts
             UpdateCoinText(CurrencyManager.Instance.Currency);
         }
     }
 
     private void OnEnable()
     {
-        //Listen for the "OnCurrencyChanged" event
-        //Whenever the manager shouts that money changed, run UpdateCoinText
+        // Subscribe to the event to listen for updates
         if (CurrencyManager.Instance != null)
         {
             CurrencyManager.Instance.OnCurrencyChanged += UpdateCoinText;
@@ -27,18 +25,16 @@ public class CurrencyUI : MonoBehaviour
 
     private void OnDisable()
     {
-        //Stop listening when this object is turned off
-        //This prevents errors when changing scenes or quitting
+        // Unsubscribe to prevent memory leaks or errors when object is disabled
         if (CurrencyManager.Instance != null)
         {
             CurrencyManager.Instance.OnCurrencyChanged -= UpdateCoinText;
         }
     }
 
-    // This function runs automatically whenever currency changes
+    // Updates the text UI element. Formats the number with commas (N0).
     private void UpdateCoinText(double amount)
     {
-        //coinText.text = amount.ToString("N0");
         coinText.text = "$" + amount.ToString("N0");
     }
 }

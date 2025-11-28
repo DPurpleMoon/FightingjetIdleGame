@@ -2,6 +2,10 @@ using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Manages the player's currency, handling storage, saving/loading, and modification events.
+/// Execution Order is set to -100 to ensure this initializes before UI scripts.
+/// </summary>
 [DefaultExecutionOrder(-100)]
 public class CurrencyManager : MonoBehaviour
 {
@@ -11,11 +15,12 @@ public class CurrencyManager : MonoBehaviour
 
     private const string CurrencyKey = "PlayerCurrency";
 
-    //An event the UI can listen to
+    // Event triggered when currency value changes
     public event Action<double> OnCurrencyChanged;
 
-    void Awake()
+    private void Awake()
     {
+        // Singleton Pattern Implementation
         if (Instance == null)
         {
             Instance = this;
@@ -40,7 +45,6 @@ public class CurrencyManager : MonoBehaviour
         if (amount <= 0) return;
 
         Currency += amount;
-
         NotifyUI();
     }
 
@@ -51,26 +55,23 @@ public class CurrencyManager : MonoBehaviour
         if (Currency >= amount)
         {
             Currency -= amount;
-
             NotifyUI();
             return true;
         }
         return false;
     }
 
-    //Helper function to update UI safely
+    // Invokes the event to update subscribers (UI)
     private void NotifyUI()
     {
         OnCurrencyChanged?.Invoke(Currency);
     }
 
-    //Save automatically when the player quits the game
     private void OnApplicationQuit()
     {
         SaveCurrency();
     }
 
-    //Save when the app is paused
     private void OnApplicationPause(bool pauseStatus)
     {
         if (pauseStatus) SaveCurrency();
@@ -78,15 +79,14 @@ public class CurrencyManager : MonoBehaviour
 
     public void SaveCurrency()
     {
-        // PlayerPrefs acts weird with Double, so we convert to String for safety
+        // Convert to string for PlayerPrefs safety regarding double precision
         PlayerPrefs.SetString(CurrencyKey, Currency.ToString());
         PlayerPrefs.Save();
-        Debug.Log("Game Saved!");
+        Debug.Log("Game Data Saved.");
     }
 
     public void LoadCurrency()
     {
-        // Load as string and convert back to double
         string s = PlayerPrefs.GetString(CurrencyKey, "0");
         if (double.TryParse(s, out double result))
         {
@@ -100,25 +100,27 @@ public class CurrencyManager : MonoBehaviour
 
     private void Update()
     {
-        //Testing
-        //Space bar to add money
-        //R to reset money
+        // --- Development Testing Controls ---
+        // A: Add Funds
+        // D: Deduct Funds
+        // R: Reset Funds
+
         if (Keyboard.current == null) return;
 
         if (Keyboard.current.aKey.wasPressedThisFrame)
         {
-            AddCurrency(100);
-            Debug.Log("Testing successful! Currency earned successfully. Current Money: " + Currency);
+            AddCurrency(1000);
+            Debug.Log($"[Debug] Currency Added. Current: {Currency}");
         }
         if (Keyboard.current.dKey.wasPressedThisFrame)
         {
             SpendCurrency(50);
-            Debug.Log("Testing successful! Currency spent successfully. Current Money: " + Currency);
+            Debug.Log($"[Debug] Currency Spent. Current: {Currency}");
         }
-            if (Keyboard.current.rKey.wasPressedThisFrame)
+        if (Keyboard.current.rKey.wasPressedThisFrame)
         {
             ResetCurrency();
-            Debug.Log("Testing successful! Money Successfully reset. Current money: " + Currency);
+            Debug.Log($"[Debug] Currency Reset. Current: {Currency}");
         }
     }
 }
