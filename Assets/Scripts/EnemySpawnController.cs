@@ -48,7 +48,6 @@ public class EnemySpawnController : MonoBehaviour {
             activeEnemies.Add(DupeEnemy);
             await Task.Delay((int)(distance * 1000f)); 
         }
-        }
     }
 
     IEnumerator WaitPath(GameObject enemy, List<float[]> waypoints, float speed)
