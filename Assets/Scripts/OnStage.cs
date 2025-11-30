@@ -23,14 +23,14 @@ public class OnStage : MonoBehaviour
         {
             Data.EnemyName = "enemydummy";
             Data.MovementType = "Line";
-            Data.StartPoint = new Vector2(-300, -300); 
+            Data.StartPoint = new Vector2(-100, -100); 
             Data.MidPoint = new Vector2(0, 0);
-            Data.EndPoint = new Vector2(300, 300);
+            Data.EndPoint = new Vector2(100, 100);
             Data.Speed = 10f;
             StageData.ScrollCoordinate = -3000f;
             StageData.AccelerationConstant = 5.0f;
             StageData.MaxVelocity = 100f;
-            EnemySpawnManager.Instance.SpawnEnemy(10, 3f);
+            EnemySpawnManager.Instance.SpawnEnemy(2, 20f);
         }
     }
 }
