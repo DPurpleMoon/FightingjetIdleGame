@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-feature/player
-guid: 8dade65c47855c24ea5ff72886be2f44
-
-guid: 2ea29f5f5debda843aea60148a61b94c
- main
+guid: 5a8e2281f3847654590986e22abae744
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
