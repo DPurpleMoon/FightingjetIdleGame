@@ -29,7 +29,7 @@ public class EnemySpawnController : MonoBehaviour {
         int i = 0;
         foreach (Vector2 coordinate in waypoints)
         {
-            Vector3 target = new Vector3(coordinate.x, coordinate.y, -0.001f);
+            Vector3 target = new Vector3(coordinate.x, coordinate.y, -20f);
             if (i == 0)
             {
                 enemy.transform.position = target;
