@@ -19,7 +19,6 @@ public class OnStage : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log($"A scene change occurred! New scene is: {scene.name}");
         if (scene.name == "Stage0")
         {
             Data.EnemyName = "enemydummy";
@@ -31,7 +30,7 @@ public class OnStage : MonoBehaviour
             StageData.ScrollCoordinate = -3000f;
             StageData.AccelerationConstant = 5.0f;
             StageData.MaxVelocity = 100f;
-            EnemySpawnController.Instance.SpawnEnemy(10, 3f);
+            EnemySpawnManager.Instance.SpawnEnemy(10, 3f);
         }
     }
 }
