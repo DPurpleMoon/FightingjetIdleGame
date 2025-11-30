@@ -19,17 +19,17 @@ public class EnemySpawnController : MonoBehaviour {
         
         if (DupeEnemy != null)
             {
-                List<float[]> Waypoints = PathFind(Data.MovementType, Data.StartPoint, Data.EndPoint, Data.MidPoint, 0.05f);
+                List<Vector2> Waypoints = PathFind(Data.MovementType, Data.StartPoint, Data.EndPoint, Data.MidPoint, 0.05f);
                 StartCoroutine(WaitPath(DupeEnemy, Waypoints, Data.Speed));
             }
     }
 
-    IEnumerator WaitPath(GameObject enemy, List<float[]> waypoints, float speed)
+    IEnumerator WaitPath(GameObject enemy, List<Vector2> waypoints, float speed)
     {
         int i = 0;
-        foreach (float[] coordinate in waypoints)
+        foreach (Vector2 coordinate in waypoints)
         {
-            Vector3 target = new Vector3(coordinate[0], coordinate[1], -0.001f);
+            Vector3 target = new Vector3(coordinate.x, coordinate.y, -0.001f);
             if (i == 0)
             {
                 enemy.transform.position = target;
@@ -47,11 +47,11 @@ public class EnemySpawnController : MonoBehaviour {
     }
 
 
-    public List<float[]> PathFind(string type, Vector2 startpoint, Vector2 endpoint, Vector2 midpoint, float speed)
+    public List<Vector2> PathFind(string type, Vector2 startpoint, Vector2 endpoint, Vector2 midpoint, float speed)
     {
         if (speed != 0)
         {
-            List<float[]> Waypoints = new List<float[]>(); 
+            List<Vector2> Waypoints = new List<Vector2>(); 
             if (type == "Line")
             {
                 float[] constant = LineFormula(startpoint, endpoint);
@@ -64,7 +64,7 @@ public class EnemySpawnController : MonoBehaviour {
                         for (float x = startpoint.x; x < endpoint.x; x += Math.Abs(speed))
                         {
                             float y = constant[0] * x + constant[1];
-                            Waypoints.Add(new float[] {x, y});
+                            Waypoints.Add(new Vector2(x, y));
                         }
                     }
                     
@@ -74,7 +74,7 @@ public class EnemySpawnController : MonoBehaviour {
                         for (float x = startpoint.x; x > endpoint.x; x -= Math.Abs(speed))
                         {
                             float y = constant[0] * x + constant[1];
-                            Waypoints.Add(new float[] {x, y});
+                            Waypoints.Add(new Vector2(x, y));
                         }
                     }
                 } else if (startpoint.y != endpoint.y){
@@ -84,7 +84,7 @@ public class EnemySpawnController : MonoBehaviour {
                     {
                         for (float y = startpoint.y; y < endpoint.y; y += Math.Abs(speed))
                         {
-                            Waypoints.Add(new float[] {x, y});
+                            Waypoints.Add(new Vector2(x, y));
                         }
                     }
                     // from down to up
@@ -92,7 +92,7 @@ public class EnemySpawnController : MonoBehaviour {
                     {
                         for (float y = startpoint.y; y > endpoint.y; y -= Math.Abs(speed))
                         {
-                            Waypoints.Add(new float[] {x, y});
+                            Waypoints.Add(new Vector2(x, y));
                         }
                     }
                 } else {
@@ -107,7 +107,7 @@ public class EnemySpawnController : MonoBehaviour {
                     float x = midpoint.x + (Mathf.Cos(angle) * constant[0]);
                     float y = midpoint.y + (Mathf.Sin(angle) * constant[0]);
                     Debug.Log(x);
-                    Waypoints.Add(new float[] {x, y});
+                    Waypoints.Add(new Vector2(x, y));
                 }
                 if (speed < 0)
                 {
