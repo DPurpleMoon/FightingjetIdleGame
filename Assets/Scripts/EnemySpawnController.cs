@@ -24,7 +24,7 @@ public class EnemySpawnController : MonoBehaviour {
         DupeEnemyList.Add(DupeEnemy);
         DupeEnemyHealthList.Add(DupeHealth);
         
-        if (DupeEnemy != null)
+        if (DupeEnemy != null) 
             {
                 List<Vector2> Waypoints = PathFind(Data.MovementType, Data.StartPoint, Data.EndPoint, Data.MidPoint, 0.05f);
                 StartCoroutine(WaitPath(DupeEnemy, DupeHealth, Waypoints, Data.Speed));
