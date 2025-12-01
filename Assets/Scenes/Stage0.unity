@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 338932753}
   - component: {fileID: 338932752}
   - component: {fileID: 338932757}
+  - component: {fileID: 338932758}
   m_Layer: 0
   m_Name: enemydummy
   m_TagString: Untagged
@@ -300,6 +301,21 @@ MonoBehaviour:
   HealthBar: {fileID: 1552311437}
   HealthCanvas: {fileID: 1923270011}
   Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
+--- !u!114 &338932758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338932750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67f1ac2c4a4486242bc3e749c37460f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthController
+  healthSlider: {fileID: 0}
+  Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
+  Controller: {fileID: 0}
 --- !u!1 &362030067
 GameObject:
   m_ObjectHideFlags: 0
@@ -931,6 +947,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1552311438}
   - component: {fileID: 1552311439}
+  - component: {fileID: 1552311441}
   m_Layer: 0
   m_Name: HealthBarOrigin
   m_TagString: Untagged
@@ -1009,6 +1026,21 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1552311441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552311437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a861a29c0dbd7df489410d326714550e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnController
+  HealthBar: {fileID: 1552311437}
+  HealthCanvas: {fileID: 1923270011}
+  Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
 --- !u!1 &1923270007
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,14 +13,9 @@ MonoBehaviour:
   m_Name: EnemyData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   EnemyName: enemydummy
-  MovementType: Circle
-  Speed: 1
-  StartPoint:
-  - 0
-  - 0
-  MidPoint:
-  - 2
-  - 2
-  EndPoint:
-  - 4
-  - 0
+  MovementType: Line
+  Speed: 10
+  StartPoint: {x: -100, y: -100}
+  MidPoint: {x: 0, y: 0}
+  EndPoint: {x: 100, y: 100}
+  maxHealth: 100
