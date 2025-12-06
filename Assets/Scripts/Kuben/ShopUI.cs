@@ -84,7 +84,7 @@ public class ShopUI : MonoBehaviour
             // Current weapon is equipped
             equipButton.GetComponentInChildren<TextMeshProUGUI>().text = "EQUIPPED";
             equipButton.interactable = false;
-            equipButton.image.color = Color.greenYellow;
+            equipButton.image.color = Color.blueViolet;
         }
         else
         {
