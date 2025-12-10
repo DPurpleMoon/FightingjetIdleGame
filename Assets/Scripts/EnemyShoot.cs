@@ -18,12 +18,12 @@ public class EnemyShoot : MonoBehaviour
             {
             if (Enemy != null && Enemy.name == gameObject.name)
                 { 
-                    SelectedEnemy = Enemy;
+                    SelectedEnemy = gameObject;
                 }
             }
         if (SelectedEnemy != null)
         {
-            ShootContinuous(SelectedEnemy);
+            StartCoroutine(ShootContinuous(SelectedEnemy));
         }
     }
 
@@ -47,12 +47,13 @@ public class EnemyShoot : MonoBehaviour
 
     public void Shoot(GameObject enemy)
     {
+        Debug.Log("yes");
         Vector3 SpawnLocation = enemy.transform.position - new Vector3(0, Data.BulletSpawnDistance, 0);   
         GameObject bullet = Instantiate(EnemyBulletObject, SpawnLocation, Quaternion.Euler(180f, 0f, 0f));
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.linearVelocity = transform.up * Data.BulletSpeed;
+            rb.AddForce(bullet.transform.up * Data.BulletSpeed, ForceMode2D.Impulse);
         }
     }
 }

@@ -67,7 +67,6 @@ public class StageScrollingController : MonoBehaviour {
         {
             Destroy(DupeStage);
         }
-        Debug.Log(CurrentStage.name);
         Renderer renderer = CurrentStage.GetComponent<Renderer>();
         BGHeight = renderer.bounds.size.y;
         ActualLocation = new Vector2(0, 0);
