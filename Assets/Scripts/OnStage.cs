@@ -32,8 +32,8 @@ public class OnStage : MonoBehaviour
             StageData.ScrollCoordinate = -3000f;
             StageData.AccelerationConstant = 5.0f;
             StageData.MaxVelocity = 100f;
-            StageScript.Initiate("stagedummy_0");
-            StageScript.Scroll();
+            StageData.StageName = "stagedummy_0";
+            StageScript.Initiate();
             EnemySpawnManager.Instance.SpawnEnemy(2, 20f);
         }
     }

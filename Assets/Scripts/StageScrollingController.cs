@@ -1,111 +1,103 @@
 using UnityEngine;
 using System;
+using System.Collections;
 
 public class StageScrollingController : MonoBehaviour {
-    public static Vector2 TargetPosition;
-    public static Vector2 ActualLocation = new Vector2(0, 0);
-    public static bool StageCloned = true;
-    public static GameObject CurrentStage;
+    public Vector2 TargetPosition;
+    public Vector2 ActualLocation = new Vector2(0, 0);
+    public bool StageCloned = false;
+    public GameObject CurrentStage;
     public GameObject DupeStage;
     private float StageMoveVelocity;
     private float Multiplier;
-    public static float BGHeight;
+    public float BGHeight;
+    private Coroutine _scrollRoutine;
 
     public StageScrollingData Stage; 
 
     public void Scroll()
     {
-    
-    Multiplier = Stage.StartingVelocity;
-    while (ActualLocation != TargetPosition)
+        if (gameObject.name == Stage.StageName)
         {
-        Debug.Log("test");
+            StartCoroutine(StageScrolling());
+        }
+    }
+
+    private IEnumerator StageScrolling()
+    {
+    Multiplier = Stage.StartingVelocity;
+    while (Mathf.Abs(ActualLocation.y - TargetPosition.y) > 0.01f)
+        {
         if (Stage.inStage){
-            Debug.Log("test");
-            if (!StageCloned)
-                {
-                    Debug.Log("test");
-                    DupeStage = Instantiate(CurrentStage, new Vector3(0, BGHeight, 0), Quaternion.identity);
-                    StageCloned = true;
-                }
             // Acceleration method
             // Increase Multiplier if smaller than MaxVelocity
-            if ((ActualLocation != TargetPosition) && (Multiplier < Stage.MaxVelocity))
+            if (Multiplier < Stage.MaxVelocity)
                 {
                     Multiplier = Multiplier * Stage.AccelerationConstant; 
-                    StageMoveVelocity = Multiplier * Time.deltaTime;
                 }
             // Set Multiplier to MaxVelocity if exceed
-            else if ((ActualLocation != TargetPosition) && (Multiplier > Stage.MaxVelocity))
+            else if (Multiplier > Stage.MaxVelocity)
                 {
                     Multiplier = Stage.MaxVelocity; 
-                    StageMoveVelocity = Multiplier * Time.deltaTime;
-                }
-            // Stop if ActualLocation is equal to TargetPosition
-            else if (ActualLocation == TargetPosition)
-                {
-                    Multiplier = Stage.StartingVelocity;
                 }
             // Dynamic deacceleration when ActualLocation is almost equals to TargetPostion
             else if (((ActualLocation.y - TargetPosition.y) < MathF.Log((Stage.MaxVelocity / Stage.StartingVelocity * (1 - Stage.AccelerationConstant)) - 1, 1 - Stage.AccelerationConstant)) && (Multiplier > Stage.StartingVelocity))
                 {
                     Multiplier = Multiplier * (1 / Stage.AccelerationConstant); 
-                    StageMoveVelocity = Multiplier * Time.deltaTime;
                 }
-
-            // Only change TargetPosition in CurrentStage to prevent desync
-            if (DupeStage != gameObject)
-                {
-                    TargetPosition = new Vector2(0, Stage.ScrollCoordinate);
-                }
-
-            // Scroll background when inStage is true and TargetPosition is smaller than ActualLocation
-            // ActualLocation and TargetPosition is towards negative
-            if ((Stage.inStage) && (ActualLocation.y > TargetPosition.y)) {
-                if (CurrentStage == gameObject)
-                    {
-                        CurrentStage.transform.position = new Vector3(0, ((ActualLocation.y - TargetPosition.y) % BGHeight) - BGHeight, 0);
-                        ActualLocation = Vector2.MoveTowards(ActualLocation, TargetPosition, StageMoveVelocity);
-                    }
-                else if (DupeStage == gameObject)
-                    {   
-                        DupeStage.transform.position = new Vector3(0, (ActualLocation.y - TargetPosition.y) % BGHeight, 0);
-                    }
-                }
-            else
-                {
-                    ActualLocation = TargetPosition;
-                }
+            StageMoveVelocity = Multiplier * Time.deltaTime;
+            ActualLocation = Vector2.MoveTowards(ActualLocation, TargetPosition, StageMoveVelocity);
+            CurrentStage.transform.position = new Vector3(0, ((ActualLocation.y - TargetPosition.y) % BGHeight) - BGHeight, 0);
+            DupeStage.transform.position = new Vector3(0, (ActualLocation.y - TargetPosition.y) % BGHeight, 0);
+            yield return null;
             }
         }
+        ActualLocation = TargetPosition;
     }
 
-    public void Initiate(string StageName){
-        Stage.StageName = StageName;
-        if (Stage.StageName == gameObject.name)
+    public void Initiate(){
+        CurrentStage = GameObject.Find(Stage.StageName);
+        CurrentStage.SetActive(true);
+        if (_scrollRoutine != null)
         {
-            CurrentStage = gameObject;
-            CurrentStage.SetActive(true);
-            Renderer renderer = CurrentStage.GetComponent<Renderer>();
-            BGHeight = GetComponent<Renderer>().bounds.size.y;
-            if (DupeStage != null)
-            {
-                Destroy(DupeStage);
-            }
-            StageCloned = false;
-            Stage.inStage = true;
+            StopCoroutine(_scrollRoutine);
+            _scrollRoutine = null;
         }
+        if (DupeStage != null)
+        {
+            Destroy(DupeStage);
+        }
+        Debug.Log(CurrentStage.name);
+        Renderer renderer = CurrentStage.GetComponent<Renderer>();
+        BGHeight = renderer.bounds.size.y;
+        ActualLocation = new Vector2(0, 0);
+        TargetPosition = new Vector2(0, Stage.ScrollCoordinate);
+        StageCloned = false;
+        Stage.inStage = true;
+        DupeStage = Instantiate(CurrentStage, new Vector3(0, BGHeight, 0), Quaternion.identity);
+        StageCloned = true;
+        _scrollRoutine = StartCoroutine(StageScrolling());
+    
         // Clone the background once and put it on top of the original background
     }
 
     public void LeaveStage(){
+        if (_scrollRoutine != null)
+        {
+            StopCoroutine(_scrollRoutine);
+            _scrollRoutine = null;
+        }
         if (DupeStage != null)
         {
             Destroy(DupeStage);
-            StageCloned = false;
+            DupeStage = null;
         }
+        StageCloned = false;
         Stage.inStage = false;
-        CurrentStage.SetActive(false);
+        if (CurrentStage != null)
+        {
+            CurrentStage.SetActive(false);
+        }
     }
 }
 
