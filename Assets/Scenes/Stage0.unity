@@ -892,7 +892,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d85020632d44d749b63ba6035454fbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageScrollingController
+  TargetPosition: {x: 0, y: 0}
+  ActualLocation: {x: 0, y: 0}
+  StageCloned: 0
+  CurrentStage: {fileID: 0}
   DupeStage: {fileID: 0}
+  BGHeight: 0
   Stage: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
 --- !u!1 &2097574367
 GameObject:
@@ -980,15 +985,15 @@ PrefabInstance:
       objectReference: {fileID: 1923270011}
     - target: {fileID: 8927536285969150340, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -188
       objectReference: {fileID: 0}
     - target: {fileID: 8927536285969150340, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -110
       objectReference: {fileID: 0}
     - target: {fileID: 8927536285969150340, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 100
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8927536285969150340, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
       propertyPath: m_LocalRotation.w

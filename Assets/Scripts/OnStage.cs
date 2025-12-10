@@ -25,9 +25,11 @@ public class OnStage : MonoBehaviour
             StageScript = GetComponent<StageScrollingController>();
             Data.EnemyName = "enemydummy";
             Data.MovementType = "Line";
-            Data.StartPoint = new Vector2(-100, -100); 
+
+            // x (-188 > 188), y (-110, 110)
+            Data.StartPoint = new Vector2(-188, 0); 
             Data.MidPoint = new Vector2(0, 0);
-            Data.EndPoint = new Vector2(100, 100);
+            Data.EndPoint = new Vector2(188, 0);
             Data.Speed = 10f;
             StageData.ScrollCoordinate = -3000f;
             StageData.AccelerationConstant = 5.0f;

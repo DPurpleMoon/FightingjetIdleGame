@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8173230250682681097}
   - component: {fileID: 6297495522651124099}
   - component: {fileID: 7665711103545316008}
+  - component: {fileID: -3145396805992809276}
   m_Layer: 0
   m_Name: enemytemplate
   m_TagString: Untagged
@@ -197,3 +198,15 @@ MonoBehaviour:
   healthSlider: {fileID: 0}
   Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
   Controller: {fileID: 0}
+--- !u!114 &-3145396805992809276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447104523345196546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 304a9da478b8c7440999e1e667e21467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageScore
