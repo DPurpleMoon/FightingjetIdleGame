@@ -4,6 +4,7 @@ public class OnStage : MonoBehaviour
 {
     public EnemyData Data; 
     public StageScrollingData StageData;
+    public StageScrollingController StageScript;
 
     void Awake()
     {
@@ -21,6 +22,7 @@ public class OnStage : MonoBehaviour
     {
         if (scene.name == "Stage0")
         {
+            StageScript = GetComponent<StageScrollingController>();
             Data.EnemyName = "enemydummy";
             Data.MovementType = "Line";
             Data.StartPoint = new Vector2(-100, -100); 
@@ -30,6 +32,8 @@ public class OnStage : MonoBehaviour
             StageData.ScrollCoordinate = -3000f;
             StageData.AccelerationConstant = 5.0f;
             StageData.MaxVelocity = 100f;
+            StageScript.Initiate("stagedummy_0");
+            StageScript.Scroll();
             EnemySpawnManager.Instance.SpawnEnemy(2, 20f);
         }
     }
