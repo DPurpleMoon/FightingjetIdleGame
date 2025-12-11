@@ -24,7 +24,7 @@ public class EnemySpawnController : MonoBehaviour {
         DupeEnemyList.Add(DupeEnemy);
         DupeEnemyHealthList.Add(DupeHealth);
         
-        if (DupeEnemy != null)
+        if (DupeEnemy != null) 
             {
                 List<Vector2> Waypoints = PathFind(Data.MovementType, Data.StartPoint, Data.EndPoint, Data.MidPoint, 0.05f);
                 StartCoroutine(WaitPath(DupeEnemy, DupeHealth, Waypoints, Data.Speed));
@@ -38,24 +38,30 @@ public class EnemySpawnController : MonoBehaviour {
         float enemyheight = renderer.bounds.size.y;
         foreach (Vector2 coordinate in waypoints)
         {
-            Vector3 target = new Vector3(coordinate.x, coordinate.y, -20f);
-                // Set health y position to current location of enemy + height of enemy/2 + 5f and x position to current location of enemy + 1.5f
-            Vector3 HealthTarget = new Vector3(coordinate.x + 1.5f, coordinate.y + (enemyheight / 2) + 5f, 0f);
-            if (i == 0)
+            if (enemy != null)
             {
-                enemy.transform.position = target;
-                Health.transform.position = HealthTarget;
-            }
-            else 
-            {
-                while (Vector3.Distance(enemy.transform.position, target) > 0.1f)
-                {
-                    enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
-                    Health.transform.position = Vector3.MoveTowards(Health.transform.position, HealthTarget, speed * Time.deltaTime);
-                    yield return null;
+                try {
+                    Vector3 target = new Vector3(coordinate.x, coordinate.y, -20f);
+                        // Set health y position to current location of enemy + height of enemy/2 + 5f and x position to current location of enemy + 1.5f
+                    Vector3 HealthTarget = new Vector3(coordinate.x + 1.5f, coordinate.y + (enemyheight / 2) + 5f, 0f);
+                    if (i == 0)
+                    {
+                        enemy.transform.position = target;
+                        Health.transform.position = HealthTarget;
+                    }
+                    else 
+                    {
+                        while (Vector3.Distance(enemy.transform.position, target) > 0.1f)
+                        {
+                            enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
+                            Health.transform.position = Vector3.MoveTowards(Health.transform.position, HealthTarget, speed * Time.deltaTime);
+                        }
+                    }
+                    i++;
                 }
+                catch {}
+                yield return null;
             }
-            i++;
         }
     }
 
