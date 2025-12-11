@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b3a25275a9c1344a4a47851a911796, type: 3}
   m_Name: StageScrollingData
   m_EditorClassIdentifier: Assembly-CSharp::StageScrollingData
-  StageName: stagedummy_0
-  ScrollCoordinate: -500
+  StageName: forest
+  ScrollCoordinate: -3000
   inStage: 1
-  AccelerationConstant: 1.1
+  AccelerationConstant: 5
   StartingVelocity: 0.6
-  MaxVelocity: 20
+  MaxVelocity: 100
