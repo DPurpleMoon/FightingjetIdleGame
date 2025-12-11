@@ -104,3 +104,8 @@ InitTestScene*.unity*
 
 # Audio assets
 .fake
+
+# Ignore heavy plugins
+/Assets/Plugins/Demigiant/
+/Assets/Plugins/UniRx/
+/Assets/TextMesh Pro/
