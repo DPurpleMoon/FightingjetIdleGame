@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 public class EnemySpawnManager : MonoBehaviour {
@@ -10,12 +11,15 @@ public class EnemySpawnManager : MonoBehaviour {
     public List<GameObject> enemyPrefabs;
     private Dictionary<string, GameObject> _prefabMap = new Dictionary<string, GameObject>();
     public EnemyData Data; 
+    private CancellationTokenSource _cancellationTokenSource;
     void Awake()
     {
+        _cancellationTokenSource = new CancellationTokenSource();
         if (Instance != null && Instance != this)
         {
             // Destroy this object if another instance already exists
             Destroy(gameObject);
+            return;
         }
         else
         {
@@ -31,6 +35,12 @@ public class EnemySpawnManager : MonoBehaviour {
         }
     }
 
+    private void OnDestroy()
+    {
+        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource.Dispose();
+    }
+
     public async Task SpawnEnemy(int enemyamount, float distance)
     {
         // Set EnemyType to selected EnemyName
@@ -40,10 +50,19 @@ public class EnemySpawnManager : MonoBehaviour {
             return; 
         }
         Controller = GetComponent<EnemySpawnController>();
-        for (int i = 0; i < enemyamount; i++)
+        CancellationToken token = _cancellationTokenSource.Token;
+        try
         {
-            Controller.EnemySpawn(EnemyType, i);
-            await Task.Delay((int)(distance * 1000f)); 
+            for (int i = 0; i < enemyamount; i++)
+            {
+                token.ThrowIfCancellationRequested();
+                Controller.EnemySpawn(EnemyType, i);
+                await Task.Delay((int)(distance * 1000f), token); 
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            return;
         }
     }
 }
