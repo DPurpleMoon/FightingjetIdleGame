@@ -6,7 +6,7 @@ namespace jetfighter.movement
     public class PlayerController : MonoBehaviour
     {
         [Header("Movement Settings")]
-        [SerializeField] private float movementSpeed = 5f;
+        [SerializeField] private float movementSpeed = 20f;
 
         private Rigidbody2D body;
         private Vector2 moveInput;

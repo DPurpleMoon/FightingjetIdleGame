@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
@@ -11,6 +12,9 @@ public class EnemyHealthController : MonoBehaviour
     public EnemyData Data;
     private float currentHealth;
     public EnemySpawnController Controller;
+
+    [SerializeField] private float invEnemyTime = 1.5f;
+    private float invEnemyFrame;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {   
@@ -33,10 +37,36 @@ public class EnemyHealthController : MonoBehaviour
         }
     }
 
-    // health reduce demo
-    void OnMouseDown()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        HealthBarChange(5);
+        if (collision.gameObject.CompareTag("PlayerBullet"))
+        {
+            Collider2D EnemyCollide = gameObject.GetComponent<Collider2D>();
+            Physics2D.IgnoreCollision(EnemyCollide, collision);
+            bullet playerScript = collision.gameObject.GetComponent<bullet>();
+            if (playerScript != null)
+            {
+                HealthBarChange(playerScript.damage);
+                Destroy(collision.gameObject);
+            }
+        }
+        else if (collision.gameObject.CompareTag("Player") && Time.time >= invEnemyFrame)
+        {
+            StartCoroutine(IgnoreCollisionTemp(collision, invEnemyTime));
+            HealthBarChange(99999999999);
+            invEnemyFrame = Time.time + invEnemyTime;
+        }
+    }
+
+    private IEnumerator IgnoreCollisionTemp(Collider2D collider, float duration)
+    {
+        Collider2D EnemyCollide = gameObject.GetComponent<Collider2D>();
+        Physics2D.IgnoreCollision(EnemyCollide, collider);
+        yield return new WaitForSeconds(duration);
+        if (collider != null) 
+        {
+            Physics2D.IgnoreCollision(EnemyCollide, collider, false);
+        }
     }
 
     public void HealthBarChange(int hpReduced) {
