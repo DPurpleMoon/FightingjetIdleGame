@@ -11,9 +11,8 @@ namespace jetfighter.movement
         
         private float nextFireTime = 0f;
 
-         private Collider2D playerCollider;
-         private void Start()
-        
+        private Collider2D playerCollider;
+        private void Start()
         {
             playerCollider = GetComponentInParent<Collider2D>();
             if (playerCollider == null)
@@ -21,6 +20,7 @@ namespace jetfighter.movement
                 playerCollider = GetComponentInChildren<Collider2D>();
             }
         }
+
         private void Update()
         {
             if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime)
@@ -37,18 +37,16 @@ namespace jetfighter.movement
                 Debug.LogWarning("Bullet Prefab or Fire Point not assigned!");
                 return;
             }
-
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
-            }
             Collider2D bulletCollider = bullet.GetComponent<Collider2D>();
             if (bulletCollider != null && playerCollider != null)
             {
                 Physics2D.IgnoreCollision(bulletCollider, playerCollider);
+            }
+            Rigidbody2D rbp = bullet.GetComponent<Rigidbody2D>();
+            if (rbp != null)
+            {
+                rbp.AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
             }
         }
 
