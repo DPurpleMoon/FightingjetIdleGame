@@ -53,7 +53,7 @@ public class EnemyHealthController : MonoBehaviour
         else if (collision.gameObject.CompareTag("Player") && Time.time >= invEnemyFrame)
         {
             StartCoroutine(IgnoreCollisionTemp(collision, invEnemyTime));
-            HealthBarChange(99999999999);
+            HealthBarChange(999999);
             invEnemyFrame = Time.time + invEnemyTime;
         }
     }
