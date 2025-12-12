@@ -4,14 +4,13 @@ namespace jetfighter.movement
 {
     public class PlayerHealth : MonoBehaviour
     {
-        [Header("Health Settings")]
-        [SerializeField] private int maxHealth = 4; 
+        
         private int currentHealth;
 
         private void Start()
         {
-            currentHealth = maxHealth;
-            Debug.Log("Player Health: " + currentHealth + "/" + maxHealth);
+            currentHealth = Statsmanger.Instance.GetMaxHealth();
+            Debug.Log("Player Health: " + currentHealth + "/" + Statsmanger.Instance.GetMaxHealth());
         }
 
         public void TakeDamage(int damage)
@@ -21,7 +20,7 @@ namespace jetfighter.movement
             if (currentHealth < 0)
                 currentHealth = 0;
 
-            Debug.Log("Player took " + damage + " damage! Health: " + currentHealth + "/" + maxHealth);
+            Debug.Log("Player took " + damage + " damage! Health: " + currentHealth + "/" + Statsmanger.Instance.GetMaxHealth());
 
             if (currentHealth <= 0)
             {
@@ -31,6 +30,8 @@ namespace jetfighter.movement
 
         public void Heal(int amount)
         {
+            int maxHealth = Statsmanger.Instance.GetMaxHealth();
+            
             if (currentHealth >= maxHealth)
             {
                 Debug.Log("Health already full!");
@@ -52,13 +53,13 @@ namespace jetfighter.movement
 
         public int GetMaxHealth()
         {
-            return maxHealth;
+            return Statsmanger.Instance.GetMaxHealth();
         }
 
         private void Die()
         {
             Debug.Log("Player Died!");
-         
+
             Destroy(gameObject);
         }
 
