@@ -1,14 +1,24 @@
 using UnityEngine;
+public class bullet : MonoBehaviour
+{
+    private int damage;
 
-
-    public class bullet : MonoBehaviour
+    private void Start()
     {
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            Destroy(gameObject);
-        }
-        private void Start()
-        {
-            Destroy(gameObject, 5f);
-        }
+        damage = Statsmanger.Instance.GetDamage();
+        Destroy(gameObject, 5f);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+           Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+           if (enemy != null)
+            {
+               enemy.TakeDamage(damage);
+            }
+        }
+        Destroy(gameObject);
+    }
+}
