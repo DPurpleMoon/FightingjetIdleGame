@@ -1,14 +1,21 @@
 using UnityEngine;
+public class bullet : MonoBehaviour
+{
+    public int damage;
+    public float destructionYBoundary = -150f;
 
-
-    public class bullet : MonoBehaviour
+    private void Start()
     {
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            Destroy(gameObject);
-        }
-        private void Start()
+        damage = Statsmanger.Instance.GetDamage();
+        float currentY = gameObject.transform.position.y;
+        if (currentY > destructionYBoundary)
+            {
+                Destroy(gameObject);
+                return;
+            }
+        else
         {
             Destroy(gameObject, 5f);
         }
     }
+}

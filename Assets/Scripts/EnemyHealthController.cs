@@ -33,10 +33,17 @@ public class EnemyHealthController : MonoBehaviour
         }
     }
 
-    // health reduce demo
-    void OnMouseDown()
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        HealthBarChange(5);
+        if (collision.gameObject.CompareTag("PlayerBullet"))
+        {
+            PlayerScript playerScript = collision.gameObject.GetComponent<bullet>();
+            if (playerScript != null)
+            {
+                HealthBarChange(playerScript.damage);
+                Destroy(collision.gameObject);
+            }
+        }
     }
 
     public void HealthBarChange(int hpReduced) {
