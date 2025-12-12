@@ -614,7 +614,7 @@ Transform:
   m_GameObject: {fileID: 637164532}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -628,6 +628,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2355476731400658848, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -3938918822449633212, guid: eb6d85be9da1e2145a10ba834f3bf4ab, type: 3}
     - target: {fileID: 7351640302785403101, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
       propertyPath: m_Name
       value: forest
@@ -1115,7 +1119,7 @@ Transform:
   m_GameObject: {fileID: 2079322968}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 960, y: 482.5, z: 0}
+  m_LocalPosition: {x: 960, y: 482.5, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1299,6 +1303,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stagedummy_0
       objectReference: {fileID: 0}
+    - target: {fileID: 7351640302785403101, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8438019912777928600, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1357,3 +1365,4 @@ SceneRoots:
   - {fileID: 1923270011}
   - {fileID: 637164535}
   - {fileID: 340181176}
+  - {fileID: 638040317}

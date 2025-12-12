@@ -633,10 +633,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d110d6f86d679846a0e7920de0f8d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::gunshooting
-  cooldown: 0.5
-  gunparcels: {fileID: 171845900211366259, guid: 55c059ff665703f4998d6ab786d622d9, type: 3}
-  firepoint: {fileID: 834163078}
-  parcelsflash: {fileID: 176548960}
 --- !u!1 &834163077
 GameObject:
   m_ObjectHideFlags: 0
