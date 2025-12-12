@@ -2,20 +2,24 @@ using UnityEngine;
 public class bullet : MonoBehaviour
 {
     public int damage;
-    public float destructionYBoundary = -150f;
+    public float destructionYBoundary = 200f;
 
-    private void Start()
+    void Start()
     {
-        damage = Statsmanger.Instance.GetDamage();
-        float currentY = gameObject.transform.position.y;
-        if (currentY > destructionYBoundary)
+        destructionYBoundary = 200f;
+    }
+
+    void Update()
+    {
+        if (gameObject.name != "bullet")
+        {
+            damage = Statsmanger.Instance.GetDamage();
+            float currentY = gameObject.transform.position.y;
+            if (currentY > destructionYBoundary)
             {
                 Destroy(gameObject);
                 return;
             }
-        else
-        {
-            Destroy(gameObject, 5f);
         }
     }
 }

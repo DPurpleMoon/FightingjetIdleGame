@@ -47,7 +47,6 @@ public class EnemyShoot : MonoBehaviour
 
     public void Shoot(GameObject enemy)
     {
-        Debug.Log("yes");
         Vector3 SpawnLocation = enemy.transform.position - new Vector3(0, Data.BulletSpawnDistance, 0);   
         GameObject bullet = Instantiate(EnemyBulletObject, SpawnLocation, Quaternion.Euler(180f, 0f, 0f));
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
