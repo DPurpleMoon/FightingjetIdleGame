@@ -13,7 +13,7 @@ public class EnemyShoot : MonoBehaviour
     void Start()
     {
         Controller = GetComponent<EnemySpawnController>();
-        List<GameObject> EnemyList = EnemySpawnController.DupeEnemyList;
+        List<GameObject> EnemyList = EnemySpawnManager.DupeEnemyList;
         foreach (GameObject Enemy in EnemyList)
             {
             if (Enemy != null && Enemy.name == gameObject.name)

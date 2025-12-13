@@ -9,26 +9,10 @@ public class EnemySpawnController : MonoBehaviour {
     
     private float[] EnemyRoute;
     private int[] EnemyPattern;
-    public static List<GameObject> DupeEnemyList = new List<GameObject>();
-    public static List<Slider> DupeEnemyHealthList = new List<Slider>();
-    public GameObject HealthBar;
-    public Transform HealthCanvas;
     public EnemyData Data; 
 
-    public void EnemySpawn(GameObject EnemyType, int count) {
-        GameObject DupeEnemy = Instantiate(EnemyType, new Vector3(0, 0, 100), Quaternion.identity);
-        GameObject DupeHealthCanvas = Instantiate(HealthBar, HealthCanvas);
-        Slider DupeHealth = DupeHealthCanvas.GetComponent<Slider>();
-        DupeEnemy.name = $"{EnemyType.name}{count + 1}";
-        DupeHealth.name = $"{EnemyType.name}{count + 1}HPBar";
-        DupeEnemyList.Add(DupeEnemy);
-        DupeEnemyHealthList.Add(DupeHealth);
-        
-        if (DupeEnemy != null) 
-            {
-                List<Vector2> Waypoints = PathFind(Data.MovementType, Data.StartPoint, Data.EndPoint, Data.MidPoint, 0.05f);
-                StartCoroutine(WaitPath(DupeEnemy, DupeHealth, Waypoints, Data.Speed));
-            }
+    public void SetPath(GameObject enemy, Slider Health, List<Vector2> waypoints, float speed){
+        StartCoroutine(WaitPath(enemy, Health, waypoints, speed));
     }
 
     IEnumerator WaitPath(GameObject enemy, Slider Health, List<Vector2> waypoints, float speed)
@@ -63,6 +47,8 @@ public class EnemySpawnController : MonoBehaviour {
                 yield return null;
             }
         }
+        Destroy(Health);
+        Destroy(enemy);
     }
 
 
@@ -125,7 +111,6 @@ public class EnemySpawnController : MonoBehaviour {
                 {
                     float x = midpoint.x + (Mathf.Cos(angle) * constant[0]);
                     float y = midpoint.y + (Mathf.Sin(angle) * constant[0]);
-                    Debug.Log(x);
                     Waypoints.Add(new Vector2(x, y));
                 }
                 if (speed < 0)

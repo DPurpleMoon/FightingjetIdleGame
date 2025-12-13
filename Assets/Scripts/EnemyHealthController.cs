@@ -21,7 +21,7 @@ public class EnemyHealthController : MonoBehaviour
         if (gameObject.name != Data.EnemyName)
         {
             Controller = GetComponent<EnemySpawnController>();
-            List<Slider> HealthBarList = EnemySpawnController.DupeEnemyHealthList;
+            List<Slider> HealthBarList = EnemySpawnManager.DupeEnemyHealthList;
             foreach (Slider HealthBar in HealthBarList)
             {
                 if (HealthBar != null && HealthBar.name == $"{gameObject.name}HPBar")
@@ -47,7 +47,7 @@ public class EnemyHealthController : MonoBehaviour
             if (playerScript != null)
             {
                 HealthBarChange(playerScript.damage);
-                Destroy(collision.gameObject);
+                Destroy(collision.gameObject);  
             }
         }
         else if (collision.gameObject.CompareTag("Player") && Time.time >= invEnemyFrame)
@@ -75,13 +75,13 @@ public class EnemyHealthController : MonoBehaviour
         healthSlider.value = currentDisplayHealth;
         if (currentHealth <= 0)
         {
-            if (EnemySpawnController.DupeEnemyHealthList.Contains(healthSlider))
+            if (EnemySpawnManager.DupeEnemyHealthList.Contains(healthSlider))
             {
-                EnemySpawnController.DupeEnemyHealthList.Remove(healthSlider);
+                EnemySpawnManager.DupeEnemyHealthList.Remove(healthSlider);
             }
-            if (EnemySpawnController.DupeEnemyList.Contains(gameObject))
+            if (EnemySpawnManager.DupeEnemyList.Contains(gameObject))
             {
-                EnemySpawnController.DupeEnemyList.Remove(gameObject);
+                EnemySpawnManager.DupeEnemyList.Remove(gameObject);
             }
             Destroy(healthSlider.gameObject);
             Destroy(gameObject);

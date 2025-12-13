@@ -36,7 +36,7 @@ public class OnStage : MonoBehaviour
             StageData.MaxVelocity = 100f;
             StageData.StageName = "forest";
             StageScript.Initiate();
-            EnemySpawnManager.Instance.SpawnEnemy(2, 20f);
+            EnemySpawnManager.Instance.SpawnEnemy(2, 20f, null);
         }
     }
 }
