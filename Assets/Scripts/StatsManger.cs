@@ -5,7 +5,7 @@ public class Statsmanger : MonoBehaviour
     public static Statsmanger Instance { get; private set; }
 
     [Header("Health Settings")]
-    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private int maxHealth = 3;
     
     [Header("damege Settings")]
     [SerializeField] private int damage = 10;

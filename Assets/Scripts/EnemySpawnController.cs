@@ -2,94 +2,116 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine.UI;
 
 public class EnemySpawnController : MonoBehaviour {
-    private GameObject EnemyType;
-    public EnemySpawnManager Manager;
+    
+    private float[] EnemyRoute;
+    private int[] EnemyPattern;
+    public static List<GameObject> DupeEnemyList = new List<GameObject>();
+    public static List<Slider> DupeEnemyHealthList = new List<Slider>();
+    public GameObject HealthBar;
+    public Transform HealthCanvas;
     public EnemyData Data; 
 
-    //testing purpose
-    private void Awake() 
-    {   
-        // Set EnemyType to selected EnemyName
-        EnemyType = GameObject.Find(Data.EnemyName);
-        Manager = GetComponent<EnemySpawnManager>();
-        List<float[]> Waypoints = PathFind("Line", new float[] {-50f, -50f}, new float[] {50f, 50f}, new float[] {0f, 0f}, 3f);
-        StartCoroutine(WaitPath(EnemyType, Waypoints, 3f));
+    public void EnemySpawn(GameObject EnemyType, int count) {
+        GameObject DupeEnemy = Instantiate(EnemyType, new Vector3(0, 0, 100), Quaternion.identity);
+        GameObject DupeHealthCanvas = Instantiate(HealthBar, HealthCanvas);
+        Slider DupeHealth = DupeHealthCanvas.GetComponent<Slider>();
+        DupeEnemy.name = $"{EnemyType.name}{count + 1}";
+        DupeHealth.name = $"{EnemyType.name}{count + 1}HPBar";
+        DupeEnemyList.Add(DupeEnemy);
+        DupeEnemyHealthList.Add(DupeHealth);
+        
+        if (DupeEnemy != null) 
+            {
+                List<Vector2> Waypoints = PathFind(Data.MovementType, Data.StartPoint, Data.EndPoint, Data.MidPoint, 0.05f);
+                StartCoroutine(WaitPath(DupeEnemy, DupeHealth, Waypoints, Data.Speed));
+            }
     }
 
-    IEnumerator WaitPath(GameObject enemy, List<float[]> waypoints, float speed)
+    IEnumerator WaitPath(GameObject enemy, Slider Health, List<Vector2> waypoints, float speed)
     {
         int i = 0;
-        foreach (float[] coordinate in waypoints)
+        Renderer renderer = enemy.GetComponent<Renderer>();
+        float enemyheight = renderer.bounds.size.y;
+        foreach (Vector2 coordinate in waypoints)
         {
-            Vector3 target = new Vector3(coordinate[0], coordinate[1], -0.001f);
-            if (i == 0)
+            if (enemy != null)
             {
-                enemy.transform.position = target;
-            }
-            else 
-            {
-                while (Vector3.Distance(enemy.transform.position, target) > 0.1f)
-                {
-                    enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
-                    yield return null;
+                try {
+                    Vector3 target = new Vector3(coordinate.x, coordinate.y, -20f);
+                        // Set health y position to current location of enemy + height of enemy/2 + 5f and x position to current location of enemy + 1.5f
+                    Vector3 HealthTarget = new Vector3(coordinate.x + 1.5f, coordinate.y + (enemyheight / 2) + 5f, 0f);
+                    if (i == 0)
+                    {
+                        enemy.transform.position = target;
+                        Health.transform.position = HealthTarget;
+                    }
+                    else 
+                    {
+                        while (Vector3.Distance(enemy.transform.position, target) > 0.1f)
+                        {
+                            enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
+                            Health.transform.position = Vector3.MoveTowards(Health.transform.position, HealthTarget, speed * Time.deltaTime);
+                        }
+                    }
+                    i++;
                 }
+                catch {}
+                yield return null;
             }
-            i++;
         }
     }
 
-    private void Update()
-    {
-    }
 
-    public List<float[]> PathFind(string type, float[] startpoint, float[] endpoint, float[] midpoint, float speed)
+    public List<Vector2> PathFind(string type, Vector2 startpoint, Vector2 endpoint, Vector2 midpoint, float speed)
     {
         if (speed != 0)
         {
-            List<float[]> Waypoints = new List<float[]>(); 
+            List<Vector2> Waypoints = new List<Vector2>(); 
             if (type == "Line")
             {
-                float[] constant = Manager.LineFormula(startpoint, endpoint);
+                float[] constant = LineFormula(startpoint, endpoint);
 
                 if (constant != null)
                 {
                     // from left to right
-                    if (startpoint[0] < endpoint[0])
+                    if (startpoint.x < endpoint.x)
                     {
-                        for (float x = startpoint[0]; x < endpoint[0]; x += Math.Abs(speed))
+                        for (float x = startpoint.x; x < endpoint.x; x += Math.Abs(speed))
                         {
                             float y = constant[0] * x + constant[1];
-                            Waypoints.Add(new float[] {x, y});
+                            Waypoints.Add(new Vector2(x, y));
                         }
                     }
                     
                     // from right to left
-                    else if (startpoint[0] > endpoint[0])
+                    else if (startpoint.x > endpoint.x)
                     {
-                        for (float x = startpoint[0]; x > endpoint[0]; x -= Math.Abs(speed))
+                        for (float x = startpoint.x; x > endpoint.x; x -= Math.Abs(speed))
                         {
                             float y = constant[0] * x + constant[1];
-                            Waypoints.Add(new float[] {x, y});
+                            Waypoints.Add(new Vector2(x, y));
                         }
                     }
-                } else if (startpoint[1] != endpoint[1]){
+                } else if (startpoint.y != endpoint.y){
                     // from down to up
-                    float x = startpoint[0];
-                    if (startpoint[1] < endpoint[1])
+                    float x = startpoint.x;
+                    if (startpoint.y < endpoint.y)
                     {
-                        for (float y = startpoint[1]; y < endpoint[1]; y += Math.Abs(speed))
+                        for (float y = startpoint.y; y < endpoint.y; y += Math.Abs(speed))
                         {
-                            Waypoints.Add(new float[] {x, y});
+                            Waypoints.Add(new Vector2(x, y));
                         }
                     }
                     // from down to up
-                    else if (startpoint[1] > endpoint[1])
+                    else if (startpoint.y > endpoint.y)
                     {
-                        for (float y = startpoint[1]; y > endpoint[1]; y -= Math.Abs(speed))
+                        for (float y = startpoint.y; y > endpoint.y; y -= Math.Abs(speed))
                         {
-                            Waypoints.Add(new float[] {x, y});
+                            Waypoints.Add(new Vector2(x, y));
                         }
                     }
                 } else {
@@ -98,12 +120,13 @@ public class EnemySpawnController : MonoBehaviour {
             }
             else if (type == "Circle")
             {
-                float[] constant = Manager.CircleFormula(startpoint, endpoint, midpoint);
+                float[] constant = CircleFormula(startpoint, endpoint, midpoint);
                 for (float angle = constant[1]; angle < constant[2]; angle += Math.Abs(speed))
                 {
-                    float x = midpoint[0] + Mathf.Cos(angle) * constant[0];
-                    float y = midpoint[1] + Mathf.Sin(angle) * constant[0];
-                    Waypoints.Add(new float[] {x, y});
+                    float x = midpoint.x + (Mathf.Cos(angle) * constant[0]);
+                    float y = midpoint.y + (Mathf.Sin(angle) * constant[0]);
+                    Debug.Log(x);
+                    Waypoints.Add(new Vector2(x, y));
                 }
                 if (speed < 0)
                 {
@@ -115,6 +138,75 @@ public class EnemySpawnController : MonoBehaviour {
         else 
         {
             return null;
+        }
+    }
+
+    public float[] LineFormula(Vector2 StartPoint, Vector2 EndPoint)
+    {
+        float StartPointX = StartPoint.x;
+        float StartPointY = StartPoint.y;
+        float EndPointX = EndPoint.x;
+        float EndPointY = EndPoint.y;
+        if (StartPointX - EndPointX != 0)
+        {
+            float Gradient = (StartPointY - EndPointY) / (StartPointX - EndPointX);
+            float HShift = StartPointY - (Gradient * StartPointX);
+            // {Gradient, HorizontalShift}
+            float[] Constant = new float[] {Gradient, HShift};
+            return Constant;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    public float[] CircleFormula(Vector2 StartPoint, Vector2 EndPoint, Vector2 MidPoint)
+    {
+        float StartPointX = StartPoint.x;
+        float StartPointY = StartPoint.y;
+        float EndPointX = EndPoint.x;
+        float EndPointY = EndPoint.y;
+        float MidPointX = MidPoint.x;
+        float MidPointY = MidPoint.y;
+        float Radius;
+        float StartRadian = 0;
+        float EndRadian = 0;
+        if (Math.Pow(StartPointX - MidPointX, 2) + Math.Pow(StartPointY - MidPointY, 2) != Math.Pow(EndPointX - MidPointX, 2) + Math.Pow(EndPointY - MidPointY, 2))
+        {
+            throw new ArgumentException("Length of StartPoint to MidPoint and EndPoint to MidPoint is not the same.");
+        }
+        else
+        {
+            Radius = (float)Math.Sqrt(Math.Pow(StartPointX - MidPointX, 2) + Math.Pow(StartPointY - MidPointY, 2));
+            
+            // Find StartRadian
+            // Calculate distance between starting point and 0 degree 
+            float LineBetween = (float)Math.Sqrt(Math.Pow(StartPointX - MidPointX, 2) + Math.Pow(StartPointY - MidPointY + Radius, 2));
+            StartRadian = (float)Math.Acos(((2 * Math.Pow(Radius, 2)) - Math.Pow(LineBetween, 2)) / (2 * Math.Pow(Radius, 2)));
+            // Correct quardrant
+            if (StartPointX > MidPointX)
+            {
+                StartRadian = 2*Mathf.PI - StartRadian;
+            }
+            
+
+            // Find EndRadian
+            float LineBetweenEnd = (float)Math.Sqrt(Math.Pow(EndPointX - MidPointX, 2) + Math.Pow(EndPointY - MidPointY + Radius, 2));
+            EndRadian = (float)Math.Acos(((2 * Math.Pow(Radius, 2)) - Math.Pow(LineBetweenEnd, 2)) / (2 * Math.Pow(Radius, 2)));
+            // Correct quardrant 
+            if (EndPointX > MidPointX)
+            {
+                EndRadian = 2*Mathf.PI - EndRadian;
+            }
+            // Increase radian by 2π(360°) if EndRadian is smaller than StartRadian to ensure that the path will always move towards counter clockwise 
+            if (StartRadian > EndRadian)
+            {
+                EndRadian += 2*Mathf.PI;
+            }
+            
+        float[] Constant = new float[] {Radius, StartRadian + Mathf.PI, EndRadian + Mathf.PI};
+        return Constant;
         }
     }
 }

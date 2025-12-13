@@ -4,14 +4,31 @@ namespace jetfighter.movement
 {
     public class PlayerHealth : MonoBehaviour
     {
-        
+
+        [SerializeField] private float invTime = 1.5f;
         private int currentHealth;
+        private float invFrame;
 
         private void Start()
         {
             currentHealth = Statsmanger.Instance.GetMaxHealth();
             Debug.Log("Player Health: " + currentHealth + "/" + Statsmanger.Instance.GetMaxHealth());
         }
+
+        void OnTriggerEnter2D(Collider2D collision)
+            {
+                Collider2D PlayerCollider = gameObject.GetComponent<Collider2D>();
+                Physics2D.IgnoreCollision(PlayerCollider, collision);
+                if ((collision.gameObject.CompareTag("EnemyBullet") || collision.gameObject.CompareTag("Enemy")) && Time.time >= invFrame)
+                {
+                    TakeDamage(1);
+                    if (collision.gameObject.name == "EnemyBullet(Clone)")
+                    {
+                        Destroy(collision.gameObject);
+                    }
+                    invFrame = Time.time + invTime;
+                }
+            }
 
         public void TakeDamage(int damage)
         {
@@ -61,14 +78,6 @@ namespace jetfighter.movement
             Debug.Log("Player Died!");
 
             Destroy(gameObject);
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.gameObject.CompareTag("Enemy"))
-            {
-                TakeDamage(1); 
-            }
         }
     }
 }
