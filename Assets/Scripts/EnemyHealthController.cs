@@ -82,7 +82,7 @@ public class EnemyHealthController : MonoBehaviour
             {
                 EnemySpawnManager.DupeEnemyList.Remove(gameObject);
             }
-            if (healthSlider != null) Destroy(healthSlider.gameObject);
+            if (healthSlider.gameObject != null) Destroy(healthSlider.gameObject);
             if (gameObject != null) Destroy(gameObject);
         }
     }

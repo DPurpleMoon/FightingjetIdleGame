@@ -19,6 +19,7 @@ public class EnemySpawnController : MonoBehaviour {
     {
         int i = 0;
         Renderer renderer = enemy.GetComponent<Renderer>();
+        if (renderer == null) yield break;
         float enemyheight = renderer.bounds.size.y;
         foreach (Vector2 coordinate in waypoints)
         {
@@ -33,7 +34,7 @@ public class EnemySpawnController : MonoBehaviour {
             }
             else 
             {
-                while (!Mathf.Approximately(Vector3.Distance(enemy.transform.position, target), 0.1f))
+                while (Vector3.Distance(enemy.transform.position, target) > 0.1f)
                 {
                     enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
                     Health.transform.position = Vector3.MoveTowards(Health.transform.position, HealthTarget, speed * Time.deltaTime);
@@ -43,7 +44,15 @@ public class EnemySpawnController : MonoBehaviour {
             }
             i++;
         }
-        if (Health != null) Destroy(Health.gameObject);
+        if (EnemySpawnManager.DupeEnemyHealthList.Contains(Health))
+            {
+                EnemySpawnManager.DupeEnemyHealthList.Remove(Health);
+            }
+        if (EnemySpawnManager.DupeEnemyList.Contains(enemy))
+            {
+                EnemySpawnManager.DupeEnemyList.Remove(enemy);
+            }
+        if (Health.gameObject != null) Destroy(Health.gameObject);
         if (enemy != null) Destroy(enemy);
     }
 
@@ -153,7 +162,7 @@ public class EnemySpawnController : MonoBehaviour {
         float Radius;
         float StartRadian = 0;
         float EndRadian = 0;
-        if (Math.Pow(StartPointX - MidPointX, 2) + Math.Pow(StartPointY - MidPointY, 2) != Math.Pow(EndPointX - MidPointX, 2) + Math.Pow(EndPointY - MidPointY, 2))
+        if (!Mathf.Approximately((float)(Math.Pow(StartPointX - MidPointX, 2) + Math.Pow(StartPointY - MidPointY, 2)), (float)(Math.Pow(EndPointX - MidPointX, 2) + Math.Pow(EndPointY - MidPointY, 2))))
         {
             throw new ArgumentException("Length of StartPoint to MidPoint and EndPoint to MidPoint is not the same.");
         }
