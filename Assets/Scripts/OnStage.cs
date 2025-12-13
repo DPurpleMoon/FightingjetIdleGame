@@ -22,21 +22,26 @@ public class OnStage : MonoBehaviour
     {
         if (scene.name == "Stage0")
         {
+            List<List<object>> CoordinateList; 
             StageScript = GetComponent<StageScrollingController>();
             Data.EnemyName = "enemydummy";
-            Data.MovementType = "Line";
 
+            // rewrote to integrate stage reading from file system later
+            string MovementType = "Line";
             // x (-188 > 188), y (-110, 110)
-            Data.StartPoint = new Vector2(-188, 0); 
-            Data.MidPoint = new Vector2(0, 0);
-            Data.EndPoint = new Vector2(188, 0);
+            Vector2 StartPoint = new Vector2(-188, 0); 
+            Vector2 MidPoint = new Vector2(0, 0);
+            Vector2 EndPoint = new Vector2(188, 0);
+            List<object> Paths = new List<object>{MovementType, StartPoint, MidPoint, EndPoint};
+            CoordinateList.Add(Paths);
+
             Data.Speed = 10f;
             StageData.ScrollCoordinate = -3000f;
             StageData.AccelerationConstant = 5.0f;
             StageData.MaxVelocity = 100f;
             StageData.StageName = "forest";
             StageScript.Initiate();
-            EnemySpawnManager.Instance.SpawnEnemy(2, 20f, null);
+            EnemySpawnManager.Instance.SpawnEnemy(2, 20f, CoordinateList);
         }
     }
 }
