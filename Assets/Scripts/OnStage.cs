@@ -35,6 +35,7 @@ public class OnStage : MonoBehaviour
             Vector2 MidPoint = new Vector2(0, 0);
             Vector2 EndPoint = new Vector2(188, 0);
             List<object> Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};
+            //
             CoordinateList.Add(Paths);
 
             Data.Speed = 10f;
