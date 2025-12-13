@@ -22,33 +22,29 @@ public class EnemySpawnController : MonoBehaviour {
         float enemyheight = renderer.bounds.size.y;
         foreach (Vector2 coordinate in waypoints)
         {
-            if (enemy != null)
+            if (enemy == null) yield break;
+            Vector3 target = new Vector3(coordinate.x, coordinate.y, -20f);
+            // Set health y position to current location of enemy + height of enemy/2 + 5f and x position to current location of enemy + 1.5f
+            Vector3 HealthTarget = new Vector3(coordinate.x + 1.5f, coordinate.y + (enemyheight / 2) + 5f, 0f);
+            if (i == 0)
             {
-                try {
-                    Vector3 target = new Vector3(coordinate.x, coordinate.y, -20f);
-                        // Set health y position to current location of enemy + height of enemy/2 + 5f and x position to current location of enemy + 1.5f
-                    Vector3 HealthTarget = new Vector3(coordinate.x + 1.5f, coordinate.y + (enemyheight / 2) + 5f, 0f);
-                    if (i == 0)
-                    {
-                        enemy.transform.position = target;
-                        Health.transform.position = HealthTarget;
-                    }
-                    else 
-                    {
-                        while (Vector3.Distance(enemy.transform.position, target) > 0.1f)
-                        {
-                            enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
-                            Health.transform.position = Vector3.MoveTowards(Health.transform.position, HealthTarget, speed * Time.deltaTime);
-                        }
-                    }
-                    i++;
-                }
-                catch {}
-                yield return null;
+                enemy.transform.position = target;
+                Health.transform.position = HealthTarget;
             }
+            else 
+            {
+                while (!Mathf.Approximately(Vector3.Distance(enemy.transform.position, target), 0.1f))
+                {
+                    enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
+                    Health.transform.position = Vector3.MoveTowards(Health.transform.position, HealthTarget, speed * Time.deltaTime);
+                    yield return null;
+                    if (enemy == null) yield break;
+                }
+            }
+            i++;
         }
-        Destroy(Health);
-        Destroy(enemy);
+        if (Health != null) Destroy(Health.gameObject);
+        if (enemy != null) Destroy(enemy);
     }
 
 

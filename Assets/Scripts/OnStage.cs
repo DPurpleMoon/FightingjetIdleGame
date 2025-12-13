@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Collections.Generic;
 public class OnStage : MonoBehaviour
 {
     public EnemyData Data; 
@@ -22,7 +24,7 @@ public class OnStage : MonoBehaviour
     {
         if (scene.name == "Stage0")
         {
-            List<List<object>> CoordinateList; 
+            List<List<object>> CoordinateList = new List<List<object>>{}; 
             StageScript = GetComponent<StageScrollingController>();
             Data.EnemyName = "enemydummy";
 

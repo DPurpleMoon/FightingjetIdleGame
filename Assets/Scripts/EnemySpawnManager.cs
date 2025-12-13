@@ -68,11 +68,12 @@ public class EnemySpawnManager : MonoBehaviour {
                 DupeHealth.name = $"{EnemyType.name}{i + 1}HPBar";
                 DupeEnemyList.Add(DupeEnemy);
                 DupeEnemyHealthList.Add(DupeHealth);
-                List<Vector2> Waypoints = new List<Vector2>();
+                List<Vector2> Waypoints = new List<Vector2>{};
                 foreach (List<object> path in route)
                 {
                     Waypoints.AddRange(Controller.PathFind((string)path[0], (Vector2)path[1], (Vector2)path[2], (Vector2)path[3], 0.05f));
                 }
+
                 Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Data.Speed);
                 await Task.Delay((int)(distance * 1000f), token); 
             }

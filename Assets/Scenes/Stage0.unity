@@ -987,8 +987,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a861a29c0dbd7df489410d326714550e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnController
-  HealthBar: {fileID: 1552311437}
-  HealthCanvas: {fileID: 1923270011}
   Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
 --- !u!1001 &1893690143
 PrefabInstance:
@@ -1254,6 +1252,8 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 338932750}
   Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
+  HealthBar: {fileID: 1552311437}
+  HealthCanvas: {fileID: 1923270011}
 --- !u!114 &2097574369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1266,8 +1266,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a861a29c0dbd7df489410d326714550e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnController
-  HealthBar: {fileID: 1552311437}
-  HealthCanvas: {fileID: 1923270011}
   Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
 --- !u!4 &2097574370
 Transform:
@@ -1312,6 +1310,10 @@ PrefabInstance:
       propertyPath: HealthCanvas
       value: 
       objectReference: {fileID: 1923270011}
+    - target: {fileID: 7665711103545316008, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
+      propertyPath: healthSlider
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8927536285969150340, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -300

@@ -20,7 +20,6 @@ public class EnemyHealthController : MonoBehaviour
     {   
         if (gameObject.name != Data.EnemyName)
         {
-            Controller = GetComponent<EnemySpawnController>();
             List<Slider> HealthBarList = EnemySpawnManager.DupeEnemyHealthList;
             foreach (Slider HealthBar in HealthBarList)
             {
@@ -83,8 +82,8 @@ public class EnemyHealthController : MonoBehaviour
             {
                 EnemySpawnManager.DupeEnemyList.Remove(gameObject);
             }
-            Destroy(healthSlider.gameObject);
-            Destroy(gameObject);
+            if (healthSlider != null) Destroy(healthSlider.gameObject);
+            if (gameObject != null) Destroy(gameObject);
         }
     }
 }
