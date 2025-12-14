@@ -4,12 +4,12 @@ public class StageScore : MonoBehaviour
 {
     public static StageScore Instance { get; private set; } 
     
-    // An event that other scripts can subscribe to for UI updates (BEST PRACTICE)
+    // An event that other scripts can subscribe to for UI updates 
     public event Action<int> OnScoreChanged;
 
     private int currentScore = 0;
 
-    // Public property to safely read the score.
+    // Public property to safely read the score
     public int CurrentScore
     {
         get { return currentScore; }
@@ -33,7 +33,6 @@ public class StageScore : MonoBehaviour
         {
             currentScore += points;
             
-            // Log the update to the Unity Console
             Debug.Log($"Score: {currentScore}");
             
             // Notify any subscribed UI/logic elements
