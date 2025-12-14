@@ -109,3 +109,8 @@ InitTestScene*.unity*
 /Assets/Plugins/Demigiant/
 /Assets/Plugins/UniRx/
 /Assets/TextMesh Pro/
+# Ignore specific Asset folders - Custom additions
+/Assets/UniRx/
+/Assets/DOTween/
+/Assets/GUI_Parts/
+/Assets/Health Heart System/
