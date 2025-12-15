@@ -52,7 +52,7 @@ public class EnemyShoot : MonoBehaviour
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.AddForce(bullet.transform.up * Data.BulletSpeed, ForceMode2D.Impulse);
+            rb.linearVelocity = bullet.transform.up.normalized * Data.BulletSpeed;
         }
     }
 }
