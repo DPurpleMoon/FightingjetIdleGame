@@ -75,7 +75,10 @@ public class EnemyHealthController : MonoBehaviour
         if (currentHealth <= 0)
         {
             int EnemyScore = 100;
-            StageScore.Instance.AddPoints(EnemyScore);
+            if (EnemySpawnManager.DupeEnemyHealthList.Contains(healthSlider))
+            {
+                StageScore.Instance.AddPoints(EnemyScore);
+            }
             // change this to subscribe method later for ease of management
             if (EnemySpawnManager.DupeEnemyHealthList.Contains(healthSlider))
             {
