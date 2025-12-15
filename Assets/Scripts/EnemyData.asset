@@ -15,10 +15,7 @@ MonoBehaviour:
   EnemyName: enemydummy
   MovementType: Line
   Speed: 10
-  StartPoint: {x: -188, y: 0}
-  MidPoint: {x: 0, y: 0}
-  EndPoint: {x: 188, y: 0}
   maxHealth: 100
   BulletSpeed: 10
   BulletSpawnDistance: 10
-  Shootrate: 5
+  Shootrate: 2.5

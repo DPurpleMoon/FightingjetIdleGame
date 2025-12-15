@@ -13,7 +13,7 @@ public class EnemyShoot : MonoBehaviour
     void Start()
     {
         Controller = GetComponent<EnemySpawnController>();
-        List<GameObject> EnemyList = EnemySpawnController.DupeEnemyList;
+        List<GameObject> EnemyList = EnemySpawnManager.DupeEnemyList;
         foreach (GameObject Enemy in EnemyList)
             {
             if (Enemy != null && Enemy.name == gameObject.name)
@@ -52,7 +52,7 @@ public class EnemyShoot : MonoBehaviour
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.AddForce(bullet.transform.up * Data.BulletSpeed, ForceMode2D.Impulse);
+            rb.linearVelocity = bullet.transform.up.normalized * Data.BulletSpeed;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEngine.UI;
 
 public class EnemySpawnManager : MonoBehaviour {
     public static EnemySpawnManager Instance { get; private set; } 
@@ -11,6 +12,10 @@ public class EnemySpawnManager : MonoBehaviour {
     public List<GameObject> enemyPrefabs;
     private Dictionary<string, GameObject> _prefabMap = new Dictionary<string, GameObject>();
     public EnemyData Data; 
+    public GameObject HealthBar;
+    public Transform HealthCanvas;
+    public static List<GameObject> DupeEnemyList = new List<GameObject>();
+    public static List<Slider> DupeEnemyHealthList = new List<Slider>();
     private CancellationTokenSource _cancellationTokenSource;
     void Awake()
     {
@@ -41,7 +46,7 @@ public class EnemySpawnManager : MonoBehaviour {
         _cancellationTokenSource.Dispose();
     }
 
-    public async Task SpawnEnemy(int enemyamount, float distance)
+    public async Task SpawnEnemy(int enemyamount, float distance, List<List<object>> route)
     {
         // Set EnemyType to selected EnemyName
         GameObject EnemyType;
@@ -56,7 +61,19 @@ public class EnemySpawnManager : MonoBehaviour {
             for (int i = 0; i < enemyamount; i++)
             {
                 token.ThrowIfCancellationRequested();
-                Controller.EnemySpawn(EnemyType, i);
+                GameObject DupeEnemy = Instantiate(EnemyType, new Vector3(0, 0, 100), Quaternion.identity);
+                GameObject DupeHealthCanvas = Instantiate(HealthBar, HealthCanvas);
+                Slider DupeHealth = DupeHealthCanvas.GetComponent<Slider>();
+                DupeEnemy.name = $"{EnemyType.name}{i + 1}";
+                DupeHealth.name = $"{EnemyType.name}{i + 1}HPBar";
+                DupeEnemyList.Add(DupeEnemy);
+                DupeEnemyHealthList.Add(DupeHealth);
+                List<Vector2> Waypoints = new List<Vector2>{};
+                foreach (List<object> path in route)
+                {
+                    Waypoints.AddRange(Controller.PathFind((string)path[0], (Vector2)path[1], (Vector2)path[2], (Vector2)path[3], 0.05f));
+                }
+                Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Data.Speed);
                 await Task.Delay((int)(distance * 1000f), token); 
             }
         }

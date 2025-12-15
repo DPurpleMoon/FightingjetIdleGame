@@ -20,8 +20,7 @@ public class EnemyHealthController : MonoBehaviour
     {   
         if (gameObject.name != Data.EnemyName)
         {
-            Controller = GetComponent<EnemySpawnController>();
-            List<Slider> HealthBarList = EnemySpawnController.DupeEnemyHealthList;
+            List<Slider> HealthBarList = EnemySpawnManager.DupeEnemyHealthList;
             foreach (Slider HealthBar in HealthBarList)
             {
                 if (HealthBar != null && HealthBar.name == $"{gameObject.name}HPBar")
@@ -47,13 +46,13 @@ public class EnemyHealthController : MonoBehaviour
             if (playerScript != null)
             {
                 HealthBarChange(playerScript.damage);
-                Destroy(collision.gameObject);
+                Destroy(collision.gameObject);  
             }
         }
         else if (collision.gameObject.CompareTag("Player") && Time.time >= invEnemyFrame)
         {
             StartCoroutine(IgnoreCollisionTemp(collision, invEnemyTime));
-            HealthBarChange(999);
+            HealthBarChange(999999);
             invEnemyFrame = Time.time + invEnemyTime;
         }
     }
@@ -75,16 +74,22 @@ public class EnemyHealthController : MonoBehaviour
         healthSlider.value = currentDisplayHealth;
         if (currentHealth <= 0)
         {
-            if (EnemySpawnController.DupeEnemyHealthList.Contains(healthSlider))
+            int EnemyScore = 100;
+            if (EnemySpawnManager.DupeEnemyHealthList.Contains(healthSlider))
             {
-                EnemySpawnController.DupeEnemyHealthList.Remove(healthSlider);
+                StageScore.Instance.AddPoints(EnemyScore);
             }
-            if (EnemySpawnController.DupeEnemyList.Contains(gameObject))
+            // change this to subscribe method later for ease of management
+            if (EnemySpawnManager.DupeEnemyHealthList.Contains(healthSlider))
             {
-                EnemySpawnController.DupeEnemyList.Remove(gameObject);
+                EnemySpawnManager.DupeEnemyHealthList.Remove(healthSlider);
             }
-            Destroy(healthSlider.gameObject);
-            Destroy(gameObject);
+            if (EnemySpawnManager.DupeEnemyList.Contains(gameObject))
+            {
+                EnemySpawnManager.DupeEnemyList.Remove(gameObject);
+            }
+            if (healthSlider.gameObject != null) Destroy(healthSlider.gameObject);
+            if (gameObject != null) Destroy(gameObject);
         }
     }
 }
