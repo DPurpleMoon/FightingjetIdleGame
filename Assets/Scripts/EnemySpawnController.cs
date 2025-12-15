@@ -22,7 +22,7 @@ public class EnemySpawnController : MonoBehaviour {
         if (renderer == null) yield break;
         float enemyheight = renderer.bounds.size.y;
         foreach (Vector2 coordinate in waypoints)
-        {
+        {    
             if (enemy == null) yield break;
             Vector3 target = new Vector3(coordinate.x, coordinate.y, -20f);
             // Set health y position to current location of enemy + height of enemy/2 + 5f and x position to current location of enemy + 1.5f

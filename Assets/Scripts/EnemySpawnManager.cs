@@ -73,7 +73,6 @@ public class EnemySpawnManager : MonoBehaviour {
                 {
                     Waypoints.AddRange(Controller.PathFind((string)path[0], (Vector2)path[1], (Vector2)path[2], (Vector2)path[3], 0.05f));
                 }
-
                 Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Data.Speed);
                 await Task.Delay((int)(distance * 1000f), token); 
             }
