@@ -1,36 +1,83 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class heartdisplay :MonoBehaviour
+public class heartdisplay : MonoBehaviour
 {
-    public int maxHearts;
-    public int currentHearts;
+    [Header("Heart Images")]
     public Image[] hearts;
+    
+    [Header("Heart Sprites")]
     public Sprite fullHeart;
     public Sprite emptyHeart;
+    
+    [Header("Player Reference")]
+    public jetfighter.movement.PlayerHealth playerHealth;
+    
+    private int maxHearts;
+    private int currentHearts;
 
-
-void Update()
-{
-    for (int i = 0; i < hearts.Length; i++)
+    void Start()
     {
-        if (i < currentHearts)
+        if (playerHealth != null)
         {
-            hearts[i].sprite = fullHeart;
+            maxHearts = playerHealth.GetMaxHealth();
+            currentHearts = playerHealth.GetCurrentHealth();
         }
-        else
+        
+        if (playerHealth == null)
         {
-            hearts[i].sprite = emptyHeart;
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                playerHealth = playerObj.GetComponent<jetfighter.movement.PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    maxHearts = playerHealth.GetMaxHealth();
+                    currentHearts = playerHealth.GetCurrentHealth();
+                }
+            }
         }
+        
+        UpdateHearts();
+        Debug.Log("Heart Display Initialized. Health: " + currentHearts + "/" + maxHearts);
+    }
 
-        if (i < maxHearts)
+    void Update()
+    {
+        if (playerHealth != null)
         {
-            hearts[i].enabled = true;
-        }
-        else
-        {
-            hearts[i].enabled = false;
+            int newHealth = playerHealth.GetCurrentHealth();
+            
+            if (newHealth != currentHearts)
+            {
+                currentHearts = newHealth;
+                UpdateHearts();
+                Debug.Log("Health changed! New health: " + currentHearts);
+            }
         }
     }
-}
+    
+    void UpdateHearts()
+    {
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i < currentHearts)
+            {
+                hearts[i].sprite = fullHeart;
+            }
+            else
+            {
+                hearts[i].sprite = emptyHeart;
+            }
+
+            if (i < maxHearts)
+            {
+                hearts[i].enabled = true;
+            }
+            else
+            {
+                hearts[i].enabled = false;
+            }
+        }
+    }
 }
