@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Collections.Generic;
 public class OnStage : MonoBehaviour
 {
     public EnemyData Data; 
@@ -22,21 +24,35 @@ public class OnStage : MonoBehaviour
     {
         if (scene.name == "Stage0")
         {
+            List<List<object>> CoordinateList = new List<List<object>>{}; 
             StageScript = GetComponent<StageScrollingController>();
             Data.EnemyName = "enemydummy";
-            Data.MovementType = "Line";
 
+            // rewrote to integrate stage reading from file system later
+            string MovementType = "Line";
             // x (-188 > 188), y (-110, 110)
-            Data.StartPoint = new Vector2(-188, 0); 
-            Data.MidPoint = new Vector2(0, 0);
-            Data.EndPoint = new Vector2(188, 0);
-            Data.Speed = 10f;
+            Vector2 StartPoint = new Vector2(-188, 0); 
+            Vector2 MidPoint = new Vector2(0, 0);
+            Vector2 EndPoint = new Vector2(0, 0);
+            List<object> Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};
+            //
+            CoordinateList.Add(Paths);
+            
+            StartPoint = new Vector2(0, 0); 
+            MidPoint = new Vector2(0, 0);
+            EndPoint = new Vector2(188, 100);
+            Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};
+            //
+            CoordinateList.Add(Paths);
+
+
+            Data.Speed = 15f;
             StageData.ScrollCoordinate = -3000f;
             StageData.AccelerationConstant = 5.0f;
             StageData.MaxVelocity = 100f;
             StageData.StageName = "forest";
             StageScript.Initiate();
-            EnemySpawnManager.Instance.SpawnEnemy(2, 20f);
+            EnemySpawnManager.Instance.SpawnEnemy(5, 5f, CoordinateList);
         }
     }
 }

@@ -5,10 +5,10 @@ public class Statsmanger : MonoBehaviour
     public static Statsmanger Instance { get; private set; }
 
     [Header("Health Settings")]
-    [SerializeField] private int maxHealth = 3;
+    [SerializeField] private int maxHealth ;
     
     [Header("damege Settings")]
-    [SerializeField] private int damage = 10;
+    [SerializeField] private int damage ;
 
     private void Awake()
     {

@@ -10,8 +10,9 @@ namespace jetfighter.movement
         [SerializeField] private float fireRate = 0.2f; 
         
         private float nextFireTime = 0f;
-
         private Collider2D playerCollider;
+        private statsUI statsMenu; 
+
         private void Start()
         {
             playerCollider = GetComponentInParent<Collider2D>();
@@ -19,11 +20,13 @@ namespace jetfighter.movement
             {
                 playerCollider = GetComponentInChildren<Collider2D>();
             }
+            
+            statsMenu = FindObjectOfType<statsUI>();
         }
 
         private void Update()
         {
-            if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime)
+            if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime && !IsMenuOpen())
             {
                 Fire();
                 nextFireTime = Time.time + fireRate;
@@ -50,7 +53,13 @@ namespace jetfighter.movement
             }
         }
 
+        private bool IsMenuOpen()
+        {
+            if (statsMenu != null)
+            {
+                return statsMenu.IsMenuOpen();
+            }
+            return false;
+        }
     }
-
-    
 }
