@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   EnemyName: enemydummy
   MovementType: Line
-  Speed: 10
+  Speed: 3000
   maxHealth: 100
   BulletSpeed: 10
   BulletSpawnDistance: 10

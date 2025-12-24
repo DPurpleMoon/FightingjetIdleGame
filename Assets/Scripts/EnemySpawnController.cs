@@ -34,13 +34,16 @@ public class EnemySpawnController : MonoBehaviour {
             }
             else 
             {
-                while (Vector3.Distance(enemy.transform.position, target) > 0.1f)
+                while (Vector3.Distance(enemy.transform.position, target) > 0.05f)
                 {
+                    if (enemy == null) yield break;
                     enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
                     Health.transform.position = Vector3.MoveTowards(Health.transform.position, HealthTarget, speed * Time.deltaTime);
-                    yield return null;
-                    if (enemy == null) yield break;
                 }
+            }
+            if (i % speed == 0)
+            {
+                yield return null;
             }
             i++;
         }

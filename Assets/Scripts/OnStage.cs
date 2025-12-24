@@ -33,12 +33,20 @@ public class OnStage : MonoBehaviour
             // x (-188 > 188), y (-110, 110)
             Vector2 StartPoint = new Vector2(-188, 0); 
             Vector2 MidPoint = new Vector2(0, 0);
-            Vector2 EndPoint = new Vector2(188, 0);
+            Vector2 EndPoint = new Vector2(0, 0);
             List<object> Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};
             //
             CoordinateList.Add(Paths);
+            
+            StartPoint = new Vector2(0, 0); 
+            MidPoint = new Vector2(0, 0);
+            EndPoint = new Vector2(188, 100);
+            Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};
+            //
+            CoordinateList.Add(Paths);
 
-            Data.Speed = 10f;
+
+            Data.Speed = 15f;
             StageData.ScrollCoordinate = -3000f;
             StageData.AccelerationConstant = 5.0f;
             StageData.MaxVelocity = 100f;
