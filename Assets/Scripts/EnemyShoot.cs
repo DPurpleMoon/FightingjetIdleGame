@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 public class EnemyShoot : MonoBehaviour
 {
     public EnemySpawnController Controller;
+    public AttackPattern Pattern;
     public GameObject EnemyBulletObject;
     public GameObject SelectedEnemy;
     public EnemyData Data;
@@ -13,6 +14,7 @@ public class EnemyShoot : MonoBehaviour
     void Start()
     {
         Controller = GetComponent<EnemySpawnController>();
+        Pattern = GetComponent<AttackPattern>();
         List<GameObject> EnemyList = EnemySpawnManager.DupeEnemyList;
         foreach (GameObject Enemy in EnemyList)
             {
@@ -23,18 +25,28 @@ public class EnemyShoot : MonoBehaviour
             }
         if (SelectedEnemy != null)
         {
-            StartCoroutine(ShootContinuous(SelectedEnemy));
+            List<object> BulletPattern = new List<object>{Pattern.AttackRead(Data.AttackType)};
+            int ShootRate = Data.Shootrate;
+            StartCoroutine(ShootContinuous(SelectedEnemy, BulletPattern, ShootRate));
         }
     }
 
-    IEnumerator ShootContinuous(GameObject enemy){
+    IEnumerator ShootContinuous(GameObject enemy, List<object> attackpattern, int shoottime){
         float timer = 0f;
+        int i = 0;
         while (enemy != null)
         {
-            if (timer > Data.Shootrate)
+            if (timer > shoottime)
             {
-                Shoot(enemy);
+                if ((int)attackpattern[i] != 0)
+                {
+                    foreach (float angle in (List<float>)attackpattern[i])
+                    {
+                        Shoot(enemy, angle);
+                    }
+                }
                 timer = 0f;
+                i++;
                 yield return null;
             }
             else
@@ -42,17 +54,23 @@ public class EnemyShoot : MonoBehaviour
                 timer += Time.deltaTime;
                 yield return null;
             }
+            if (i >= attackpattern.Count)
+            {
+                i = 0;
+            }
         }
     }
 
-    public void Shoot(GameObject enemy)
+    public void Shoot(GameObject enemy, float angle)
     {
-        Vector3 SpawnLocation = enemy.transform.position - new Vector3(0, Data.BulletSpawnDistance, 0);   
-        GameObject bullet = Instantiate(EnemyBulletObject, SpawnLocation, Quaternion.Euler(180f, 0f, 0f));
+        float radians = angle * Mathf.Deg2Rad;
+        Vector3 direction = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
+        Vector3 SpawnLocation = enemy.transform.position + (direction * Data.BulletSpawnDistance);
+        GameObject bullet = Instantiate(EnemyBulletObject, SpawnLocation, Quaternion.Euler(0f, 0f, angle - 90f));
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.linearVelocity = bullet.transform.up.normalized * Data.BulletSpeed;
+            rb.linearVelocity = direction * Data.BulletSpeed;
         }
     }
 }

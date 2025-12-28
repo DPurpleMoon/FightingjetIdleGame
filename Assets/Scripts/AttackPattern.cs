@@ -3,6 +3,7 @@ using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 public class AttackPattern : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class AttackPattern : MonoBehaviour
         List<float> ShotAngle = new List<float>{}; 
         string FilePath = Path.Combine(Application.streamingAssetsPath, $"{name}.txt");
         string Attack = File.ReadAllText(FilePath);
-        string[] parts = StageText.Split(",");
+        string[] parts = Attack.Split(",");
         for (int i = 0; i < parts.Length; i++)
         {
             if (parts[i] == "")
@@ -21,7 +22,8 @@ public class AttackPattern : MonoBehaviour
             } 
             else
             {
-                ShotAngle.AddRange(parts[i].Trim('{', '}').Split(',').Select(float.Parse));
+                string angle = parts[i];
+                ShotAngle.AddRange(angle.Trim('{', '}').Split(',').Select(float.Parse));
             }
             AttackPatternStyle.Add(ShotAngle);
         }

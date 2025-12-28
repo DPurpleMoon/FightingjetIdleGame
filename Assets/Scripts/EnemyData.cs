@@ -10,4 +10,5 @@ public class EnemyData : ScriptableObject
     public float BulletSpeed;
     public float BulletSpawnDistance;
     public float Shootrate;
+    public string AttackType;
 }

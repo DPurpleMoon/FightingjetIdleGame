@@ -3,6 +3,7 @@ using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 public class StageRead : MonoBehaviour
 {
     public string StageText;
@@ -20,15 +21,15 @@ public class StageRead : MonoBehaviour
         List<object> Stage = new List<object>{};
         List<object> StageRoute = new List<object>{};
         List<object> Route = new List<object>{};
-        for (int x = 0; x < StageLines.Length; x++)
+        for (int a = 0; a < StageLines.Length; a++)
         {
-            string StageText = StageLines[x];
+            string StageText = StageLines[a];
             int index = StageText.IndexOf("#");
             if (index >= 0)
             {
                 StageText = StageText.Substring(0, index);
             }
-            if (x == 0 || x == 1)
+            if (a == 0 || a == 1)
             {
                 Stage.Add(StageText);
             }
@@ -39,7 +40,7 @@ public class StageRead : MonoBehaviour
                 {
                     if (i == 0)
                     {
-                        Route.Add((int)parts[i]);
+                        Route.Add(int.Parse(parts[i]));
                     }
                     else if (i == 1 || i == 2)
                     {
@@ -52,13 +53,13 @@ public class StageRead : MonoBehaviour
                         {
                             ListType cmd = new ListType();
                             cmd.type = m.Groups[1].Value[0];
-                            cmd.points = new List<Vector2>();
+                            cmd.point = new List<Vector2>();
                             var pointMatches = Regex.Matches(m.Groups[2].Value, @"\((-?\d+),\s*(-?\d+)\)");
                             foreach (Match p in pointMatches)
                             {
                                 float x = float.Parse(p.Groups[1].Value);
                                 float y = float.Parse(p.Groups[2].Value);
-                                cmd.points.Add(new Vector2(x, y));
+                                cmd.point.Add(new Vector2(x, y));
                             }
                             Route.Add(cmd);
                         }
