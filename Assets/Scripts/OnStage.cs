@@ -8,12 +8,6 @@ public class OnStage : MonoBehaviour
     public StageScrollingData StageData;
     public StageScrollingController StageScript;
     public StageRead Read;
-
-    public class ListType
-    {
-        public char type;
-        public List<Vector2> point;
-    }
     void Awake()
     {
         // Subscribe to the event
@@ -33,15 +27,15 @@ public class OnStage : MonoBehaviour
             List<List<object>> CoordinateList = new List<List<object>>{}; 
             StageScript = GetComponent<StageScrollingController>();
             Read = GetComponent<StageRead>();
-            List<object> LevelData = new List<object>{Read.FileRead("level0-1")};
-            
+            List<object> LevelData = Read.FileRead("level0-1");
+                        
             StageData.ScrollCoordinate = -3000f;
             StageData.AccelerationConstant = 5.0f;
             StageData.MaxVelocity = 100f;
             StageData.StageName = (string)LevelData[0];
             StageScript.Initiate();
-            float multiplier = (float)LevelData[1];
-            EnemySpawn(LevelData);
+            float multiplier = float.Parse((string)LevelData[1]);
+            StartCoroutine(EnemySpawn(LevelData));
         }
     }
     
@@ -50,41 +44,37 @@ public class OnStage : MonoBehaviour
         List<List<object>> CoordinateList = new List<List<object>>{};
         for (int i = 2; i < Level.Count;)
             {
-                List<object> EnemyDetails = new List<object>((List<object>)Level[i]);
-                if (StageScript.ActualLocation.y >= (int)EnemyDetails[0])
+                List<object> EnemyDetails = (List<object>)Level[i];
+                if (-StageScript.ActualLocation.y >= (int)EnemyDetails[0])
                 {
                     Data.EnemyName = (string)EnemyDetails[1];
                     Data.AttackType = (string)EnemyDetails[2];
 
-                    foreach (List<ListType> Coordinate in (List<object>)EnemyDetails[3])
+                    foreach (List<object> Coordinate in (List<object>)EnemyDetails[3])
                     {
                         Vector2 StartPoint = Vector2.zero;
                         Vector2 MidPoint = Vector2.zero;
                         Vector2 EndPoint = Vector2.zero;
                         string MovementType = string.Empty;
-                        foreach (ListType cmd in Coordinate)
+                        if ((char)Coordinate[0] == 'L')
                         {
-                            if (cmd.type == 'L')
-                            {
-                                MovementType = "Line";
-                                StartPoint = cmd.point[0];
-                                MidPoint = new Vector2(0, 0);
-                                EndPoint = cmd.point[1];
-                            }
-                            else if (cmd.type == 'C')
-                            {
-                                MovementType = "Circle";
-                                StartPoint = cmd.point[0];
-                                MidPoint = cmd.point[1];
-                                EndPoint = cmd.point[2];
-                            }
-                            else
-                            {
-                                yield return null;
-                            }
-                            List<object> Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};  
-                            CoordinateList.Add(Paths);
+                            MovementType = "Line";
+                            StartPoint = (Vector2)Coordinate[1];
+                            EndPoint = (Vector2)Coordinate[2];
                         }
+                        else if ((char)Coordinate[0] == 'C')
+                        {
+                            MovementType = "Circle";
+                            StartPoint = (Vector2)Coordinate[1];
+                            MidPoint = (Vector2)Coordinate[2];
+                            EndPoint = (Vector2)Coordinate[3];
+                        }
+                        else
+                        {
+                            yield return null;
+                        }
+                        List<object> Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};  
+                        CoordinateList.Add(Paths);
                     }
                     // x (-188 > 188), y (-110, 110)
                     Data.Speed = 15f;
