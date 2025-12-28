@@ -6,8 +6,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 public class StageRead : MonoBehaviour
 {
-    public string StageText;
-
     public class ListType
     {
         public char type;
@@ -16,7 +14,7 @@ public class StageRead : MonoBehaviour
 
     public List<object> FileRead(string name)
     {
-        string FilePath = Path.Combine(Application.streamingAssetsPath, $"{name}.lvl");
+        string FilePath = Path.Combine(Application.streamingAssetsPath, $"levels\\{name}.lvl");
         string[] StageLines = File.ReadAllLines(FilePath);
         List<object> Stage = new List<object>{};
         List<object> StageRoute = new List<object>{};
@@ -31,7 +29,7 @@ public class StageRead : MonoBehaviour
             }
             if (a == 0 || a == 1)
             {
-                Stage.Add(StageText);
+                Stage.Add(StageText.Trim());
             }
             else
             {

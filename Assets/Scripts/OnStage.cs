@@ -7,7 +7,13 @@ public class OnStage : MonoBehaviour
     public EnemyData Data; 
     public StageScrollingData StageData;
     public StageScrollingController StageScript;
+    public StageRead Read;
 
+    public class ListType
+    {
+        public char type;
+        public List<Vector2> point;
+    }
     void Awake()
     {
         // Subscribe to the event
@@ -26,33 +32,69 @@ public class OnStage : MonoBehaviour
         {
             List<List<object>> CoordinateList = new List<List<object>>{}; 
             StageScript = GetComponent<StageScrollingController>();
-            Data.EnemyName = "enemydummy";
-
-            // rewrote to integrate stage reading from file system later
-            string MovementType = "Line";
-            // x (-188 > 188), y (-110, 110)
-            Vector2 StartPoint = new Vector2(-188, 0); 
-            Vector2 MidPoint = new Vector2(0, 0);
-            Vector2 EndPoint = new Vector2(0, 0);
-            List<object> Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};
-            //
-            CoordinateList.Add(Paths);
+            Read = GetComponent<StageRead>();
+            List<object> LevelData = new List<object>{Read.FileRead("level0-1")};
             
-            StartPoint = new Vector2(0, 0); 
-            MidPoint = new Vector2(0, 0);
-            EndPoint = new Vector2(188, 100);
-            Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};
-            //
-            CoordinateList.Add(Paths);
-
-
-            Data.Speed = 15f;
             StageData.ScrollCoordinate = -3000f;
             StageData.AccelerationConstant = 5.0f;
             StageData.MaxVelocity = 100f;
-            StageData.StageName = "forest";
+            StageData.StageName = (string)LevelData[0];
             StageScript.Initiate();
-            EnemySpawnManager.Instance.SpawnEnemy(5, 5f, CoordinateList);
+            float multiplier = (float)LevelData[1];
+            EnemySpawn(LevelData);
         }
+    }
+    
+    private IEnumerator EnemySpawn(List<object> Level)
+    {
+        List<List<object>> CoordinateList = new List<List<object>>{};
+        for (int i = 2; i < Level.Count;)
+            {
+                List<object> EnemyDetails = new List<object>((List<object>)Level[i]);
+                if (StageScript.ActualLocation.y >= (int)EnemyDetails[0])
+                {
+                    Data.EnemyName = (string)EnemyDetails[1];
+                    Data.AttackType = (string)EnemyDetails[2];
+
+                    foreach (List<ListType> Coordinate in (List<object>)EnemyDetails[3])
+                    {
+                        Vector2 StartPoint = Vector2.zero;
+                        Vector2 MidPoint = Vector2.zero;
+                        Vector2 EndPoint = Vector2.zero;
+                        string MovementType = string.Empty;
+                        foreach (ListType cmd in Coordinate)
+                        {
+                            if (cmd.type == 'L')
+                            {
+                                MovementType = "Line";
+                                StartPoint = cmd.point[0];
+                                MidPoint = new Vector2(0, 0);
+                                EndPoint = cmd.point[1];
+                            }
+                            else if (cmd.type == 'C')
+                            {
+                                MovementType = "Circle";
+                                StartPoint = cmd.point[0];
+                                MidPoint = cmd.point[1];
+                                EndPoint = cmd.point[2];
+                            }
+                            else
+                            {
+                                yield return null;
+                            }
+                            List<object> Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};  
+                            CoordinateList.Add(Paths);
+                        }
+                    }
+                    // x (-188 > 188), y (-110, 110)
+                    Data.Speed = 15f;
+                    EnemySpawnManager.Instance.SpawnEnemy(5, 5f, CoordinateList);
+                    i++;
+                }
+                else
+                {
+                    yield return null;
+                }
+            }
     }
 }

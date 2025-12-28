@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyShoot
   Controller: {fileID: 0}
+  Pattern: {fileID: 0}
   EnemyBulletObject: {fileID: 340181174}
   SelectedEnemy: {fileID: 0}
   Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
@@ -1206,6 +1207,7 @@ GameObject:
   - component: {fileID: 2079322969}
   - component: {fileID: 2079322970}
   - component: {fileID: 2079322971}
+  - component: {fileID: 2079322972}
   m_Layer: 0
   m_Name: InStageManager
   m_TagString: Untagged
@@ -1243,6 +1245,7 @@ MonoBehaviour:
   Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
   StageData: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
   StageScript: {fileID: 0}
+  Read: {fileID: 0}
 --- !u!114 &2079322971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1262,6 +1265,18 @@ MonoBehaviour:
   DupeStage: {fileID: 0}
   BGHeight: 0
   Stage: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
+--- !u!114 &2079322972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079322968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22676a8d830308c4189eb01720da7184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageRead
 --- !u!1 &2097574367
 GameObject:
   m_ObjectHideFlags: 0

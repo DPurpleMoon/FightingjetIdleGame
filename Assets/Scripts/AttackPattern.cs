@@ -11,7 +11,7 @@ public class AttackPattern : MonoBehaviour
     {
         List<object> AttackPatternStyle = new List<object>{};
         List<float> ShotAngle = new List<float>{}; 
-        string FilePath = Path.Combine(Application.streamingAssetsPath, $"{name}.txt");
+        string FilePath = Path.Combine(Application.streamingAssetsPath, $"attackpattern\\{name}.txt");
         string Attack = File.ReadAllText(FilePath);
         string[] parts = Attack.Split(",");
         for (int i = 0; i < parts.Length; i++)
