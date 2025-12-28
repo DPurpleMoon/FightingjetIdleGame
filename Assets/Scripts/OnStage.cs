@@ -77,7 +77,8 @@ public class OnStage : MonoBehaviour
                         CoordinateList.Add(Paths);
                     }
                     // x (-188 > 188), y (-110, 110)
-                    Data.Speed = 15f;
+                    Data.Speed = 10f;
+                    Data.Shootrate = 1f;
                     EnemySpawnManager.Instance.SpawnEnemy(5, 5f, CoordinateList);
                     i++;
                 }

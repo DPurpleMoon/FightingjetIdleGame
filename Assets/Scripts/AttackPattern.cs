@@ -18,12 +18,12 @@ public class AttackPattern : MonoBehaviour
         {
             if (parts[i] == "")
             {
-                ShotAngle.Add(0);
+                AttackPatternStyle.Add(0);
             } 
             else
             {
                 string angle = parts[i];
-                ShotAngle.AddRange(angle.Trim('{', '}').Split(',').Select(float.Parse));
+                ShotAngle.AddRange(angle.Trim('{', '}').Split(';').Select(float.Parse));
             }
             AttackPatternStyle.Add(ShotAngle);
         }

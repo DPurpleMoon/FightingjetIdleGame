@@ -25,7 +25,7 @@ public class EnemyShoot : MonoBehaviour
             }
         if (SelectedEnemy != null)
         {
-            List<object> BulletPattern = new List<object>{Pattern.AttackRead(Data.AttackType)};
+            List<object> BulletPattern = Pattern.AttackRead(Data.AttackType);
             float ShootRate = Data.Shootrate;
             StartCoroutine(ShootContinuous(SelectedEnemy, BulletPattern, ShootRate));
         }
@@ -38,7 +38,7 @@ public class EnemyShoot : MonoBehaviour
         {
             if (timer > shoottime)
             {
-                if ((int)attackpattern[i] != 0)
+                if (attackpattern[i] is List<float>)
                 {
                     foreach (float angle in (List<float>)attackpattern[i])
                     {
@@ -63,7 +63,7 @@ public class EnemyShoot : MonoBehaviour
 
     public void Shoot(GameObject enemy, float angle)
     {
-        float radians = angle * Mathf.Deg2Rad;
+        float radians = (angle + 90) * Mathf.Deg2Rad;
         Vector3 direction = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
         Vector3 SpawnLocation = enemy.transform.position + (direction * Data.BulletSpawnDistance);
         GameObject bullet = Instantiate(EnemyBulletObject, SpawnLocation, Quaternion.Euler(0f, 0f, angle - 90f));
