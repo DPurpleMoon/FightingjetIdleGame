@@ -39,11 +39,11 @@ public class StageRead : MonoBehaviour
                 {
                     if (i == 0)
                     {
-                        Route.Add((int)parts[i])
+                        Route.Add((int)parts[i]);
                     }
                     else if (i == 1 || i == 2)
                     {
-                        Route.Add((string)parts[i])
+                        Route.Add((string)parts[i]);
                     }
                     else
                     {
