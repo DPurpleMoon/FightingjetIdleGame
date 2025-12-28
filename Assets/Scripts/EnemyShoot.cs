@@ -26,12 +26,12 @@ public class EnemyShoot : MonoBehaviour
         if (SelectedEnemy != null)
         {
             List<object> BulletPattern = new List<object>{Pattern.AttackRead(Data.AttackType)};
-            int ShootRate = Data.Shootrate;
+            float ShootRate = Data.Shootrate;
             StartCoroutine(ShootContinuous(SelectedEnemy, BulletPattern, ShootRate));
         }
     }
 
-    IEnumerator ShootContinuous(GameObject enemy, List<object> attackpattern, int shoottime){
+    IEnumerator ShootContinuous(GameObject enemy, List<object> attackpattern, float shoottime){
         float timer = 0f;
         int i = 0;
         while (enemy != null)
