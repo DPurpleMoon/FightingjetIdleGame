@@ -10,8 +10,7 @@ public class optionmenu : MonoBehaviour
     public GameObject pauseSettingsPanel;
 
     [Header("Settings UI")]
-    public Slider volumeSlider;
-    public TMP_Dropdown qualityDropdown;
+    public Slider brightnessSlider;
 
     private bool isPaused = false;
 
@@ -29,25 +28,16 @@ public class optionmenu : MonoBehaviour
 
         LoadSettings();
 
-        if (volumeSlider != null)
+        if (brightnessSlider != null)
         {
-            volumeSlider.onValueChanged.AddListener(SetVolume);
+            brightnessSlider.onValueChanged.AddListener(SetBrightness);
         }
-
-        if (qualityDropdown != null)
-        {
-            qualityDropdown.onValueChanged.AddListener(SetQuality);
-        }
-
-        Debug.Log("PauseMenu Ready - NO Time.timeScale");
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("ESC Pressed");
-            
             if (isPaused)
             {
                 if (pauseSettingsPanel != null && pauseSettingsPanel.activeSelf)
@@ -68,27 +58,30 @@ public class optionmenu : MonoBehaviour
 
     void LoadSettings()
     {
-        float savedVolume = PlayerPrefs.GetFloat("Volume", 0.5f);
-        int savedQuality = PlayerPrefs.GetInt("Quality", 1);
+        float savedBrightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
 
-        if (volumeSlider != null)
+        if (brightnessSlider != null)
         {
-            volumeSlider.value = savedVolume;
+            brightnessSlider.value = savedBrightness;
         }
 
-        if (qualityDropdown != null)
-        {
-            qualityDropdown.value = savedQuality;
-        }
+        SetBrightness(savedBrightness);
+    }
 
-        SetVolume(savedVolume);
-        SetQuality(savedQuality);
+    public void PauseGame()
+    {
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(true);
+        }
+        
+        PauseGameplay();
+        
+        isPaused = true;
     }
 
     public void ResumeGame()
     {
-        Debug.Log("Resume");
-        
         if (pausePanel != null)
         {
             pausePanel.SetActive(false);
@@ -99,25 +92,148 @@ public class optionmenu : MonoBehaviour
             pauseSettingsPanel.SetActive(false);
         }
         
+        ResumeGameplay();
+        
         isPaused = false;
     }
 
-    public void PauseGame()
+    void PauseGameplay()
     {
-        Debug.Log("Pause");
-        
-        if (pausePanel != null)
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
         {
-            pausePanel.SetActive(true);
+            MonoBehaviour[] scripts = player.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour script in scripts)
+            {
+                script.enabled = false;
+            }
+            
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+            }
         }
-        
-        isPaused = true;
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            MonoBehaviour[] scripts = enemy.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour script in scripts)
+            {
+                script.enabled = false;
+            }
+            
+            Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+        }
+
+        GameObject forest = GameObject.Find("forest");
+        if (forest != null)
+        {
+            MonoBehaviour[] scripts = forest.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour script in scripts)
+            {
+                script.enabled = false;
+            }
+            
+            Rigidbody2D rb = forest.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+        }
+
+        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
+        foreach (GameObject bullet in bullets)
+        {
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+        }
+
+        GameObject spawner = GameObject.Find("EnemySpawnManager");
+        if (spawner != null)
+        {
+            MonoBehaviour[] scripts = spawner.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour script in scripts)
+            {
+                script.enabled = false;
+            }
+        }
+
+        GameObject stageManager = GameObject.Find("InStageManager");
+        if (stageManager != null)
+        {
+            MonoBehaviour[] scripts = stageManager.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour script in scripts)
+            {
+                script.enabled = false;
+            }
+        }
+    }
+
+    void ResumeGameplay()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            MonoBehaviour[] scripts = player.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour script in scripts)
+            {
+                script.enabled = true;
+            }
+        }
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            MonoBehaviour[] scripts = enemy.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour script in scripts)
+            {
+                script.enabled = true;
+            }
+        }
+
+        GameObject forest = GameObject.Find("forest");
+        if (forest != null)
+        {
+            MonoBehaviour[] scripts = forest.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour script in scripts)
+            {
+                script.enabled = true;
+            }
+        }
+
+        GameObject spawner = GameObject.Find("EnemySpawnManager");
+        if (spawner != null)
+        {
+            MonoBehaviour[] scripts = spawner.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour script in scripts)
+            {
+                script.enabled = true;
+            }
+        }
+
+        GameObject stageManager = GameObject.Find("InStageManager");
+        if (stageManager != null)
+        {
+            MonoBehaviour[] scripts = stageManager.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour script in scripts)
+            {
+                script.enabled = true;
+            }
+        }
     }
 
     public void OpenPauseSettings()
     {
-        Debug.Log("Open Settings");
-        
         if (pausePanel != null)
         {
             pausePanel.SetActive(false);
@@ -131,8 +247,6 @@ public class optionmenu : MonoBehaviour
 
     public void ClosePauseSettings()
     {
-        Debug.Log("Close Settings");
-        
         if (pauseSettingsPanel != null)
         {
             pauseSettingsPanel.SetActive(false);
@@ -144,29 +258,25 @@ public class optionmenu : MonoBehaviour
         }
     }
 
-    public void SetVolume(float volume)
+    public void SetBrightness(float brightness)
     {
-        AudioListener.volume = volume;
-        PlayerPrefs.SetFloat("Volume", volume);
+        PlayerPrefs.SetFloat("Brightness", brightness);
         PlayerPrefs.Save();
-    }
-
-    public void SetQuality(int qualityIndex)
-    {
-        QualitySettings.SetQualityLevel(qualityIndex);
-        PlayerPrefs.SetInt("Quality", qualityIndex);
-        PlayerPrefs.Save();
+        
+        if (BrightnessManager.Instance != null)
+        {
+            BrightnessManager.Instance.ApplyBrightness(brightness);
+        }
     }
 
     public void LoadMainMenu()
     {
-        Debug.Log("Main Menu");
+        ResumeGameplay(); 
         SceneManager.LoadScene("startmenu");
     }
 
     public void QuitGame()
     {
-        Debug.Log("Quit");
         Application.Quit();
         
         #if UNITY_EDITOR

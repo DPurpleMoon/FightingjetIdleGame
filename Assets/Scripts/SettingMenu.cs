@@ -5,53 +5,37 @@ using TMPro;
 public class SettingsMenu : MonoBehaviour
 {
     [Header("Settings UI")]
-    public Slider volumeSlider;
-    public TMP_Dropdown qualityDropdown;
+    public Slider brightnessSlider;
     public GameObject settingsPanel;
 
     void Start()
     {
-        float savedVolume = PlayerPrefs.GetFloat("Volume", 0.5f);
-        int savedQuality = PlayerPrefs.GetInt("Quality", 1);
+        float savedBrightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
         
-        if (volumeSlider != null)
+        if (brightnessSlider != null)
         {
-            volumeSlider.value = savedVolume;
+            brightnessSlider.value = savedBrightness;
         }
         
-        if (qualityDropdown != null)
-        {
-            qualityDropdown.value = savedQuality;
-        }
+        SetBrightness(savedBrightness);
         
-        SetVolume(savedVolume);
-        SetQuality(savedQuality);
-        
-        if (volumeSlider != null)
+        if (brightnessSlider != null)
         {
-            volumeSlider.onValueChanged.AddListener(SetVolume);
-        }
-        
-        if (qualityDropdown != null)
-        {
-            qualityDropdown.onValueChanged.AddListener(SetQuality);
+            brightnessSlider.onValueChanged.AddListener(SetBrightness);
         }
     }
 
-    public void SetVolume(float volume)
+    public void SetBrightness(float brightness)
     {
-        AudioListener.volume = volume;
-        PlayerPrefs.SetFloat("Volume", volume);
+        PlayerPrefs.SetFloat("Brightness", brightness);
         PlayerPrefs.Save();
-        Debug.Log("Volume set to: " + volume);
-    }
-
-    public void SetQuality(int qualityIndex)
-    {
-        QualitySettings.SetQualityLevel(qualityIndex);
-        PlayerPrefs.SetInt("Quality", qualityIndex);
-        PlayerPrefs.Save();
-        Debug.Log("Quality set to: " + qualityIndex);
+        
+        if (BrightnessManager.Instance != null)
+        {
+            BrightnessManager.Instance.ApplyBrightness(brightness);
+        }
+        
+        Debug.Log("Brightness set to: " + brightness);
     }
 
     public void CloseSettings()
