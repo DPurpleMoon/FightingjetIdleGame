@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 public class OnStage : MonoBehaviour
 {
     public EnemyData Data; 
@@ -93,5 +94,7 @@ public class OnStage : MonoBehaviour
                     yield return null;
                 }
             }
+            yield return new WaitUntil(() => EnemySpawnManager.DupeEnemyList.All(item => item == null));
+            StageScript.LeaveStage();
     }
 }
