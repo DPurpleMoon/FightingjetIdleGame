@@ -34,6 +34,8 @@ public class EnemyShoot : MonoBehaviour
     IEnumerator ShootContinuous(GameObject enemy, List<object> attackpattern, float shoottime){
         float timer = 0f;
         int i = 0;
+        float bulletspeed = Data.BulletSpeed;
+        float spawndistance = Data.BulletSpawnDistance;
         while (enemy != null)
         {
             if (timer > shoottime)
@@ -42,7 +44,7 @@ public class EnemyShoot : MonoBehaviour
                 {
                     foreach (float angle in (List<float>)attackpattern[i])
                     {
-                        Shoot(enemy, angle);
+                        Shoot(enemy, angle, bulletspeed, spawndistance);
                     }
                 }
                 timer = 0f;
@@ -61,16 +63,16 @@ public class EnemyShoot : MonoBehaviour
         }
     }
 
-    public void Shoot(GameObject enemy, float angle)
+    public void Shoot(GameObject enemy, float angle, float bulletspeed, float spawndistance)
     {
         float radians = (angle + 90) * Mathf.Deg2Rad;
         Vector3 direction = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
-        Vector3 SpawnLocation = enemy.transform.position + (direction * Data.BulletSpawnDistance);
+        Vector3 SpawnLocation = enemy.transform.position + (direction * spawndistance);
         GameObject bullet = Instantiate(EnemyBulletObject, SpawnLocation, Quaternion.Euler(0f, 0f, angle - 90f));
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.linearVelocity = direction * Data.BulletSpeed;
+            rb.linearVelocity = direction * bulletspeed;
         }
     }
 }

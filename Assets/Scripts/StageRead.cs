@@ -31,11 +31,15 @@ public class StageRead : MonoBehaviour
                 string[] parts = StageText.Split(" ");
                 for (int i = 0; i < parts.Length; i++)
                 {
-                    if (i == 0)
+                    if (i == 0 || i == 2 || i == 4)
+                    {
+                        Details.Add(float.Parse(parts[i]));
+                    }
+                    else if (i == 3)
                     {
                         Details.Add(int.Parse(parts[i]));
                     }
-                    else if (i == 1 || i == 2)
+                    else if (i == 1)
                     {
                         Details.Add((string)parts[i]);
                     }
