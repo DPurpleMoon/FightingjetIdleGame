@@ -1,1 +1,1 @@
-0.5 attackpattern1 100 10 3
+2 attackpattern1 50 10 3

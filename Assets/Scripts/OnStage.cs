@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 public class OnStage : MonoBehaviour
 {
     public EnemyData Data; 
@@ -43,55 +44,59 @@ public class OnStage : MonoBehaviour
     
     private IEnumerator EnemySpawn(List<object> Level)
     {
-        List<List<object>> CoordinateList = new List<List<object>>{};
-        for (int i = 2; i < Level.Count;)
-            {
-                List<object> EnemyDetails = (List<object>)Level[i];
-                if (-StageScript.ActualLocation.y >= (float)EnemyDetails[0])
+            List<List<object>> CoordinateList = new List<List<object>>{};
+            for (int i = 2; i < Level.Count;)
                 {
-                    Data.EnemyName = (string)EnemyDetails[1];
-                    List<object> Stat = StatRead.EnemyStat(Data.EnemyName);
-                    Data.AttackType = (string)Stat[1];
-
-                    foreach (List<object> Coordinate in (List<object>)EnemyDetails[5])
+                    List<object> EnemyDetails = (List<object>)Level[i];
+                    if (-StageScript.ActualLocation.y >= (float)EnemyDetails[0])
                     {
-                        Vector2 StartPoint = Vector2.zero;
-                        Vector2 MidPoint = Vector2.zero;
-                        Vector2 EndPoint = Vector2.zero;
-                        string MovementType = string.Empty;
-                        if ((char)Coordinate[0] == 'L')
+                        Data.EnemyName = (string)EnemyDetails[1];
+                        List<object> Stat = StatRead.EnemyStat(Data.EnemyName);
+                        Data.AttackType = (string)Stat[1];
+
+                        foreach (List<object> Coordinate in (List<object>)EnemyDetails[5])
                         {
-                            MovementType = "Line";
-                            StartPoint = (Vector2)Coordinate[1];
-                            EndPoint = (Vector2)Coordinate[2];
+                            Vector2 StartPoint = Vector2.zero;
+                            Vector2 MidPoint = Vector2.zero;
+                            Vector2 EndPoint = Vector2.zero;
+                            string MovementType = string.Empty;
+                            if ((char)Coordinate[0] == 'L')
+                            {
+                                MovementType = "Line";
+                                StartPoint = (Vector2)Coordinate[1];
+                                EndPoint = (Vector2)Coordinate[2];
+                            }
+                            else if ((char)Coordinate[0] == 'C')
+                            {
+                                MovementType = "Circle";
+                                StartPoint = (Vector2)Coordinate[1];
+                                MidPoint = (Vector2)Coordinate[2];
+                                EndPoint = (Vector2)Coordinate[3];
+                            }
+                            else
+                            {
+                                yield return null;
+                            }
+                            List<object> Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};  
+                            CoordinateList.Add(Paths);
                         }
-                        else if ((char)Coordinate[0] == 'C')
+                        // x (-188 > 188), y (-110, 110)
+                        Data.Speed = (float)EnemyDetails[2];
+                        Data.Shootrate = (float)Stat[0];
+                        Data.maxHealth = (float)Stat[2];
+                        Data.BulletSpeed = (float)Stat[3];
+                        Data.BulletSpawnDistance = (float)Stat[4];
+                        EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList);
+                        if (i == Level.Count - 1)
                         {
-                            MovementType = "Circle";
-                            StartPoint = (Vector2)Coordinate[1];
-                            MidPoint = (Vector2)Coordinate[2];
-                            EndPoint = (Vector2)Coordinate[3];
+                            Final = true;
                         }
-                        else
-                        {
-                            yield return null;
-                        }
-                        List<object> Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};  
-                        CoordinateList.Add(Paths);
+                        i++;
                     }
-                    // x (-188 > 188), y (-110, 110)
-                    Data.Speed = (float)EnemyDetails[2];
-                    Data.Shootrate = (float)Stat[0];
-                    Data.maxHealth = (float)Stat[2];
-                    Data.BulletSpeed = (float)Stat[3];
-                    Data.BulletSpawnDistance = (float)Stat[4];
-                    EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList);
-                    i++;
+                    else
+                    {
+                        yield return null;
+                    }
                 }
-                else
-                {
-                    yield return null;
-                }
-            }
     }
 }

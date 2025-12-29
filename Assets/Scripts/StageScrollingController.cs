@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class StageScrollingController : MonoBehaviour {
     public Vector2 TargetPosition;
@@ -93,10 +94,8 @@ public class StageScrollingController : MonoBehaviour {
         }
         StageCloned = false;
         Stage.inStage = false;
-        if (CurrentStage != null)
-        {
-            CurrentStage.SetActive(false);
-        }
+        SceneManager.LoadScene("StageList");
+        
     }
 }
 
