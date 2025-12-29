@@ -94,7 +94,10 @@ public class OnStage : MonoBehaviour
                     yield return null;
                 }
             }
+        if (i == Level.Count - 1)
+        {
             yield return new WaitUntil(() => EnemySpawnManager.DupeEnemyList.All(item => item == null));
             StageScript.LeaveStage();
+        }
     }
 }
