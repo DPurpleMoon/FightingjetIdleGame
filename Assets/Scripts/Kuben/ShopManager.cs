@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Manages the purchasing, upgrading, and equipping logic for weapons.
@@ -11,6 +12,7 @@ public class ShopManager : MonoBehaviour
 {
     public static ShopManager Instance;
 
+    [Header("Configuration")]
     public List<WeaponData> availableWeapons;
     public WeaponData equippedWeapon;
 
@@ -41,7 +43,7 @@ public class ShopManager : MonoBehaviour
         LoadShop();
     }
 
-    // --- Data Persistence ---
+    // --- SAVE & LOAD ---
 
     public void SaveShop()
     {
@@ -99,7 +101,7 @@ public class ShopManager : MonoBehaviour
         NotifyUI();
     }
 
-    // --- Transaction Logic ---
+    // --- TRANSACTION LOGIC ---
 
     public void TryBuyWeapon(WeaponData weapon)
     {
@@ -133,5 +135,36 @@ public class ShopManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         SaveShop();
+    }
+
+    // --- RESET ---
+    [ContextMenu("Reset shop (Ascension)")]
+    public void ResetAllWeapons()
+    {
+        // 1. Reset All Weapon Levels 
+        foreach (WeaponData weapon in availableWeapons)
+        {
+            weapon.currentLevel = 0;
+        }
+        // 2. Remove equiped weapons 
+        equippedWeapon = null;
+        // 3. Save the changes 
+        SaveShop() ;
+        NotifyUI();
+        Debug.Log("[Shop Sysytem] All weapon levels reset succesfully");
+    }
+
+    private void Update()
+    {
+        // --- Development Testing Controls ---
+        // W: Reset Weapons Levels
+        
+        if (Keyboard.current == null) return;
+
+        if (Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            ResetAllWeapons();
+            Debug.Log($"[Debug] All Weapon Level Have Been Reset Succesfully");
+        }
     }
 }

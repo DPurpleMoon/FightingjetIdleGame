@@ -103,7 +103,7 @@ public class IdleManager : MonoBehaviour
 
             // Setting Cap for idle limit, 86400s = 24hrs 
             if (secondsPassed > 86400) secondsPassed = 86400;
-            if (secondsPassed > 0)
+            if (secondsPassed > 1200)
             {
                 DistributeReward(secondsPassed);
             }
@@ -133,9 +133,16 @@ public class IdleManager : MonoBehaviour
     {
         //Formula: (Base + Upgrades) * (StageBonus ^ StageLevel)
         double flatRate = baseRate + (idleUpgradeLevel * ratePerUpgrade);
-        double multiplier = Math.Pow(stageMultiplier, currentStage);
+        double stageBonus = Math.Pow(stageMultiplier, currentStage);
 
-        return flatRate * multiplier;
+        double total = flatRate * stageBonus;
+        
+        if (AscensionManager.Instance != null)
+        {
+            total *= AscensionManager.Instance.GetAscensionMultiplier();
+        }
+
+        return total;
     }
 
     public double GetUpgradeCost()
