@@ -67,4 +67,34 @@ public class StageRead : MonoBehaviour
         StageRoute.Add(Details);
         return StageRoute;
     }
+
+    // My stuff to read the multiplier only - Kuben
+    public float GetStageMultiplier(string name)
+    {
+        string FilePath = Path.Combine(Application.streamingAssetsPath, $"levels\\{name}.lvl");
+        
+        if (!System.IO.File.Exists(FilePath))
+        {
+            Debug.LogError($"[StageRead] Level file not found: {name}.lvl. Defaulting to 1.0 multiplier.");
+            return 1.0f;
+        }
+
+        using (StreamReader reader = new StreamReader(FilePath))
+        {
+            reader.ReadLine(); // Skip first line
+            string line2 = reader.ReadLine();
+
+            if (string.IsNullOrEmpty(line2)) return 1.0f;
+            
+            if (line2.Contains('#')) // to ignoore comments
+            {
+                line2 = line2.Split('#')[0];
+            }
+            if (float.TryParse(line2.Trim(), out float result))
+            {
+                return result;
+            }
+        }
+        return 1.0f; // take this as default if the parsing fails 
+    }
 }
