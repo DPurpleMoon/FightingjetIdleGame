@@ -139,7 +139,7 @@ public class ShopManager : MonoBehaviour
 
     // --- RESET ---
     [ContextMenu("Reset shop (Ascension)")]
-    public void ResetAllWeopons()
+    public void ResetAllWeapons()
     {
         // 1. Reset All Weapon Levels 
         foreach (WeaponData weapon in availableWeapons)
@@ -163,7 +163,7 @@ public class ShopManager : MonoBehaviour
 
         if (Keyboard.current.wKey.wasPressedThisFrame)
         {
-            ResetAllWeopons();
+            ResetAllWeapons();
             Debug.Log($"[Debug] All Weapon Level Have Been Reset Succesfully");
         }
     }
