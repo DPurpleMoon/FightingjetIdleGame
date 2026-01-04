@@ -96,20 +96,4 @@ public class OnStage : MonoBehaviour
                 yield return null;
                 }
     }
-    
-
-    void LogRecursive(object input)
-    {
-        if (input is System.Collections.IEnumerable list && !(input is string))
-        {
-            foreach (var item in list)
-            {
-                LogRecursive(item);
-            }
-        }
-        else
-        {
-            Debug.Log(input?.ToString());
-        }
-    }
 }

@@ -83,7 +83,6 @@ public class EnemySpawnManager : MonoBehaviour {
             DupeEnemyList.Add(DupeEnemy);
             DupeEnemyHealthList.Add(DupeHealth);
             Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Speed);
-            Debug.Log("why");
             yield return new WaitForSeconds(distance);
         }
     }
