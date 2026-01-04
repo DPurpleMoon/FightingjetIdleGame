@@ -45,8 +45,10 @@ public class OnStage : MonoBehaviour
     private IEnumerator EnemySpawn(List<object> Level)
     {
             List<List<object>> CoordinateList = new List<List<object>>{};
-            for (int i = 2; i < Level.Count;)
+            for (int i = 2; ;)
                 {
+                    if (i < Level.Count)
+                    {
                     List<object> EnemyDetails = (List<object>)Level[i];
                     if (-StageScript.ActualLocation.y >= (float)EnemyDetails[0])
                     {
@@ -87,15 +89,16 @@ public class OnStage : MonoBehaviour
                         Data.BulletSpeed = (float)Stat[3];
                         Data.BulletSpawnDistance = (float)Stat[4];
                         EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList);
-                        if (i == Level.Count - 1)
-                        {
-                            Final = true;
-                        }
                         i++;
                     }
                     else
                     {
                         yield return null;
+                    }
+                    }
+                    else if (i == Level.Count)
+                    {
+                        
                     }
                 }
     }
