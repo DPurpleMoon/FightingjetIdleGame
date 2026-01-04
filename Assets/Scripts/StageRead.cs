@@ -6,32 +6,35 @@ using System.IO;
 using System.Text.RegularExpressions;
 public class StageRead : MonoBehaviour
 {
-
+    string StageText;
+    int index;
     public List<object> FileRead(string name)
     {
         string FilePath = Path.Combine(Application.streamingAssetsPath, $"levels\\{name}.lvl");
         string[] StageLines = File.ReadAllLines(FilePath);
-        List<object> StageRoute = new List<object>{};
-        List<object> Details = new List<object>{};
-        List<object> Route = new List<object>{};
+        List<object> StageRoute = new List<object>();
         for (int a = 0; a < StageLines.Length; a++)
         {
-            string StageText = StageLines[a];
-            int index = StageText.IndexOf("#");
+            StageText = StageLines[a];
+            index = StageText.IndexOf("#");
             if (index >= 0)
             {
                 StageText = StageText.Substring(0, index);
             }
+            StageText = StageText.Trim();
+            if (string.IsNullOrEmpty(StageText)) continue;
             if (a == 0 || a == 1)
             {
-                StageRoute.Add(StageText.Trim());
+                StageRoute.Add(StageText);
             }
             else
             {
+                List<object> Details = new List<object>();
                 string[] parts = StageText.Split(" ");
                 for (int i = 0; i < parts.Length; i++)
                 {
-                    if (i == 0 || i == 2 || i == 4)
+                    //0 = y location, 1 = enemyname, 2 = movement speed, 3 = enemycount, 4 = bulletspeed
+                    if (i == 0 || i == 2 || i == 4) 
                     {
                         Details.Add(float.Parse(parts[i]));
                     }
@@ -41,7 +44,7 @@ public class StageRead : MonoBehaviour
                     }
                     else if (i == 1)
                     {
-                        Details.Add((string)parts[i]);
+                        Details.Add(parts[i].ToString());
                     }
                     else
                     {
@@ -57,14 +60,13 @@ public class StageRead : MonoBehaviour
                                 float y = float.Parse(p.Groups[2].Value);
                                 cmd.Add(new Vector2(x, y));
                             }
-                            Route.Add(cmd);
+                            Details.Add(cmd);
                         }
                     }
                 }
+                StageRoute.Add(Details);
             }
         }
-        Details.Add(Route);
-        StageRoute.Add(Details);
         return StageRoute;
     }
 
