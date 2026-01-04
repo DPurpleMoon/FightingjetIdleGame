@@ -184,7 +184,10 @@ MonoBehaviour:
   Pattern: {fileID: 0}
   EnemyBulletObject: {fileID: 340181174}
   SelectedEnemy: {fileID: 0}
-  Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
+  ShootRate: 0
+  bulletspeed: 0
+  spawndistance: 0
+  AttackType: 
 --- !u!1 &340181174
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +263,7 @@ SpriteRenderer:
   m_Size: {x: 5, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &340181176
@@ -470,7 +473,6 @@ RectTransform:
   m_Children:
   - {fileID: 1562210051}
   - {fileID: 1392897181}
-  - {fileID: 73986902}
   m_Father: {fileID: 1442671084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1131,6 +1133,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7351640302785403101, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
+      propertyPath: m_TagString
+      value: Background
+      objectReference: {fileID: 0}
     - target: {fileID: 8438019912777928600, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1628,8 +1634,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6648727}
+  m_Children: []
   m_Father: {fileID: 2077407208}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3047,6 +3052,7 @@ MonoBehaviour:
   pausePanel: {fileID: 2077407207}
   pauseSettingsPanel: {fileID: 1442671083}
   brightnessSlider: {fileID: 514641329}
+  Data: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
 --- !u!1 &1190792536
 GameObject:
   m_ObjectHideFlags: 0
@@ -3959,7 +3965,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 317850616}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -4113,7 +4119,7 @@ RectTransform:
   - {fileID: 1430113406}
   - {fileID: 870245905}
   - {fileID: 901889658}
-  m_Father: {fileID: 151058711}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4278,7 +4284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a861a29c0dbd7df489410d326714550e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnController
-  Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
+  Data: {fileID: 0}
 --- !u!1 &1562210050
 GameObject:
   m_ObjectHideFlags: 0
@@ -4656,7 +4662,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 73986902}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -4864,7 +4870,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 685163762}
-  - {fileID: 317850616}
   - {fileID: 1111551152}
   m_Father: {fileID: 1442671084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5119,7 +5124,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1889673262}
-  - {fileID: 2096620047}
   m_Father: {fileID: 1349412332}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5149,7 +5153,7 @@ MonoBehaviour:
   m_ScrollSensitivity: 1
   m_Viewport: {fileID: 1889673262}
   m_HorizontalScrollbar: {fileID: 0}
-  m_VerticalScrollbar: {fileID: 2096620048}
+  m_VerticalScrollbar: {fileID: 0}
   m_HorizontalScrollbarVisibility: 0
   m_VerticalScrollbarVisibility: 2
   m_HorizontalScrollbarSpacing: 0
@@ -5428,6 +5432,7 @@ MonoBehaviour:
   StageData: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
   StageScript: {fileID: 0}
   Read: {fileID: 0}
+  StatRead: {fileID: 0}
 --- !u!114 &2079322971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5519,7 +5524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a861a29c0dbd7df489410d326714550e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnController
-  Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
+  Data: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
 --- !u!4 &2097574370
 Transform:
   m_ObjectHideFlags: 0
@@ -5556,6 +5561,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6297495522651124099, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
+      propertyPath: Data
+      value: 
+      objectReference: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
+    - target: {fileID: 6297495522651124099, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
       propertyPath: HealthBar
       value: 
       objectReference: {fileID: 1552311437}
@@ -5563,6 +5572,10 @@ PrefabInstance:
       propertyPath: HealthCanvas
       value: 
       objectReference: {fileID: 1923270011}
+    - target: {fileID: 7665711103545316008, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
+      propertyPath: Data
+      value: 
+      objectReference: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
     - target: {fileID: 7665711103545316008, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
       propertyPath: healthSlider
       value: 
@@ -6389,3 +6402,7 @@ SceneRoots:
   - {fileID: 638040317}
   - {fileID: 1893690143}
   - {fileID: 46072635}
+  - {fileID: 1189919048}
+  - {fileID: 1503551274}
+  - {fileID: 1543208873}
+  - {fileID: 1655543650}

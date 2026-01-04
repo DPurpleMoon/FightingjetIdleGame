@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 
 public class optionmenu : MonoBehaviour
 {
@@ -11,11 +13,11 @@ public class optionmenu : MonoBehaviour
 
     [Header("Settings UI")]
     public Slider brightnessSlider;
-
-    private bool isPaused = false;
+    public StageScrollingData Data; 
 
     void Start()
     {
+        Data.isPaused = false;
         if (pausePanel != null)
         {
             pausePanel.SetActive(false);
@@ -38,7 +40,7 @@ public class optionmenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused)
+            if (Data.isPaused)
             {
                 if (pauseSettingsPanel != null && pauseSettingsPanel.activeSelf)
                 {
@@ -77,7 +79,7 @@ public class optionmenu : MonoBehaviour
         
         PauseGameplay();
         
-        isPaused = true;
+        Data.isPaused = true;
     }
 
     public void ResumeGame()
@@ -94,7 +96,7 @@ public class optionmenu : MonoBehaviour
         
         ResumeGameplay();
         
-        isPaused = false;
+        Data.isPaused = false;
     }
 
     void PauseGameplay()
@@ -111,8 +113,7 @@ public class optionmenu : MonoBehaviour
             Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                rb.linearVelocity = Vector2.zero;
-                rb.angularVelocity = 0f;
+                rb.Sleep();
             }
         }
 
@@ -128,33 +129,38 @@ public class optionmenu : MonoBehaviour
             Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                rb.linearVelocity = Vector2.zero;
+                rb.Sleep();
             }
         }
 
-        GameObject forest = GameObject.Find("forest");
-        if (forest != null)
+        GameObject[] background = GameObject.FindGameObjectsWithTag("Background");
+        foreach (GameObject bg in background)
         {
-            MonoBehaviour[] scripts = forest.GetComponents<MonoBehaviour>();
-            foreach (MonoBehaviour script in scripts)
+            if (bg != null)
             {
-                script.enabled = false;
-            }
-            
-            Rigidbody2D rb = forest.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector2.zero;
+                MonoBehaviour[] scripts = bg.GetComponents<MonoBehaviour>();
+                foreach (MonoBehaviour script in scripts)
+                {
+                    script.enabled = false;
+                }
+                
+                Rigidbody2D rb = bg.GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    rb.Sleep();
+                }
             }
         }
 
-        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
+        List<GameObject> bullets = new List<GameObject>{};
+        bullets.AddRange(GameObject.FindGameObjectsWithTag("PlayerBullet"));
+        bullets.AddRange(GameObject.FindGameObjectsWithTag("EnemyBullet"));
         foreach (GameObject bullet in bullets)
         {
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                rb.linearVelocity = Vector2.zero;
+                rb.Sleep();
             }
         }
 
@@ -189,6 +195,11 @@ public class optionmenu : MonoBehaviour
             {
                 script.enabled = true;
             }
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.WakeUp();
+            }
         }
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -199,15 +210,40 @@ public class optionmenu : MonoBehaviour
             {
                 script.enabled = true;
             }
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.WakeUp();
+            }
         }
 
-        GameObject forest = GameObject.Find("forest");
-        if (forest != null)
+        GameObject[] background = GameObject.FindGameObjectsWithTag("Background");
+        foreach (GameObject bg in background)
         {
-            MonoBehaviour[] scripts = forest.GetComponents<MonoBehaviour>();
-            foreach (MonoBehaviour script in scripts)
+            if (bg != null)
             {
-                script.enabled = true;
+                MonoBehaviour[] scripts = bg.GetComponents<MonoBehaviour>();
+                foreach (MonoBehaviour script in scripts)
+                {
+                    script.enabled = true;
+                }
+                Rigidbody2D rb = bg.GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    rb.WakeUp();
+                }
+            }
+        }
+
+        List<GameObject> bullets = new List<GameObject>{};
+        bullets.AddRange(GameObject.FindGameObjectsWithTag("PlayerBullet"));
+        bullets.AddRange(GameObject.FindGameObjectsWithTag("EnemyBullet"));
+        foreach (GameObject bullet in bullets)
+        {
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.WakeUp();
             }
         }
 

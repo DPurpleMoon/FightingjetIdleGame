@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnemySpawnManager : MonoBehaviour {
     public static EnemySpawnManager Instance { get; private set; } 
@@ -70,6 +71,7 @@ public class EnemySpawnManager : MonoBehaviour {
         for (int i = 0; i < enemyamount; i++)
         {
             if (token.IsCancellationRequested) yield break;
+            if (currentScene.name != "Stage0") yield break;
             GameObject DupeEnemy = Instantiate(EnemyType, new Vector3(0, 0, 100), Quaternion.identity);
             object[] healthstats = new object[] {EnemyName, maxHealth};
             DupeEnemy.SendMessage("Initialize", healthstats, SendMessageOptions.DontRequireReceiver);
