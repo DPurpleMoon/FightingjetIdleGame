@@ -89,7 +89,7 @@ public class OnStage : MonoBehaviour
                         EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList);
                         if (i == Level.Count - 1)
                         {
-                            Final = true;
+                            
                         }
                         i++;
                     }
