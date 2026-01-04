@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using TMPro;
-using UnityEditor.SceneManagement;
 using UnityEngine.InputSystem; //for the welcome UI
 
 ///<summary>
@@ -17,10 +17,15 @@ public class IdleManager : MonoBehaviour
     public int idleUpgradeLevel = 0; // Increases via button
     public int currentStage = 1;
 
+    [Header("Stage Configuration")]
+    public StageRead stageReader;
+    public List<string> stageFileNames;
+
+    [SerializeField] private float activeLevelMultiplier = 1.0f;
+
     [Header("Economy Settings")]
     public double baseRate = 0.1; // Base coins per second
     public double ratePerUpgrade = 0.1; // Added coins per second per upgrade
-    public double stageMultiplier = 1.1f; // 5% bonus per stage is cleared
     public float incomeTicketInterval = 1.0f;
 
     [Header("Upgrade Costs")]
@@ -55,7 +60,7 @@ public class IdleManager : MonoBehaviour
 
     private void Start()
     {
-        // Calculate earning immediately on start
+        UpdateStageMultiplier();
         CalculateOfflineEarnings();
     }
 
@@ -79,8 +84,9 @@ public class IdleManager : MonoBehaviour
         if (Keyboard.current.iKey.wasPressedThisFrame)
         {
             ResetIdleProgress();
-            currentStage = 0;
-            Debug.Log($"[Debug] Idle And Stage Level Reset. Current Level: {idleUpgradeLevel} And {currentStage}");
+            currentStage =1;
+            UpdateStageMultiplier();
+            Debug.Log($"[Debug] Idle Reset.");
         }
         if (Keyboard.current.sKey.wasPressedThisFrame)
         {
@@ -90,7 +96,57 @@ public class IdleManager : MonoBehaviour
 
     // --- OFFLINE CALCULATION ---
 
-    private void CalculateOfflineEarnings()
+    // --- PUBLIC HELPERS ---
+
+
+    public void UpdateStageMultiplier()
+    {
+        if (stageReader == null)
+        {
+            stageReader = FindFirstObjectByType<StageRead>();
+            if (stageReader == null)
+            {
+                Debug.LogWarning("StageRead script missing from scene!");
+                return;
+            }
+        }
+
+        int fileIndex = currentStage - 1;
+
+        if (stageFileNames == null || stageFileNames.Count == 0)
+        {
+            activeLevelMultiplier = 1.0f;
+            return;
+        }
+
+        if (fileIndex >= stageFileNames.Count)
+        {
+            fileIndex = stageFileNames.Count - 1;
+        }
+
+        string fileToLoad = stageFileNames[fileIndex];
+
+        activeLevelMultiplier = stageReader.GetStageMultiplier(fileToLoad);
+        Debug.Log($"[IdleManager] Loaded Stage: {fileToLoad} | Multiplier: {activeLevelMultiplier}x");
+
+        NotifyUI();
+    }
+    public double GetCoinsPerSecond()
+    {
+        //Formula: (Base + Upgrades) * (StageBonus ^ StageLevel)
+        double flatRate = baseRate + (idleUpgradeLevel * ratePerUpgrade);
+        double total = flatRate * activeLevelMultiplier;
+        
+        if (AscensionManager.Instance != null)
+        {
+            total *= AscensionManager.Instance.GetAscensionMultiplier();
+        }
+
+        return total;
+    }
+
+    // --- HELPERS --- 
+        private void CalculateOfflineEarnings()
     {
         if (PlayerPrefs.HasKey(LogoutKey))
         {
@@ -103,7 +159,7 @@ public class IdleManager : MonoBehaviour
 
             // Setting Cap for idle limit, 86400s = 24hrs 
             if (secondsPassed > 86400) secondsPassed = 86400;
-            if (secondsPassed > 0)
+            if (secondsPassed > 1200)
             {
                 DistributeReward(secondsPassed);
             }
@@ -127,23 +183,10 @@ public class IdleManager : MonoBehaviour
         Debug.Log($"[Idle System] Player earned {totalEarned} coins for {seconds} seconds offline.");
     }
 
-    // --- PUBLIC HELPERS ---
-
-    public double GetCoinsPerSecond()
-    {
-        //Formula: (Base + Upgrades) * (StageBonus ^ StageLevel)
-        double flatRate = baseRate + (idleUpgradeLevel * ratePerUpgrade);
-        double multiplier = Math.Pow(stageMultiplier, currentStage);
-
-        return flatRate * multiplier;
-    }
-
     public double GetUpgradeCost()
     {
         return upgradeBaseCost * Math.Pow(upgradeCostMultiplier, idleUpgradeLevel);
     }
-
-    // --- INTERACTION ---
 
     public void BuyIdleUpgrade()
     {
@@ -161,6 +204,7 @@ public class IdleManager : MonoBehaviour
     public void AdvanceStage()
     {
         currentStage++;
+        UpdateStageMultiplier();
         SaveIdleData();
         NotifyUI();
         Debug.Log($"[Game Progression] Stage Advanced. Current Stage: {currentStage}");
