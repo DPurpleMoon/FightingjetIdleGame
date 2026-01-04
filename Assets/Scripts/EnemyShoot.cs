@@ -10,7 +10,18 @@ public class EnemyShoot : MonoBehaviour
     public GameObject EnemyBulletObject;
     public GameObject SelectedEnemy;
     public EnemyData Data;
+    public float ShootRate;
+    public float bulletspeed;
+    public float spawndistance;
+    public string AttackType;
 
+    void BulletInit(object[] data)
+    {
+        AttackType = (string)data[0];
+        ShootRate = (float)data[1];
+        bulletspeed = (float)data[2];
+        spawndistance = (float)data[3];
+    }
     void Start()
     {
         Controller = GetComponent<EnemySpawnController>();
@@ -25,8 +36,7 @@ public class EnemyShoot : MonoBehaviour
             }
         if (SelectedEnemy != null)
         {
-            List<object> BulletPattern = Pattern.AttackRead(Data.AttackType);
-            float ShootRate = Data.Shootrate;
+            List<object> BulletPattern = Pattern.AttackRead(AttackType);
             StartCoroutine(ShootContinuous(SelectedEnemy, BulletPattern, ShootRate));
         }
     }
@@ -34,8 +44,6 @@ public class EnemyShoot : MonoBehaviour
     IEnumerator ShootContinuous(GameObject enemy, List<object> attackpattern, float shoottime){
         float timer = 0f;
         int i = 0;
-        float bulletspeed = Data.BulletSpeed;
-        float spawndistance = Data.BulletSpawnDistance;
         while (enemy != null)
         {
             if (timer > shoottime)

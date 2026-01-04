@@ -8,7 +8,8 @@ public class EnemyHealthController : MonoBehaviour
     public Slider healthSlider;
     private float maxDisplayHealth = 100f;
     private float currentDisplayHealth;
-    private float MaxHealth;
+    public float MaxHealth;
+    public string EnemyName;
     public EnemyData Data;
     private float currentHealth;
     public EnemySpawnController Controller;
@@ -16,9 +17,14 @@ public class EnemyHealthController : MonoBehaviour
     [SerializeField] private float invEnemyTime = 1.5f;
     private float invEnemyFrame;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Initialize(object[] Data)
+    {
+        EnemyName = (string)Data[0];
+        MaxHealth = (float)Data[1];
+    }
+    public void Start()
     {   
-        if (gameObject.name != Data.EnemyName)
+        if (healthSlider == null)
         {
             List<Slider> HealthBarList = EnemySpawnManager.DupeEnemyHealthList;
             foreach (Slider HealthBar in HealthBarList)
@@ -26,13 +32,23 @@ public class EnemyHealthController : MonoBehaviour
                 if (HealthBar != null && HealthBar.name == $"{gameObject.name}HPBar")
                     { 
                         healthSlider = HealthBar;
+                        break;
                     }
             }
-            MaxHealth = Data.maxHealth;
-            healthSlider.maxValue = maxDisplayHealth;
-            currentHealth = MaxHealth;
-            currentDisplayHealth = currentHealth * maxDisplayHealth / MaxHealth;
-            healthSlider.value = currentDisplayHealth;
+            if (healthSlider != null)
+            {
+                    healthSlider.maxValue = maxDisplayHealth;
+                    currentHealth = MaxHealth;
+                    if (MaxHealth > 0)
+                    {
+                        currentDisplayHealth = (currentHealth * maxDisplayHealth) / MaxHealth;
+                    }
+                    else
+                    {
+                        currentDisplayHealth = 0;
+                    }
+                    healthSlider.value = currentDisplayHealth;
+            }
         }
     }
 

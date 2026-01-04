@@ -45,19 +45,25 @@ public class OnStage : MonoBehaviour
     private IEnumerator EnemySpawn(List<object> Level)
     {
             List<List<object>> CoordinateList = new List<List<object>>{};
-            for (int i = 2; ;)
+            int i = 2;
+            while (i < Level.Count)
                 {
-                    if (i < Level.Count)
-                    {
                     List<object> EnemyDetails = (List<object>)Level[i];
                     if (-StageScript.ActualLocation.y >= (float)EnemyDetails[0])
                     {
-                        Data.EnemyName = (string)EnemyDetails[1];
-                        List<object> Stat = StatRead.EnemyStat(Data.EnemyName);
-                        Data.AttackType = (string)Stat[1];
+                        string EnemyName = (string)EnemyDetails[1];
+                        List<object> Stat = StatRead.EnemyStat(EnemyName);
+                        string AttackType = (string)Stat[1];
+                        float Speed = (float)EnemyDetails[2];
+                        float Shootrate = (float)Stat[0];
+                        float maxHealth = (float)Stat[2];
+                        float BulletSpeed = (float)Stat[3];
+                        float BulletSpawnDistance = (float)Stat[4];
+                        List<object> stats = new List<object> {AttackType, Shootrate, maxHealth, BulletSpeed, BulletSpawnDistance};
 
-                        foreach (List<object> Coordinate in (List<object>)EnemyDetails[5])
+                        for (int ListCount = 5; ListCount < EnemyDetails.Count; ListCount++)
                         {
+                            List<object> Coordinate = (List<object>)EnemyDetails[ListCount];
                             Vector2 StartPoint = Vector2.zero;
                             Vector2 MidPoint = Vector2.zero;
                             Vector2 EndPoint = Vector2.zero;
@@ -83,23 +89,26 @@ public class OnStage : MonoBehaviour
                             CoordinateList.Add(Paths);
                         }
                         // x (-188 > 188), y (-110, 110)
-                        Data.Speed = (float)EnemyDetails[2];
-                        Data.Shootrate = (float)Stat[0];
-                        Data.maxHealth = (float)Stat[2];
-                        Data.BulletSpeed = (float)Stat[3];
-                        Data.BulletSpawnDistance = (float)Stat[4];
-                        EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList);
+                        StartCoroutine(EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList, EnemyName, Speed, stats));
                         i++;
                     }
-                    else
-                    {
-                        yield return null;
-                    }
-                    }
-                    else if (i == Level.Count)
-                    {
-                        
-                    }
+                yield return null;
                 }
+    }
+    
+
+    void LogRecursive(object input)
+    {
+        if (input is System.Collections.IEnumerable list && !(input is string))
+        {
+            foreach (var item in list)
+            {
+                LogRecursive(item);
+            }
+        }
+        else
+        {
+            Debug.Log(input?.ToString());
+        }
     }
 }
