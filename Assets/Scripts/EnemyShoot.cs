@@ -9,7 +9,6 @@ public class EnemyShoot : MonoBehaviour
     public AttackPattern Pattern;
     public GameObject EnemyBulletObject;
     public GameObject SelectedEnemy;
-    public EnemyData Data;
     public float ShootRate;
     public float bulletspeed;
     public float spawndistance;

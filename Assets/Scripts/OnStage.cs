@@ -44,13 +44,13 @@ public class OnStage : MonoBehaviour
     
     private IEnumerator EnemySpawn(List<object> Level)
     {
-            List<List<object>> CoordinateList = new List<List<object>>{};
             int i = 2;
             while (i < Level.Count)
                 {
                     List<object> EnemyDetails = (List<object>)Level[i];
                     if (-StageScript.ActualLocation.y >= (float)EnemyDetails[0])
                     {
+                        List<List<object>> CoordinateList = new List<List<object>>{};
                         string EnemyName = (string)EnemyDetails[1];
                         List<object> Stat = StatRead.EnemyStat(EnemyName);
                         string AttackType = (string)Stat[1];
@@ -91,6 +91,7 @@ public class OnStage : MonoBehaviour
                         // x (-188 > 188), y (-110, 110)
                         StartCoroutine(EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList, EnemyName, Speed, stats));
                         i++;
+                        continue;
                     }
                 yield return null;
                 }

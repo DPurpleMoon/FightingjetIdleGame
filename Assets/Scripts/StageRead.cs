@@ -65,7 +65,7 @@ public class StageRead : MonoBehaviour
                     }
                 }
                 StageRoute.Add(Details);
-            }   
+            }
         }
         return StageRoute;
     }
