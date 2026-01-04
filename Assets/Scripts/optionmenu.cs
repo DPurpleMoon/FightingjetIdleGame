@@ -109,12 +109,6 @@ public class optionmenu : MonoBehaviour
             {
                 script.enabled = false;
             }
-            
-            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.Sleep();
-            }
         }
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -124,12 +118,6 @@ public class optionmenu : MonoBehaviour
             foreach (MonoBehaviour script in scripts)
             {
                 script.enabled = false;
-            }
-            
-            Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.Sleep();
             }
         }
 
@@ -143,24 +131,17 @@ public class optionmenu : MonoBehaviour
                 {
                     script.enabled = false;
                 }
-                
-                Rigidbody2D rb = bg.GetComponent<Rigidbody2D>();
-                if (rb != null)
-                {
-                    rb.Sleep();
-                }
             }
         }
 
-        List<GameObject> bullets = new List<GameObject>{};
-        bullets.AddRange(GameObject.FindGameObjectsWithTag("PlayerBullet"));
-        bullets.AddRange(GameObject.FindGameObjectsWithTag("EnemyBullet"));
-        foreach (GameObject bullet in bullets)
+        List<BulletSelfDestruct> bullets = new List<BulletSelfDestruct>{};
+        bullets.AddRange(FindObjectsOfType<BulletSelfDestruct>());
+        foreach (BulletSelfDestruct bullet in bullets)
         {
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                rb.Sleep();
+                bullet.PauseBullet();
             }
         }
 
@@ -195,11 +176,6 @@ public class optionmenu : MonoBehaviour
             {
                 script.enabled = true;
             }
-            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.WakeUp();
-            }
         }
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -209,11 +185,6 @@ public class optionmenu : MonoBehaviour
             foreach (MonoBehaviour script in scripts)
             {
                 script.enabled = true;
-            }
-            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.WakeUp();
             }
         }
 
@@ -227,23 +198,17 @@ public class optionmenu : MonoBehaviour
                 {
                     script.enabled = true;
                 }
-                Rigidbody2D rb = bg.GetComponent<Rigidbody2D>();
-                if (rb != null)
-                {
-                    rb.WakeUp();
-                }
             }
         }
 
-        List<GameObject> bullets = new List<GameObject>{};
-        bullets.AddRange(GameObject.FindGameObjectsWithTag("PlayerBullet"));
-        bullets.AddRange(GameObject.FindGameObjectsWithTag("EnemyBullet"));
-        foreach (GameObject bullet in bullets)
+        List<BulletSelfDestruct> bullets = new List<BulletSelfDestruct>{};
+        bullets.AddRange(FindObjectsOfType<BulletSelfDestruct>());
+        foreach (BulletSelfDestruct bullet in bullets)
         {
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                rb.WakeUp();
+                bullet.ResumeBullet();
             }
         }
 

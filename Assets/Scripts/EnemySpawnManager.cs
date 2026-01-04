@@ -70,6 +70,7 @@ public class EnemySpawnManager : MonoBehaviour {
         }
         for (int i = 0; i < enemyamount; i++)
         {
+            Scene currentScene = SceneManager.GetActiveScene();
             if (token.IsCancellationRequested) yield break;
             if (currentScene.name != "Stage0") yield break;
             GameObject DupeEnemy = Instantiate(EnemyType, new Vector3(0, 0, 100), Quaternion.identity);

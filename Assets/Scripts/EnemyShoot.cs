@@ -13,6 +13,7 @@ public class EnemyShoot : MonoBehaviour
     public float bulletspeed;
     public float spawndistance;
     public string AttackType;
+    public StageScrollingData Data; 
 
     void BulletInit(object[] data)
     {
@@ -76,10 +77,8 @@ public class EnemyShoot : MonoBehaviour
         Vector3 direction = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
         Vector3 SpawnLocation = enemy.transform.position + (direction * spawndistance);
         GameObject bullet = Instantiate(EnemyBulletObject, SpawnLocation, Quaternion.Euler(0f, 0f, angle - 90f));
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.linearVelocity = direction * bulletspeed;
-        }
+        Vector2 shootDirection = direction * bulletspeed;
+        BulletSelfDestruct State = bullet.GetComponent<BulletSelfDestruct>();
+        State.BulInitialize(shootDirection, Data.isPaused);
     }
 }

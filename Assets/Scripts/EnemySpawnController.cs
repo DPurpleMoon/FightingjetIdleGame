@@ -24,6 +24,7 @@ public class EnemySpawnController : MonoBehaviour {
         float enemyheight = renderer.bounds.size.y;
         foreach (Vector2 coordinate in waypoints)
         {    
+            Scene currentScene = SceneManager.GetActiveScene();
             if (!Data.isPaused)
             { 
             if (enemy == null) yield break;
