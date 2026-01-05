@@ -9,5 +9,6 @@ public class StageScrollingData : ScriptableObject
     public float AccelerationConstant;
     public float StartingVelocity;
     public float MaxVelocity;
-    
+    public bool isPaused = false;
+    public bool StageEnd = false;
 }

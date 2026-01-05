@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnemySpawnManager : MonoBehaviour {
     public static EnemySpawnManager Instance { get; private set; } 
@@ -17,6 +18,7 @@ public class EnemySpawnManager : MonoBehaviour {
     public static List<GameObject> DupeEnemyList = new List<GameObject>();
     public static List<Slider> DupeEnemyHealthList = new List<Slider>();
     private CancellationTokenSource _cancellationTokenSource;
+    public GameObject EnemySpawnManObject;
     void Awake()
     {
         _cancellationTokenSource = new CancellationTokenSource();
@@ -69,7 +71,9 @@ public class EnemySpawnManager : MonoBehaviour {
         }
         for (int i = 0; i < enemyamount; i++)
         {
+            Scene currentScene = SceneManager.GetActiveScene();
             if (token.IsCancellationRequested) yield break;
+            if (currentScene.name != "Stage0") yield break;
             GameObject DupeEnemy = Instantiate(EnemyType, new Vector3(0, 0, 100), Quaternion.identity);
             object[] healthstats = new object[] {EnemyName, maxHealth};
             DupeEnemy.SendMessage("Initialize", healthstats, SendMessageOptions.DontRequireReceiver);
@@ -85,6 +89,7 @@ public class EnemySpawnManager : MonoBehaviour {
             Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Speed);
             yield return new WaitForSeconds(distance);
         }
+        gameObject.SendMessage("HandleTaskDone", true, SendMessageOptions.DontRequireReceiver);
     }
 
     private string EnemyQueue()
