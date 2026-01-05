@@ -26,4 +26,8 @@ public class StageList : MonoBehaviour
     {
         SceneManager.LoadScene("Stage0");
     }
+    public void ShopOpen()
+    {
+        SceneManager.LoadScene("Kuben");
+    }
 }

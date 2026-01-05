@@ -414,7 +414,7 @@ RectTransform:
   m_Father: {fileID: 1392897181}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1364,8 +1364,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1111551152}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2967,7 +2967,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1189919045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5194,6 +5194,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: playerUI
       objectReference: {fileID: 0}
+    - target: {fileID: 1767637153404027163, guid: 172b7bb55df8c8743aa61140f1df4bb4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4209220613025056813, guid: 172b7bb55df8c8743aa61140f1df4bb4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 300
@@ -5660,6 +5664,7 @@ GameObject:
   - component: {fileID: 2097574370}
   - component: {fileID: 2097574369}
   - component: {fileID: 2097574368}
+  - component: {fileID: 2097574371}
   m_Layer: 0
   m_Name: EnemySpawnManager
   m_TagString: Untagged
@@ -5685,6 +5690,7 @@ MonoBehaviour:
   Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
   HealthBar: {fileID: 1552311437}
   HealthCanvas: {fileID: 1923270011}
+  EnemySpawnManObject: {fileID: 0}
 --- !u!114 &2097574369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5713,6 +5719,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2097574371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097574367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ff83069e632bf409536997d8dacc87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageEndCheck
+  worker: {fileID: 0}
+  Data: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
 --- !u!1001 &126429630872899117
 PrefabInstance:
   m_ObjectHideFlags: 0

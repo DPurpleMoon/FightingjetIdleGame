@@ -102,7 +102,6 @@ public class StageScrollingController : MonoBehaviour {
         StageCloned = false;
         Stage.inStage = false;
         SceneManager.LoadScene("StageList");
-        
     }
 }
 
