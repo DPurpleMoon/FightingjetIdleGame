@@ -15,26 +15,23 @@ public class WeaponData : ScriptableObject
     public int currentLevel = 0;
 
     [Header("Combat Stats")]
+    public GameObject bulletPrefab; // --- MUST BE ASSIGNED IN EDITOR ---
     public double baseDamage = 10;
     public double damageMultiplier = 2;
     [Tooltip("Time between shots in seconds.")]
     public float fireRate = 0.5f;
+    public float fireForce = 20f;
 
-    // Calculates the cost for the next purchase or upgrade
-    // Formula: BaseCost * (Multiplier ^ Level)
     public double GetCost()
     {
         return baseCost * System.Math.Pow(costMultiplier, currentLevel);
     }
 
-    // Calculates current damage output based on level
-    // Formula: BaseDamage + ((Level - 1) * Multiplier)
     public double GetDamage()
     {
         if (currentLevel == 0) return 0;
         double baseDmg = baseDamage + ((currentLevel - 1) * damageMultiplier);
 
-        // --- APPLY ASCENSION BONUS ---
         if (AscensionManager.Instance != null)
         {
             baseDmg *= AscensionManager.Instance.GetAscensionMultiplier();
@@ -42,8 +39,6 @@ public class WeaponData : ScriptableObject
         return baseDmg;
     }
 
-
-    // Increments the level of the weapon
     public void LevelUp()
     {
         currentLevel++;

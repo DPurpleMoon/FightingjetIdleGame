@@ -18,6 +18,8 @@ MonoBehaviour:
   baseCost: 100
   costMultiplier: 1.2
   currentLevel: 1
+  bulletPrefab: {fileID: 3644972259863761232, guid: 09b584087c6889c41b637d3453ca0207, type: 3}
   baseDamage: 10
   damageMultiplier: 2
   fireRate: 0.5
+  fireForce: 20

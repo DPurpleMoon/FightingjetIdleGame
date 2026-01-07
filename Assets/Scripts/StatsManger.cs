@@ -31,4 +31,10 @@ public class Statsmanger : MonoBehaviour
     {
         return damage;
     }
+
+    public void SetDamage(int newDamage)
+    {
+        damage = newDamage;
+        Debug.Log("StatsManager Updated: Damage is now " + damage);
+    }
 }
