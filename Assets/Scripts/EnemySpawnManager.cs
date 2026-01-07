@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnemySpawnManager : MonoBehaviour {
     public static EnemySpawnManager Instance { get; private set; } 
@@ -17,6 +18,7 @@ public class EnemySpawnManager : MonoBehaviour {
     public static List<GameObject> DupeEnemyList = new List<GameObject>();
     public static List<Slider> DupeEnemyHealthList = new List<Slider>();
     private CancellationTokenSource _cancellationTokenSource;
+    public GameObject EnemySpawnManObject;
     void Awake()
     {
         _cancellationTokenSource = new CancellationTokenSource();
@@ -46,40 +48,68 @@ public class EnemySpawnManager : MonoBehaviour {
         _cancellationTokenSource.Dispose();
     }
 
-    public async Task SpawnEnemy(int enemyamount, float distance, List<List<object>> route)
+    public IEnumerator SpawnEnemy(int enemyamount, float distance, List<List<object>> route, string EnemyName, float Speed, List<object> stats)
     {
+        string AttackType = (string)stats[0];
+        float Shootrate = (float)stats[1];
+        float maxHealth = (float)stats[2];
+        float BulletSpeed = (float)stats[3];
+        float BulletSpawnDistance = (float)stats[4];
+    
         // Set EnemyType to selected EnemyName
         GameObject EnemyType;
-        if (!_prefabMap.TryGetValue(Data.EnemyName, out EnemyType))
+        if (!_prefabMap.TryGetValue(EnemyName, out EnemyType))
         {
-            return; 
+            yield break; 
         }
         Controller = GetComponent<EnemySpawnController>();
         CancellationToken token = _cancellationTokenSource.Token;
-        try
+        List<Vector2> Waypoints = new List<Vector2>{};
+        foreach (List<object> path in route)
         {
-            for (int i = 0; i < enemyamount; i++)
-            {
-                token.ThrowIfCancellationRequested();
-                GameObject DupeEnemy = Instantiate(EnemyType, new Vector3(0, 0, 100), Quaternion.identity);
-                GameObject DupeHealthCanvas = Instantiate(HealthBar, HealthCanvas);
-                Slider DupeHealth = DupeHealthCanvas.GetComponent<Slider>();
-                DupeEnemy.name = $"{EnemyType.name}{i + 1}";
-                DupeHealth.name = $"{EnemyType.name}{i + 1}HPBar";
-                DupeEnemyList.Add(DupeEnemy);
-                DupeEnemyHealthList.Add(DupeHealth);
-                List<Vector2> Waypoints = new List<Vector2>{};
-                foreach (List<object> path in route)
-                {
-                    Waypoints.AddRange(Controller.PathFind((string)path[0], (Vector2)path[1], (Vector2)path[2], (Vector2)path[3], 0.05f));
-                }
-                Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Data.Speed);
-                await Task.Delay((int)(distance * 1000f), token); 
-            }
+            Waypoints.AddRange(Controller.PathFind((string)path[0], (Vector2)path[1], (Vector2)path[2], (Vector2)path[3], 0.05f));
         }
-        catch (OperationCanceledException)
+        for (int i = 0; i < enemyamount; i++)
         {
-            return;
+            Scene currentScene = SceneManager.GetActiveScene();
+            if (token.IsCancellationRequested) yield break;
+            if (currentScene.name != "Stage0") yield break;
+            GameObject DupeEnemy = Instantiate(EnemyType, new Vector3(0, 0, 100), Quaternion.identity);
+            object[] healthstats = new object[] {EnemyName, maxHealth};
+            DupeEnemy.SendMessage("Initialize", healthstats, SendMessageOptions.DontRequireReceiver);
+            object[] attackstats = new object[] {AttackType, Shootrate, BulletSpeed, BulletSpawnDistance};
+            DupeEnemy.SendMessage("BulletInit", attackstats, SendMessageOptions.DontRequireReceiver);
+            GameObject DupeHealthCanvas = Instantiate(HealthBar, HealthCanvas);
+            Slider DupeHealth = DupeHealthCanvas.GetComponent<Slider>();
+            String enemyId = EnemyQueue();
+            DupeEnemy.name = enemyId;
+            DupeHealth.name = $"{enemyId}HPBar";
+            DupeEnemyList.Add(DupeEnemy);
+            DupeEnemyHealthList.Add(DupeHealth);
+            Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Speed);
+            yield return new WaitForSeconds(distance);
+        }
+        gameObject.SendMessage("HandleTaskDone", true, SendMessageOptions.DontRequireReceiver);
+    }
+
+    private string EnemyQueue()
+    {
+        int i = 1;
+        List<string> EnemyList = new List<string>();
+        foreach (GameObject go in DupeEnemyList)
+        {
+            EnemyList.Add(go.name);
+        }
+        while (true)
+        {
+            if (!EnemyList.Contains($"Enemy{i}"))
+            {
+                return $"Enemy{i}";
+            }
+            else
+            {
+                i++;
+            }
         }
     }
 }

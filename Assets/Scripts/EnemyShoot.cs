@@ -9,8 +9,19 @@ public class EnemyShoot : MonoBehaviour
     public AttackPattern Pattern;
     public GameObject EnemyBulletObject;
     public GameObject SelectedEnemy;
-    public EnemyData Data;
+    public float ShootRate;
+    public float bulletspeed;
+    public float spawndistance;
+    public string AttackType;
+    public StageScrollingData Data; 
 
+    void BulletInit(object[] data)
+    {
+        AttackType = (string)data[0];
+        ShootRate = (float)data[1];
+        bulletspeed = (float)data[2];
+        spawndistance = (float)data[3];
+    }
     void Start()
     {
         Controller = GetComponent<EnemySpawnController>();
@@ -25,8 +36,7 @@ public class EnemyShoot : MonoBehaviour
             }
         if (SelectedEnemy != null)
         {
-            List<object> BulletPattern = Pattern.AttackRead(Data.AttackType);
-            float ShootRate = Data.Shootrate;
+            List<object> BulletPattern = Pattern.AttackRead(AttackType);
             StartCoroutine(ShootContinuous(SelectedEnemy, BulletPattern, ShootRate));
         }
     }
@@ -34,8 +44,6 @@ public class EnemyShoot : MonoBehaviour
     IEnumerator ShootContinuous(GameObject enemy, List<object> attackpattern, float shoottime){
         float timer = 0f;
         int i = 0;
-        float bulletspeed = Data.BulletSpeed;
-        float spawndistance = Data.BulletSpawnDistance;
         while (enemy != null)
         {
             if (timer > shoottime)
@@ -69,10 +77,8 @@ public class EnemyShoot : MonoBehaviour
         Vector3 direction = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
         Vector3 SpawnLocation = enemy.transform.position + (direction * spawndistance);
         GameObject bullet = Instantiate(EnemyBulletObject, SpawnLocation, Quaternion.Euler(0f, 0f, angle - 90f));
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.linearVelocity = direction * bulletspeed;
-        }
+        Vector2 shootDirection = direction * bulletspeed;
+        BulletSelfDestruct State = bullet.GetComponent<BulletSelfDestruct>();
+        State.BulInitialize(shootDirection, Data.isPaused);
     }
 }

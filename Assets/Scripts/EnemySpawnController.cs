@@ -4,12 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnemySpawnController : MonoBehaviour {
     
     private float[] EnemyRoute;
     private int[] EnemyPattern;
-    public EnemyData Data; 
+    public StageScrollingData Data;
 
     public void SetPath(GameObject enemy, Slider Health, List<Vector2> waypoints, float speed){
         StartCoroutine(WaitPath(enemy, Health, waypoints, speed));
@@ -23,6 +24,9 @@ public class EnemySpawnController : MonoBehaviour {
         float enemyheight = renderer.bounds.size.y;
         foreach (Vector2 coordinate in waypoints)
         {    
+            Scene currentScene = SceneManager.GetActiveScene();
+            if (!Data.isPaused)
+            { 
             if (enemy == null) yield break;
             Vector3 target = new Vector3(coordinate.x, coordinate.y, -20f);
             // Set health y position to current location of enemy + height of enemy/2 + 5f and x position to current location of enemy + 1.5f
@@ -46,6 +50,12 @@ public class EnemySpawnController : MonoBehaviour {
                 yield return null;
             }
             i++;
+            }
+            else
+            {
+                if (currentScene.name != "Stage0") yield break;
+                yield return null;
+            }
         }
         if (EnemySpawnManager.DupeEnemyHealthList.Contains(Health))
             {
