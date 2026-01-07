@@ -2,26 +2,23 @@ using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// Manages the Prestige/Rebirth system.
-/// Calculates tokens based on progress and applies permanent multipliers.
-/// </summary>
-[DefaultExecutionOrder(-40)] // Runs after other managers
+[DefaultExecutionOrder(-40)]
 public class AscensionManager : MonoBehaviour
 {
     public static AscensionManager Instance;
 
     [Header("Ascension Data")]
-    public int ascensionTokens = 0;   // Permanent Currency
-    public float bonusPerToken = 0.10f; // Each token = +10% stats
+    public int ascensionTokens = 0;   // This is now your "Ascension Count"
+    public float bonusPerToken = 0.10f; // +10% per ascension
 
-    [Header("Settings")]
-    public int unlockStage = 10;      // Minimum stage to ascend
-    public int stagesPerToken = 5;    // e.g., Stage 50 = 10 Tokens
+    [Header("UI Reference")]
+    public GameObject ascensionPopup; // Drag the Confirmation Panel here
+
+    // Internal state
+    private double pendingCost = 0;
 
     // Events
     public event Action OnAscensionChanged;
-
     private const string TokenKey = "Ascension_Tokens";
 
     private void Awake()
@@ -32,62 +29,72 @@ public class AscensionManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             LoadAscension();
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+        else Destroy(gameObject);
     }
 
-    // --- MATH HELPERS ---
+    // --- MATH ---
 
-    // 1. Calculate how many tokens the player WOULD get if they ascend now
-    public int GetPendingTokens()
-    {
-        int currentStage = IdleManager.Instance.currentStage;
-
-        // Safety: If below stage 10, you get nothing
-        if (currentStage < unlockStage) return 0;
-
-        // Formula: Stage / 5
-        return currentStage / stagesPerToken;
-    }
-
-    // 2. Get the global multiplier (e.g., 5 tokens * 0.10 = +50% -> 1.5x multiplier)
     public double GetAscensionMultiplier()
     {
-        // Base is 1.0 (100%) + (Tokens * 10%)
-        return 0.0 + (ascensionTokens * bonusPerToken);
+        // FIX: Start at 1.0 (100%), add bonus on top
+        // 0 Ascensions = 1.0x
+        // 1 Ascension = 1.1x
+        return 1.0 + (ascensionTokens * bonusPerToken);
     }
 
-    // --- THE BIG RED BUTTON ---
+    // --- INTERACTION ---
 
-    public void Ascend()
+    // 1. Called by ShopManager when buying the item
+    public void OpenAscensionPrompt(double cost)
     {
-        int tokensToGain = GetPendingTokens();
+        pendingCost = cost;
 
-        if (tokensToGain <= 0)
+        if (ascensionPopup != null)
         {
-            Debug.Log("Not enough progress to ascend!");
-            return;
+            ascensionPopup.SetActive(true);
         }
+        else
+        {
+            Debug.LogError("Ascension Popup not assigned in Inspector!");
+        }
+    }
 
-        // A. Add Tokens to permanent bank
-        ascensionTokens += tokensToGain;
-        SaveAscension();
+    // 2. Called by the "YES" button on the popup
+    public void ConfirmAscend()
+    {
+        // A. Pay the price
+        if (CurrencyManager.Instance.SpendCurrency(pendingCost))
+        {
+            // B. Increase Rank
+            ascensionTokens++;
+            SaveAscension();
 
-        // B. RESET EVERYTHING ELSE
-        CurrencyManager.Instance.ResetCurrency();
-        ShopManager.Instance.ResetAllWeapons();
-        IdleManager.Instance.ResetIdleProgress();
+            // C. RESET EVERYTHING
+            if (ShopManager.Instance != null) ShopManager.Instance.ResetAllWeapons();
+            if (IdleManager.Instance != null)
+            {
+                IdleManager.Instance.ResetIdleProgress();
+                IdleManager.Instance.currentStage = 1; // Force Stage 1
+                IdleManager.Instance.SaveIdleData();
+                IdleManager.Instance.UpdateStageMultiplier(); // Reload Stage 1 stats
+            }
 
-        // Important: Reset Stage back to 1
-        IdleManager.Instance.currentStage = 1;
-        IdleManager.Instance.SaveIdleData(); // Force save the stage reset
+            // D. Refresh UI
+            OnAscensionChanged?.Invoke();
 
-        // C. Notify UI
-        OnAscensionChanged?.Invoke();
+            ClosePopup();
+            Debug.Log($"<color=yellow>ASCENSION SUCCESS! New Multiplier: {GetAscensionMultiplier()}x</color>");
+        }
+        else
+        {
+            Debug.Log("Error: Currency spent failed (this shouldn't happen if checked before).");
+            ClosePopup();
+        }
+    }
 
-        Debug.Log($"<color=yellow>ASCENSION COMPLETE! Gained {tokensToGain} Tokens.</color>");
+    public void ClosePopup()
+    {
+        if (ascensionPopup != null) ascensionPopup.SetActive(false);
     }
 
     // --- SAVE & LOAD ---
@@ -104,23 +111,6 @@ public class AscensionManager : MonoBehaviour
     }
 
     // Debug
-    [ContextMenu("Add 10 Tokens")]
-    public void CheatTokens() { ascensionTokens += 10; SaveAscension(); OnAscensionChanged?.Invoke(); }
-
-    public void ResetAscensionTokens()
-    {
-        ascensionTokens = 0;
-        SaveAscension();
-    }
-
-    public void Update()
-    {
-        if (Keyboard.current == null) return;
-
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
-        {
-            ResetAscensionTokens();
-            Debug.Log($"[Debug] Reset Ascension Tokens Succesfully");
-        }
-    }
+    [ContextMenu("Reset Ascension")]
+    public void ResetAscensionTokens() { ascensionTokens = 0; SaveAscension(); OnAscensionChanged?.Invoke(); }
 }
