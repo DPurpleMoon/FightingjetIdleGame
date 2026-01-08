@@ -906,81 +906,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 349804438}
   m_CullTransparentMesh: 1
---- !u!1 &412865791
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 412865792}
-  - component: {fileID: 412865794}
-  - component: {fileID: 412865793}
-  m_Layer: 5
-  m_Name: blank
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &412865792
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 412865791}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1893690144}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &412865793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 412865791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &412865794
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 412865791}
-  m_CullTransparentMesh: 1
 --- !u!1 &514641327
 GameObject:
   m_ObjectHideFlags: 0
@@ -3493,7 +3418,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1189919045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5635,18 +5560,11 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 899724373309495822, guid: 172b7bb55df8c8743aa61140f1df4bb4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 412865792}
+    m_RemovedGameObjects:
+    - {fileID: 4321610620555479371, guid: 172b7bb55df8c8743aa61140f1df4bb4, type: 3}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 172b7bb55df8c8743aa61140f1df4bb4, type: 3}
---- !u!224 &1893690144 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 899724373309495822, guid: 172b7bb55df8c8743aa61140f1df4bb4, type: 3}
-  m_PrefabInstance: {fileID: 1893690143}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1899460130
 GameObject:
   m_ObjectHideFlags: 0
@@ -5874,7 +5792,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2077407208
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5948,6 +5866,7 @@ GameObject:
   - component: {fileID: 2079322969}
   - component: {fileID: 2079322970}
   - component: {fileID: 2079322971}
+  - component: {fileID: 2079322972}
   m_Layer: 0
   m_Name: InStageManager
   m_TagString: Untagged
@@ -6006,6 +5925,21 @@ MonoBehaviour:
   DupeStage: {fileID: 0}
   BGHeight: 0
   Stage: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
+--- !u!114 &2079322972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079322968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e80f1e680b3c847b556a5ffb0b08b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShopManager
+  availableWeapons: []
+  equippedWeapon: {fileID: 11400000, guid: 7313f3cf0ccd8c840835425a604ee763, type: 2}
+  ascensionItem: {fileID: 11400000, guid: 0648ef04606e25f46be0faa113771d0e, type: 2}
 --- !u!1 &2085461387
 GameObject:
   m_ObjectHideFlags: 0
@@ -6662,10 +6596,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19d45e48c9d74ce4db1df9fa9b7f3022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::jetfighter.movement.gun
-  bulletPrefab: {fileID: 558535905808874892}
+  defaultBulletPrefab: {fileID: 558535905808874892}
+  defaultFireForce: 20
+  defaultFireRate: 0.2
   firePoint: {fileID: 4305421751615246228}
-  fireForce: 25
-  fireRate: 0.2
 --- !u!114 &2659217138170209482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6838,6 +6772,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4612983834544826892, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
+      propertyPath: CurrentStage
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7351640302785403101, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
       propertyPath: m_Name
       value: stagedummy_0
