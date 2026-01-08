@@ -32,8 +32,16 @@ public class WeaponData : ScriptableObject
     public double GetDamage()
     {
         if (currentLevel == 0) return 0;
-        return baseDamage + ((currentLevel - 1) * damageMultiplier);
+        double baseDmg = baseDamage + ((currentLevel - 1) * damageMultiplier);
+
+        // --- APPLY ASCENSION BONUS ---
+        if (AscensionManager.Instance != null)
+        {
+            baseDmg *= AscensionManager.Instance.GetAscensionMultiplier();
+        }
+        return baseDmg;
     }
+
 
     // Increments the level of the weapon
     public void LevelUp()
