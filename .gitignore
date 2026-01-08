@@ -104,3 +104,13 @@ InitTestScene*.unity*
 
 # Audio assets
 .fake
+
+# Ignore heavy plugins
+/Assets/Plugins/Demigiant/
+/Assets/Plugins/UniRx/
+/Assets/TextMesh Pro/
+# Ignore specific Asset folders - Custom additions
+/Assets/UniRx/
+/Assets/DOTween/
+/Assets/GUI_Parts/
+/Assets/Health Heart System/

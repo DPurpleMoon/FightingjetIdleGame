@@ -1,78 +1,115 @@
 using UnityEngine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnemySpawnManager : MonoBehaviour {
-    private float[] EnemyRoute;
-    private int[] EnemyPattern;
-    private void Awake()
+    public static EnemySpawnManager Instance { get; private set; } 
+    public EnemySpawnController Controller;
+    public List<GameObject> enemyPrefabs;
+    private Dictionary<string, GameObject> _prefabMap = new Dictionary<string, GameObject>();
+    public EnemyData Data; 
+    public GameObject HealthBar;
+    public Transform HealthCanvas;
+    public static List<GameObject> DupeEnemyList = new List<GameObject>();
+    public static List<Slider> DupeEnemyHealthList = new List<Slider>();
+    private CancellationTokenSource _cancellationTokenSource;
+    public GameObject EnemySpawnManObject;
+    void Awake()
     {
-        return;
-    }
-
-    public float[] LineFormula(float[] StartPoint, float[] EndPoint)
-    {
-        float StartPointX = StartPoint[0];
-        float StartPointY = StartPoint[1];
-        float EndPointX = EndPoint[0];
-        float EndPointY = EndPoint[1];
-        if (StartPointX - EndPointX != 0)
+        _cancellationTokenSource = new CancellationTokenSource();
+        if (Instance != null && Instance != this)
         {
-            float Gradient = (StartPointY - EndPointY) / (StartPointX - EndPointX);
-            float HShift = StartPointY - (Gradient * StartPointX);
-            // {Gradient, HorizontalShift}
-            float[] Constant = new float[] {Gradient, HShift};
-            return Constant;
+            // Destroy this object if another instance already exists
+            Destroy(gameObject);
+            return;
         }
         else
         {
-            return null;
+            // Set the static reference to this instance
+            Instance = this;
+            // Often used to keep managers alive across scene loads
+            DontDestroyOnLoad(gameObject); 
+        }
+        // Build the dictionary once at the start of the scene
+        foreach (GameObject prefab in enemyPrefabs)
+        {
+            _prefabMap.Add(prefab.name, prefab);
         }
     }
+
+    private void OnDestroy()
+    {
+        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource.Dispose();
+    }
+
+    public IEnumerator SpawnEnemy(int enemyamount, float distance, List<List<object>> route, string EnemyName, float Speed, List<object> stats)
+    {
+        string AttackType = (string)stats[0];
+        float Shootrate = (float)stats[1];
+        float maxHealth = (float)stats[2];
+        float BulletSpeed = (float)stats[3];
+        float BulletSpawnDistance = (float)stats[4];
     
-    public float[] CircleFormula(float[] StartPoint, float[] EndPoint, float[] MidPoint)
+        // Set EnemyType to selected EnemyName
+        GameObject EnemyType;
+        if (!_prefabMap.TryGetValue(EnemyName, out EnemyType))
+        {
+            yield break; 
+        }
+        Controller = GetComponent<EnemySpawnController>();
+        CancellationToken token = _cancellationTokenSource.Token;
+        List<Vector2> Waypoints = new List<Vector2>{};
+        foreach (List<object> path in route)
+        {
+            Waypoints.AddRange(Controller.PathFind((string)path[0], (Vector2)path[1], (Vector2)path[2], (Vector2)path[3], 0.05f));
+        }
+        for (int i = 0; i < enemyamount; i++)
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            if (token.IsCancellationRequested) yield break;
+            if (currentScene.name != "Stage0") yield break;
+            GameObject DupeEnemy = Instantiate(EnemyType, new Vector3(0, 0, 100), Quaternion.identity);
+            object[] healthstats = new object[] {EnemyName, maxHealth};
+            DupeEnemy.SendMessage("Initialize", healthstats, SendMessageOptions.DontRequireReceiver);
+            object[] attackstats = new object[] {AttackType, Shootrate, BulletSpeed, BulletSpawnDistance};
+            DupeEnemy.SendMessage("BulletInit", attackstats, SendMessageOptions.DontRequireReceiver);
+            GameObject DupeHealthCanvas = Instantiate(HealthBar, HealthCanvas);
+            Slider DupeHealth = DupeHealthCanvas.GetComponent<Slider>();
+            String enemyId = EnemyQueue();
+            DupeEnemy.name = enemyId;
+            DupeHealth.name = $"{enemyId}HPBar";
+            DupeEnemyList.Add(DupeEnemy);
+            DupeEnemyHealthList.Add(DupeHealth);
+            Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Speed);
+            yield return new WaitForSeconds(distance);
+        }
+        gameObject.SendMessage("HandleTaskDone", true, SendMessageOptions.DontRequireReceiver);
+    }
+
+    private string EnemyQueue()
     {
-        float StartPointX = StartPoint[0];
-        float StartPointY = StartPoint[1];
-        float EndPointX = EndPoint[0];
-        float EndPointY = EndPoint[1];
-        float MidPointX = MidPoint[0];
-        float MidPointY = MidPoint[1];
-        float Radius;
-        float StartRadian = 0;
-        float EndRadian = 0;
-        if (Math.Pow(StartPointX - MidPointX, 2) + Math.Pow(StartPointY - MidPointY, 2) != Math.Pow(EndPointX - MidPointX, 2) + Math.Pow(EndPointY - MidPointY, 2))
+        int i = 1;
+        List<string> EnemyList = new List<string>();
+        foreach (GameObject go in DupeEnemyList)
         {
-            throw new ArgumentException("Length of StartPoint to MidPoint and EndPoint to MidPoint is not the same.");
+            EnemyList.Add(go.name);
         }
-        else
+        while (true)
         {
-            Radius = (float)Math.Sqrt(Math.Pow(StartPointX - MidPointX, 2) + Math.Pow(StartPointY - MidPointY, 2));
-
-            // Find StartRadian
-            // Calculate distance between starting point and 0 degree 
-            float LineBetween = (float)Math.Sqrt(Math.Pow(StartPointX - MidPointX, 2) + Math.Pow(StartPointY - MidPointY + Radius, 2));
-            StartRadian = (float)Math.Acos( ((2 * Math.Pow(Radius, 2)) - Math.Pow(LineBetween, 2)) / 2 * Radius);
-            // Correct quardrant
-            if (StartPointX > MidPointX)
+            if (!EnemyList.Contains($"Enemy{i}"))
             {
-                StartRadian = 2*Mathf.PI - StartRadian;
+                return $"Enemy{i}";
             }
-
-            // Find EndRadian
-            float LineBetweenEnd = (float)Math.Sqrt(Math.Pow(EndPointX - MidPointX, 2) + Math.Pow(EndPointY - MidPointY + Radius, 2));
-            EndRadian = (float)Math.Acos( ((2 * Math.Pow(Radius, 2)) - Math.Pow(LineBetweenEnd, 2)) / 2 * Radius);
-            // Correct quardrant
-            if (EndPointX > MidPointX)
+            else
             {
-                EndRadian = 2*Mathf.PI - EndRadian;
-            }
-            // Increase radian by 2π(360°) if EndRadian is smaller than StartRadian to ensure that the path will always move towards counter clockwise 
-            if (StartRadian > EndRadian)
-            {
-                EndRadian += 2*Mathf.PI;
+                i++;
             }
         }
-        float[] Constant = new float[] {Radius, StartRadian, EndRadian};
-        return Constant;
     }
 }
