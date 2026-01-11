@@ -20,4 +20,5 @@ MonoBehaviour:
   currentLevel: 1
   baseDamage: 10
   damageMultiplier: 2
-  fireRate: 0.5
+  fireRate: 0.01
+  fireForce: 200

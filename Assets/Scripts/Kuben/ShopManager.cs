@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// Manages the purchasing, upgrading, and equipping logic for weapons.
-/// Handles data persistence for shop items.
-/// </summary>
 [DefaultExecutionOrder(-50)]
 public class ShopManager : MonoBehaviour
 {
@@ -16,92 +12,24 @@ public class ShopManager : MonoBehaviour
     public List<WeaponData> availableWeapons;
     public WeaponData equippedWeapon;
 
+    [Header("Special Items")]
+    public SpecialItemData ascensionItem; // DRAG YOUR "ASCENSION ITEM" ASSET HERE
+
     public event Action OnShopChanged;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); }
+        else Destroy(gameObject);
     }
 
     private void Start()
     {
-        // Validate that the weapon list is populated
-        if (availableWeapons == null || availableWeapons.Count == 0)
-        {
-            Debug.LogError("ShopManager Error: Available Weapons list is empty. Please assign WeaponData objects in the Inspector.");
-            return;
-        }
-
+        if (availableWeapons == null || availableWeapons.Count == 0) return;
         LoadShop();
     }
 
-    // --- SAVE & LOAD ---
-
-    public void SaveShop()
-    {
-        // 1. Save individual weapon levels
-        foreach (WeaponData weapon in availableWeapons)
-        {
-            PlayerPrefs.SetInt("Shop_" + weapon.name, weapon.currentLevel);
-        }
-
-        // 2. Save the index of the currently equipped weapon
-        if (equippedWeapon != null)
-        {
-            int index = availableWeapons.IndexOf(equippedWeapon);
-            PlayerPrefs.SetInt("Shop_Equipped_Index", index);
-            Debug.Log($"Shop Saved. Equipped Index: {index} ({equippedWeapon.weaponName})");
-        }
-        else
-        {
-            PlayerPrefs.SetInt("Shop_Equipped_Index", -1);
-            Debug.Log("Shop Saved. No weapon equipped.");
-        }
-
-        PlayerPrefs.Save();
-    }
-
-    public void LoadShop()
-    {
-        // 1. Load weapon levels
-        foreach (WeaponData weapon in availableWeapons)
-        {
-            int savedLevel = PlayerPrefs.GetInt("Shop_" + weapon.name, 0);
-            weapon.currentLevel = savedLevel;
-        }
-
-        // 2. Load equipped weapon by index
-        int indexToLoad = PlayerPrefs.GetInt("Shop_Equipped_Index", -1);
-
-        if (indexToLoad != -1)
-        {
-            if (indexToLoad < availableWeapons.Count)
-            {
-                equippedWeapon = availableWeapons[indexToLoad];
-                Debug.Log($"Shop Loaded. Equipped: {equippedWeapon.weaponName}");
-            }
-            else
-            {
-                Debug.LogError($"Shop Load Error: Saved index [{indexToLoad}] is out of bounds. List count: {availableWeapons.Count}");
-            }
-        }
-        else
-        {
-            Debug.Log("Shop Loaded. No weapon previously equipped.");
-        }
-
-        NotifyUI();
-    }
-
-    // --- TRANSACTION LOGIC ---
+    // --- NORMAL WEAPONS ---
 
     public void TryBuyWeapon(WeaponData weapon)
     {
@@ -111,13 +39,7 @@ public class ShopManager : MonoBehaviour
         if (CurrencyManager.Instance.SpendCurrency(cost))
         {
             weapon.LevelUp();
-
-            // Auto-equip logic for first-time purchase
-            if (weapon.currentLevel == 1 && equippedWeapon == null)
-            {
-                EquipWeapon(weapon);
-            }
-
+            if (weapon.currentLevel == 1 && equippedWeapon == null) EquipWeapon(weapon);
             SaveShop();
             NotifyUI();
         }
@@ -130,41 +52,59 @@ public class ShopManager : MonoBehaviour
         NotifyUI();
     }
 
+    // --- NEW: ASCENSION PURCHASE ---
+
+    public void TryBuyAscension()
+    {
+        if (ascensionItem == null) return;
+
+        double cost = ascensionItem.GetCost();
+
+        // Check if rich enough
+        if (CurrencyManager.Instance.Currency >= cost)
+        {
+            // Hand over to AscensionManager to ask "Are you sure?"
+            AscensionManager.Instance.OpenAscensionPrompt(cost);
+        }
+        else
+        {
+            Debug.Log("Not enough money to Ascend.");
+        }
+    }
+
+    // --- DATA MANAGEMENT ---
+
     public void NotifyUI() => OnShopChanged?.Invoke();
 
-    private void OnApplicationQuit()
+    public void SaveShop()
     {
-        SaveShop();
+        foreach (WeaponData weapon in availableWeapons)
+            PlayerPrefs.SetInt("Shop_" + weapon.name, weapon.currentLevel);
+
+        int index = (equippedWeapon != null) ? availableWeapons.IndexOf(equippedWeapon) : -1;
+        PlayerPrefs.SetInt("Shop_Equipped_Index", index);
+        PlayerPrefs.Save();
     }
 
-    // --- RESET ---
-    [ContextMenu("Reset shop (Ascension)")]
+    public void LoadShop()
+    {
+        foreach (WeaponData weapon in availableWeapons)
+            weapon.currentLevel = PlayerPrefs.GetInt("Shop_" + weapon.name, 0);
+
+        int indexToLoad = PlayerPrefs.GetInt("Shop_Equipped_Index", -1);
+        if (indexToLoad != -1 && indexToLoad < availableWeapons.Count)
+            equippedWeapon = availableWeapons[indexToLoad];
+
+        NotifyUI();
+    }
+
+    [ContextMenu("Reset Shop (Ascension)")]
     public void ResetAllWeapons()
     {
-        // 1. Reset All Weapon Levels 
-        foreach (WeaponData weapon in availableWeapons)
-        {
-            weapon.currentLevel = 0;
-        }
-        // 2. Remove equiped weapons 
+        foreach (WeaponData weapon in availableWeapons) weapon.currentLevel = 0;
         equippedWeapon = null;
-        // 3. Save the changes 
-        SaveShop() ;
+        SaveShop();
         NotifyUI();
-        Debug.Log("[Shop Sysytem] All weapon levels reset succesfully");
-    }
-
-    private void Update()
-    {
-        // --- Development Testing Controls ---
-        // W: Reset Weapons Levels
-        
-        if (Keyboard.current == null) return;
-
-        if (Keyboard.current.wKey.wasPressedThisFrame)
-        {
-            ResetAllWeapons();
-            Debug.Log($"[Debug] All Weapon Level Have Been Reset Succesfully");
-        }
+        Debug.Log("[Shop] Weapons Reset.");
     }
 }

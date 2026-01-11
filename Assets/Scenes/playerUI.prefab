@@ -476,6 +476,7 @@ GameObject:
   - component: {fileID: 3597699036930757888}
   - component: {fileID: 8469465622297289499}
   - component: {fileID: 7176662790229902446}
+  - component: {fileID: 1808420701835813253}
   m_Layer: 5
   m_Name: statscanvas
   m_TagString: Untagged
@@ -578,6 +579,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1808420701835813253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5319200410169505030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 018f06faf3b50ee4086d25912daa64a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Statsmanger
+  maxHealth: 11
+  damage: 2
 --- !u!1 &6053068058955497641
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,7 @@ MonoBehaviour:
   baseCost: 500
   costMultiplier: 1.3
   currentLevel: 0
-  baseDamage: 30
-  damageMultiplier: 3
-  fireRate: 1
+  baseDamage: 10
+  damageMultiplier: 2
+  fireRate: 0.01
+  fireForce: 300
