@@ -47,7 +47,6 @@ public class OnStage : MonoBehaviour
             int i = 2;
             while (i < Level.Count)
                 {
-                    StageData.StageEnd = false;
                     List<object> EnemyDetails = (List<object>)Level[i];
                     if (-StageScript.ActualLocation.y >= (float)EnemyDetails[0])
                     {
@@ -97,13 +96,5 @@ public class OnStage : MonoBehaviour
                     }
                 yield return null;
                 }
-            if (i == Level.Count && StageData.StageEnd)
-            {
-                if (EnemySpawnManager.DupeEnemyList == null)
-                {
-                    StageScript = GetComponent<StageScrollingController>();
-                    StageScript.LeaveStage();
-                }
-            }
     }
 }

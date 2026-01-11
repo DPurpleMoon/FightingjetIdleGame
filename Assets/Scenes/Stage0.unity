@@ -6206,7 +6206,6 @@ GameObject:
   - component: {fileID: 2097574370}
   - component: {fileID: 2097574369}
   - component: {fileID: 2097574368}
-  - component: {fileID: 2097574371}
   m_Layer: 0
   m_Name: EnemySpawnManager
   m_TagString: Untagged
