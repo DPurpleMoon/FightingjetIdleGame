@@ -8,7 +8,7 @@ public class BulletSelfDestruct : MonoBehaviour
     public float destructionYBoundary = -150f;
     void Awake()
     {
-        if (gameObject.CompareTag("EnemyBullet"))
+        if (gameObject.name != "EnemyBullet"  && gameObject.CompareTag("EnemyBullet"))
         {
             rb = GetComponent<Rigidbody2D>();
         }
