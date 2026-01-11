@@ -77,8 +77,6 @@ public class EnemySpawnManager : MonoBehaviour {
             object[] healthstats = new object[] {EnemyName, maxHealth};
             DupeEnemy.SendMessage("Initialize", healthstats, SendMessageOptions.DontRequireReceiver);
             object[] attackstats = new object[] {AttackType, Shootrate, BulletSpeed, BulletSpawnDistance};
-            Debug.Log("yes");
-            Debug.Log(string.Join(", ", attackstats));
             DupeEnemy.SendMessage("BulletInit", attackstats, SendMessageOptions.DontRequireReceiver);
             GameObject DupeHealthCanvas = Instantiate(HealthBar, HealthCanvas);
             Slider DupeHealth = DupeHealthCanvas.GetComponent<Slider>();
