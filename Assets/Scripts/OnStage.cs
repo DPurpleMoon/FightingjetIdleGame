@@ -53,6 +53,7 @@ public class OnStage : MonoBehaviour
                     {
                         List<List<object>> CoordinateList = new List<List<object>>{};
                         string EnemyName = (string)EnemyDetails[1];
+                        Debug.Log(EnemyName);
                         List<object> Stat = StatRead.EnemyStat(EnemyName);
                         string AttackType = (string)Stat[1];
                         float Speed = (float)EnemyDetails[2];
