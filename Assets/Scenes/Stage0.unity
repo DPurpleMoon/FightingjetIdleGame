@@ -6260,6 +6260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageEndCheck
   Data: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
+--- !u!1001 &126429630872899117
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
