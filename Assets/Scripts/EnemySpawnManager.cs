@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 public class EnemySpawnManager : MonoBehaviour {
     public static EnemySpawnManager Instance { get; private set; } 
     public EnemySpawnController Controller;
+    public EndStageHandler Handler;
     public List<GameObject> enemyPrefabs;
     private Dictionary<string, GameObject> _prefabMap = new Dictionary<string, GameObject>();
     public EnemyData Data; 
@@ -31,8 +32,6 @@ public class EnemySpawnManager : MonoBehaviour {
         {
             // Set the static reference to this instance
             Instance = this;
-            // Often used to keep managers alive across scene loads
-            DontDestroyOnLoad(gameObject); 
         }
         // Build the dictionary once at the start of the scene
         foreach (GameObject prefab in enemyPrefabs)
@@ -47,7 +46,7 @@ public class EnemySpawnManager : MonoBehaviour {
         _cancellationTokenSource.Dispose();
     }
 
-    public IEnumerator SpawnEnemy(int enemyamount, float distance, List<List<object>> route, string EnemyName, float Speed, List<object> stats)
+    public IEnumerator SpawnEnemy(int enemyamount, float distance, List<List<object>> route, string EnemyName, float Speed, List<object> stats, bool finalwave)
     {
         string AttackType = (string)stats[0];
         float Shootrate = (float)stats[1];
@@ -87,6 +86,11 @@ public class EnemySpawnManager : MonoBehaviour {
             DupeEnemyHealthList.Add(DupeHealth);
             Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Speed);
             yield return new WaitForSeconds(distance);
+        }
+        if (finalwave == true)
+        {
+            Handler = GetComponent<EndStageHandler>();
+            StartCoroutine(Handler.EndStageCheck());
         }
     }
 

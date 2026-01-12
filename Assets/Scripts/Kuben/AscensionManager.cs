@@ -26,7 +26,6 @@ public class AscensionManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
             LoadAscension();
         }
         else Destroy(gameObject);

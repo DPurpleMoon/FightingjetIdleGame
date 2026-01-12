@@ -6252,6 +6252,8 @@ GameObject:
   - component: {fileID: 2097574370}
   - component: {fileID: 2097574369}
   - component: {fileID: 2097574368}
+  - component: {fileID: 2097574372}
+  - component: {fileID: 2097574371}
   m_Layer: 0
   m_Name: EnemySpawnManager
   m_TagString: Untagged
@@ -6272,6 +6274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnManager
   Controller: {fileID: 0}
+  Handler: {fileID: 0}
   enemyPrefabs:
   - {fileID: 338932750}
   Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
@@ -6305,6 +6308,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2097574371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097574367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d85020632d44d749b63ba6035454fbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageScrollingController
+  TargetPosition: {x: 0, y: 0}
+  ActualLocation: {x: 0, y: 0}
+  StageCloned: 0
+  CurrentStage: {fileID: 0}
+  DupeStage: {fileID: 0}
+  BGHeight: 0
+  Stage: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
+--- !u!114 &2097574372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097574367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ab5b4a32325a24a9733540687ddaeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndStageHandler
+  Stage: {fileID: 0}
 --- !u!1001 &126429630872899117
 PrefabInstance:
   m_ObjectHideFlags: 0
