@@ -6,14 +6,27 @@ using System.Threading.Tasks;
 public class EnemyShoot : MonoBehaviour
 {
     public EnemySpawnController Controller;
+    public AttackPattern Pattern;
     public GameObject EnemyBulletObject;
     public GameObject SelectedEnemy;
-    public EnemyData Data;
+    public float ShootRate;
+    public float bulletspeed;
+    public float spawndistance;
+    public string AttackType;
+    public StageScrollingData Data; 
 
+    void BulletInit(object[] data)
+    {
+        AttackType = (string)data[0];
+        ShootRate = (float)data[1];
+        bulletspeed = (float)data[2];
+        spawndistance = (float)data[3];
+    }
     void Start()
     {
         Controller = GetComponent<EnemySpawnController>();
-        List<GameObject> EnemyList = EnemySpawnController.DupeEnemyList;
+        Pattern = GetComponent<AttackPattern>();
+        List<GameObject> EnemyList = EnemySpawnManager.DupeEnemyList;
         foreach (GameObject Enemy in EnemyList)
             {
             if (Enemy != null && Enemy.name == gameObject.name)
@@ -23,18 +36,27 @@ public class EnemyShoot : MonoBehaviour
             }
         if (SelectedEnemy != null)
         {
-            StartCoroutine(ShootContinuous(SelectedEnemy));
+            List<object> BulletPattern = Pattern.AttackRead(AttackType);
+            StartCoroutine(ShootContinuous(SelectedEnemy, BulletPattern, ShootRate));
         }
     }
 
-    IEnumerator ShootContinuous(GameObject enemy){
+    IEnumerator ShootContinuous(GameObject enemy, List<object> attackpattern, float shoottime){
         float timer = 0f;
+        int i = 0;
         while (enemy != null)
         {
-            if (timer > Data.Shootrate)
+            if (timer > shoottime)
             {
-                Shoot(enemy);
+                if (attackpattern[i] is List<float>)
+                {
+                    foreach (float angle in (List<float>)attackpattern[i])
+                    {
+                        Shoot(enemy, angle, bulletspeed, spawndistance);
+                    }
+                }
                 timer = 0f;
+                i++;
                 yield return null;
             }
             else
@@ -42,17 +64,21 @@ public class EnemyShoot : MonoBehaviour
                 timer += Time.deltaTime;
                 yield return null;
             }
+            if (i >= attackpattern.Count)
+            {
+                i = 0;
+            }
         }
     }
 
-    public void Shoot(GameObject enemy)
+    public void Shoot(GameObject enemy, float angle, float bulletspeed, float spawndistance)
     {
-        Vector3 SpawnLocation = enemy.transform.position - new Vector3(0, Data.BulletSpawnDistance, 0);   
-        GameObject bullet = Instantiate(EnemyBulletObject, SpawnLocation, Quaternion.Euler(180f, 0f, 0f));
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.AddForce(bullet.transform.up * Data.BulletSpeed, ForceMode2D.Impulse);
-        }
+        float radians = (angle + 90) * Mathf.Deg2Rad;
+        Vector3 direction = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
+        Vector3 SpawnLocation = enemy.transform.position + (direction * spawndistance);
+        GameObject bullet = Instantiate(EnemyBulletObject, SpawnLocation, Quaternion.Euler(0f, 0f, angle - 90f));
+        Vector2 shootDirection = direction * bulletspeed;
+        BulletSelfDestruct State = bullet.GetComponent<BulletSelfDestruct>();
+        State.BulInitialize(shootDirection, Data.isPaused);
     }
 }

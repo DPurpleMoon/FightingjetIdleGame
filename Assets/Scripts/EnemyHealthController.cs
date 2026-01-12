@@ -8,7 +8,8 @@ public class EnemyHealthController : MonoBehaviour
     public Slider healthSlider;
     private float maxDisplayHealth = 100f;
     private float currentDisplayHealth;
-    private float MaxHealth;
+    public float MaxHealth;
+    public string EnemyName;
     public EnemyData Data;
     private float currentHealth;
     public EnemySpawnController Controller;
@@ -16,24 +17,38 @@ public class EnemyHealthController : MonoBehaviour
     [SerializeField] private float invEnemyTime = 1.5f;
     private float invEnemyFrame;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Initialize(object[] Data)
+    {
+        EnemyName = (string)Data[0];
+        MaxHealth = (float)Data[1];
+    }
+    public void Start()
     {   
-        if (gameObject.name != Data.EnemyName)
+        if (healthSlider == null)
         {
-            Controller = GetComponent<EnemySpawnController>();
-            List<Slider> HealthBarList = EnemySpawnController.DupeEnemyHealthList;
+            List<Slider> HealthBarList = EnemySpawnManager.DupeEnemyHealthList;
             foreach (Slider HealthBar in HealthBarList)
             {
                 if (HealthBar != null && HealthBar.name == $"{gameObject.name}HPBar")
                     { 
                         healthSlider = HealthBar;
+                        break;
                     }
             }
-            MaxHealth = Data.maxHealth;
-            healthSlider.maxValue = maxDisplayHealth;
-            currentHealth = MaxHealth;
-            currentDisplayHealth = currentHealth * maxDisplayHealth / MaxHealth;
-            healthSlider.value = currentDisplayHealth;
+            if (healthSlider != null)
+            {
+                    healthSlider.maxValue = maxDisplayHealth;
+                    currentHealth = MaxHealth;
+                    if (MaxHealth > 0)
+                    {
+                        currentDisplayHealth = (currentHealth * maxDisplayHealth) / MaxHealth;
+                    }
+                    else
+                    {
+                        currentDisplayHealth = 0;
+                    }
+                    healthSlider.value = currentDisplayHealth;
+            }
         }
     }
 
@@ -51,13 +66,13 @@ public class EnemyHealthController : MonoBehaviour
                 AudioManager.Instance.PlayEnemyTakeDamage();
             }
                 HealthBarChange(playerScript.damage);
-                Destroy(collision.gameObject);
+                Destroy(collision.gameObject);  
             }
         }
         else if (collision.gameObject.CompareTag("Player") && Time.time >= invEnemyFrame)
         {
             StartCoroutine(IgnoreCollisionTemp(collision, invEnemyTime));
-            HealthBarChange(999);
+            HealthBarChange(999999);
             invEnemyFrame = Time.time + invEnemyTime;
         }
     }
@@ -79,16 +94,22 @@ public class EnemyHealthController : MonoBehaviour
         healthSlider.value = currentDisplayHealth;
         if (currentHealth <= 0)
         {
-            if (EnemySpawnController.DupeEnemyHealthList.Contains(healthSlider))
+            int EnemyScore = 100;
+            if (EnemySpawnManager.DupeEnemyHealthList.Contains(healthSlider))
             {
-                EnemySpawnController.DupeEnemyHealthList.Remove(healthSlider);
+                StageScore.Instance.AddPoints(EnemyScore);
             }
-            if (EnemySpawnController.DupeEnemyList.Contains(gameObject))
+            // change this to subscribe method later for ease of management
+            if (EnemySpawnManager.DupeEnemyHealthList.Contains(healthSlider))
             {
-                EnemySpawnController.DupeEnemyList.Remove(gameObject);
+                EnemySpawnManager.DupeEnemyHealthList.Remove(healthSlider);
             }
-            Destroy(healthSlider.gameObject);
-            Destroy(gameObject);
+            if (EnemySpawnManager.DupeEnemyList.Contains(gameObject))
+            {
+                EnemySpawnManager.DupeEnemyList.Remove(gameObject);
+            }
+            if (healthSlider.gameObject != null) Destroy(healthSlider.gameObject);
+            if (gameObject != null) Destroy(gameObject);
         }
     }
 }
