@@ -18,7 +18,7 @@ public class OnStage : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)    {
     {
         if (scene.name == "Stage0")
         {
@@ -36,7 +36,7 @@ public class OnStage : MonoBehaviour
             StageData.MaxVelocity = 100f;
             StageData.StageName = "forest";
             StageScript.Initiate();
-            EnemySpawnManager.Instance.SpawnEnemy(2, 20f);
-        }
+            await EnemySpawnManager.Instance.SpawnEnemy(2, 20f);        }
     }
+}
 }

@@ -11,11 +11,15 @@ public class optionmenu : MonoBehaviour
 
     [Header("Settings UI")]
     public Slider brightnessSlider;
+    public Slider musicVolumeSlider;  
+    public Slider sfxVolumeSlider;   
 
     private bool isPaused = false;
 
     void Start()
     {
+        isPaused = false;
+        
         if (pausePanel != null)
         {
             pausePanel.SetActive(false);
@@ -26,12 +30,25 @@ public class optionmenu : MonoBehaviour
             pauseSettingsPanel.SetActive(false);
         }
 
+        ResumeGameplay();
         LoadSettings();
 
         if (brightnessSlider != null)
         {
             brightnessSlider.onValueChanged.AddListener(SetBrightness);
         }
+
+        if (musicVolumeSlider != null)
+        {
+            musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
+        }
+
+        if (sfxVolumeSlider != null)
+        {
+            sfxVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
+        }
+        
+        Debug.Log("optionmenu Start - isPaused: " + isPaused);
     }
 
     void Update()
@@ -59,13 +76,25 @@ public class optionmenu : MonoBehaviour
     void LoadSettings()
     {
         float savedBrightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
-
         if (brightnessSlider != null)
         {
             brightnessSlider.value = savedBrightness;
         }
-
         SetBrightness(savedBrightness);
+
+        float savedMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
+        if (musicVolumeSlider != null)
+        {
+            musicVolumeSlider.value = savedMusicVolume;
+        }
+        SetMusicVolume(savedMusicVolume);
+
+        float savedSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 0.7f);
+        if (sfxVolumeSlider != null)
+        {
+            sfxVolumeSlider.value = savedSFXVolume;
+        }
+        SetSFXVolume(savedSFXVolume);
     }
 
     public void PauseGame()
@@ -269,9 +298,41 @@ public class optionmenu : MonoBehaviour
         }
     }
 
+    public void SetMusicVolume(float volume)
+    {
+        PlayerPrefs.SetFloat("MusicVolume", volume);
+        PlayerPrefs.Save();
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetMusicVolume(volume);
+        }
+        
+        Debug.Log("Music volume set to: " + volume);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        PlayerPrefs.SetFloat("SFXVolume", volume);
+        PlayerPrefs.Save();
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetSFXVolume(volume);
+        }
+        
+        Debug.Log("SFX volume set to: " + volume);
+    }
+
     public void LoadMainMenu()
     {
         ResumeGameplay(); 
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayStartMenuMusic();
+        }
+        
         SceneManager.LoadScene("startmenu");
     }
 

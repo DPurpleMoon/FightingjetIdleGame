@@ -20,9 +20,8 @@ namespace jetfighter.movement
             {
                 playerCollider = GetComponentInChildren<Collider2D>();
             }
-            
-            statsMenu = FindObjectOfType<statsUI>();
-        }
+        
+        statsMenu = FindFirstObjectByType<statsUI>();        }
 
         private void Update()
         {
@@ -50,6 +49,11 @@ namespace jetfighter.movement
             if (rbp != null)
             {
                 rbp.AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
+            }
+
+            if (AudioManager.Instance != null)
+            {
+        AudioManager.Instance.PlayPlayerShoot();
             }
         }
 
