@@ -13,6 +13,7 @@ public class StageScrollingController : MonoBehaviour {
     private float Multiplier;
     public float BGHeight;
     private Coroutine _scrollRoutine;
+    public static bool isExiting = false;
 
     public StageScrollingData Stage; 
 
@@ -27,11 +28,10 @@ public class StageScrollingController : MonoBehaviour {
     private IEnumerator StageScrolling()
     {
         Multiplier = Stage.StartingVelocity;
-        while (Mathf.Abs(ActualLocation.y - TargetPosition.y) > 0.01f)
+        while (Mathf.Abs(ActualLocation.y - TargetPosition.y) > 0.01f && Stage.inStage)
         {
         if (!Stage.isPaused)
         {
-            if (Stage.inStage){
                 // Acceleration method
                 // Increase Multiplier if smaller than MaxVelocity
                 if (Multiplier < Stage.MaxVelocity)
@@ -55,12 +55,8 @@ public class StageScrollingController : MonoBehaviour {
                 yield return null;
                 }
             }
-            else
-            { 
-                yield return null;
-            }
-        }
         ActualLocation = TargetPosition;
+        yield break;
     }
 
     public void Initiate(){
@@ -83,25 +79,21 @@ public class StageScrollingController : MonoBehaviour {
         Stage.inStage = true;
         DupeStage = Instantiate(CurrentStage, new Vector3(0, BGHeight, 0), Quaternion.identity);
         StageCloned = true;
-        _scrollRoutine = StartCoroutine(StageScrolling());
+        StartCoroutine(StageScrolling());
     
         // Clone the background once and put it on top of the original background
     }
 
-    public void LeaveStage(){
-        if (_scrollRoutine != null)
-        {
-            StopCoroutine(_scrollRoutine);
-            _scrollRoutine = null;
-        }
+    public void LeaveStage(){   
+        if (isExiting) return; 
+        isExiting = true;
+        StageCloned = false;
+        Stage.inStage = false;
         if (DupeStage != null)
         {
             Destroy(DupeStage);
-            DupeStage = null;
         }
-        StageCloned = false;
-        Stage.inStage = false;
-        SceneManager.LoadScene("StageList");
+        SceneManager.LoadSceneAsync("StageList");
     }
 }
 

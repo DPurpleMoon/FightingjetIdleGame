@@ -49,7 +49,6 @@ public class IdleManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
             LoadIdleData();
         }
         else

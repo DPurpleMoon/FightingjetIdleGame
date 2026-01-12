@@ -779,14 +779,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WelcomePanel
       objectReference: {fileID: 0}
-    - target: {fileID: 3995856546990211508, guid: 8081937c20d85e24989727402a7d4338, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534308242303039531, guid: 8081937c20d85e24989727402a7d4338, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 52
-      objectReference: {fileID: 0}
     - target: {fileID: 4690653478653445658, guid: 8081937c20d85e24989727402a7d4338, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
