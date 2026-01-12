@@ -61,6 +61,10 @@ public class EnemyHealthController : MonoBehaviour
             bullet playerScript = collision.gameObject.GetComponent<bullet>();
             if (playerScript != null)
             {
+                if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayEnemyTakeDamage();
+            }
                 HealthBarChange(playerScript.damage);
                 Destroy(collision.gameObject);  
             }
