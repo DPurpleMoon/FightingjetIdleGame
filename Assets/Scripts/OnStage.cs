@@ -17,18 +17,6 @@ public class OnStage : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
-    void OnDisable() 
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode) {
-        if (scene.name == "StageList" && gameObject != null) {
-            Destroy(this.gameObject);
-        }
-    }
-
-    
     // Unsubscribe when the script is destroyed to prevent memory leaks
     private void OnDestroy()
     {
