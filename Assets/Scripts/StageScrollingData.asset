@@ -18,3 +18,4 @@ MonoBehaviour:
   AccelerationConstant: 5
   StartingVelocity: 0.6
   MaxVelocity: 100
+  isPaused: 0

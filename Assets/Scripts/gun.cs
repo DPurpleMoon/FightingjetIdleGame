@@ -25,9 +25,8 @@ namespace jetfighter.movement
             {
                 playerCollider = GetComponentInChildren<Collider2D>();
             }
-            
-            statsMenu = FindObjectOfType<statsUI>();
-        }
+        
+        statsMenu = FindFirstObjectByType<statsUI>();        }
 
         private void Update()
         {
@@ -83,6 +82,11 @@ namespace jetfighter.movement
                 // Use weapon's force if available, otherwise default
                 float force = (weaponData != null) ? weaponData.fireForce : defaultFireForce;
                 rbp.AddForce(firePoint.up * force, ForceMode2D.Impulse);
+            }
+
+            if (AudioManager.Instance != null)
+            {
+        AudioManager.Instance.PlayPlayerShoot();
             }
         }
 

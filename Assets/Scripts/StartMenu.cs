@@ -18,11 +18,21 @@ public class StartMenu : MonoBehaviour
         {
             settingsPanel.SetActive(false);
         }
+
+        if (AudioManager.Instance != null)
+        {
+        AudioManager.Instance.PlayStartMenuMusic();
+        }
     }
 
     public void PlayGame()
     {
         SceneManager.LoadScene("Stage0");
+
+         if (AudioManager.Instance != null)
+    {
+        AudioManager.Instance.PlayGameplayMusic();
+    }
     }
 
     public void OpenSettings()
@@ -38,10 +48,10 @@ public class StartMenu : MonoBehaviour
         }
         else
         {
-            SettingsMenu settingsMenu = FindObjectOfType<SettingsMenu>();
-            if (settingsMenu != null)
+            StartMenu startMenu = FindFirstObjectByType<StartMenu>();
+            if (startMenu != null)
             {
-                settingsMenu.OpenSettings();
+                startMenu.OpenSettings();
             }
         }
     }

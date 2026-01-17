@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 public class OnStage : MonoBehaviour
 {
     public EnemyData Data; 
@@ -22,7 +23,7 @@ public class OnStage : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)    {
     {
         if (scene.name == "Stage0")
         {
@@ -41,13 +42,14 @@ public class OnStage : MonoBehaviour
             StartCoroutine(EnemySpawn(LevelData));
         }
     }
+
     
     private IEnumerator EnemySpawn(List<object> Level)
     {
             int i = 2;
+            bool finalwave = false;
             while (i < Level.Count)
                 {
-                    StageData.StageEnd = false;
                     List<object> EnemyDetails = (List<object>)Level[i];
                     if (-StageScript.ActualLocation.y >= (float)EnemyDetails[0])
                     {
@@ -90,19 +92,16 @@ public class OnStage : MonoBehaviour
                             CoordinateList.Add(Paths);
                         }
                         // x (-188 > 188), y (-110, 110)
-                        StartCoroutine(EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList, EnemyName, Speed, stats));
+                        if (i == Level.Count - 1)
+                        {
+                            finalwave = true;
+                        }
+                        StartCoroutine(EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList, EnemyName, Speed, stats, finalwave));
                         i++;
                         continue;
                     }
                 yield return null;
                 }
-            if (i == Level.Count && StageData.StageEnd)
-            {
-                if (EnemySpawnManager.DupeEnemyList == null)
-                {
-                    StageScript = GetComponent<StageScrollingController>();
-                    StageScript.LeaveStage();
-                }
-            }
     }
+}
 }

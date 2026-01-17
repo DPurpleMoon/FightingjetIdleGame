@@ -61,6 +61,10 @@ public class EnemyHealthController : MonoBehaviour
             bullet playerScript = collision.gameObject.GetComponent<bullet>();
             if (playerScript != null)
             {
+                if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayEnemyTakeDamage();
+            }
                 HealthBarChange(playerScript.damage);
                 Destroy(collision.gameObject);  
             }
@@ -87,7 +91,10 @@ public class EnemyHealthController : MonoBehaviour
     public void HealthBarChange(int hpReduced) {
         currentHealth -= hpReduced;
         currentDisplayHealth = currentHealth * maxDisplayHealth / MaxHealth;
+        if (healthSlider != null)
+        {
         healthSlider.value = currentDisplayHealth;
+        }
         if (currentHealth <= 0)
         {
             int EnemyScore = 100;

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BrightnessManager : MonoBehaviour
 {
@@ -13,8 +14,6 @@ public class BrightnessManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-            Debug.Log("BrightnessManager created");
         }
         else
         {

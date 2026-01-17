@@ -28,6 +28,10 @@ namespace jetfighter.movement
                     }
                     invFrame = Time.time + invTime;
                 }
+                if (AudioManager.Instance != null)
+{
+    AudioManager.Instance.PlayPlayerTakeDamage();
+}
             }
 
         public void TakeDamage(int damage)
@@ -74,9 +78,13 @@ namespace jetfighter.movement
         }
 
         private void Die()
+        
         {
             Debug.Log("Player Died!");
-
+        if (AudioManager.Instance != null)
+{
+    AudioManager.Instance.PlayPlayerDeath();
+}
             Destroy(gameObject);
         }
     }
