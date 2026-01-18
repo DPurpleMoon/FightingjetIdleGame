@@ -1,9 +1,27 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
+using System;
 using System.IO;
 
+public static class JsonHelper {
+    public static string[] FromJsonArray(string json) {
+        string newJson = "{ \"Items\": " + json + "}";
+        Wrapper wrapper = JsonUtility.FromJson<Wrapper>(newJson);
+        return wrapper.Items;
+    }
+
+    [Serializable]
+    private class Wrapper {
+        public string[] Items;
+    }
+}
 public class StageList : MonoBehaviour
 {
+    public GameObject StageButton;
+    public Transform contentParent;
+    public StageScrollingData Stage; 
     void Start()
     {
         string streamingpath = Application.streamingAssetsPath;
@@ -18,13 +36,24 @@ public class StageList : MonoBehaviour
                 fileName = fileName.Substring(0, index);
             }
         
-        int stagenum = int.Parse(fileName.Substring(5));    
-        Debug.Log(stagenum);
+        int stagenum = int.Parse(fileName.Substring(5));
+        string JsonString = File.ReadAllText(filepath);
+        string[] levels = JsonHelper.FromJsonArray(JsonString);
+            foreach (string level in levels)
+            {
+                GameObject newButton = Instantiate(StageButton, contentParent);
+                newButton.name = level;
+                
+                // Set the text (Assumes prefab has a TMP_Text component)
+                newButton.GetComponentInChildren<TMP_Text>().text = level;
+
+                // Add a click listener
+                newButton.GetComponent<Button>().onClick.AddListener(() => {
+                    Stage.StageName = gameObject.name;
+                    SceneManager.LoadScene("Stage0");
+                });
+            }
         }
-    }
-    public void StagePressed()
-    {
-        SceneManager.LoadScene("Stage0");
     }
 
     public void ShopOpen()

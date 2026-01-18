@@ -23,7 +23,7 @@ public class OnStage : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)    {
+    private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Stage0")
         {
@@ -48,6 +48,7 @@ private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)    {
     {
             int i = 2;
             bool finalwave = false;
+            bool boss = false;
             while (i < Level.Count)
                 {
                     List<object> EnemyDetails = (List<object>)Level[i];
@@ -84,6 +85,10 @@ private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)    {
                                 MidPoint = (Vector2)Coordinate[2];
                                 EndPoint = (Vector2)Coordinate[3];
                             }
+                            else if ((char)Coordinate[0] == 'B')
+                            {
+                                boss = true;
+                            }
                             else
                             {
                                 yield return null;
@@ -96,12 +101,11 @@ private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)    {
                         {
                             finalwave = true;
                         }
-                        StartCoroutine(EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList, EnemyName, Speed, stats, finalwave));
+                        StartCoroutine(EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList, EnemyName, Speed, stats, finalwave, boss));
                         i++;
                         continue;
                     }
                 yield return null;
                 }
     }
-}
 }
