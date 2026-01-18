@@ -7169,7 +7169,7 @@ BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 558535905808874892}
+  m_GameObject: {fileID:  558535905808874892}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1

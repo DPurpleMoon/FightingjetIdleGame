@@ -23,7 +23,7 @@ public class OnStage : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)    {
+    private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Stage0")
         {
@@ -103,5 +103,4 @@ private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)    {
                 yield return null;
                 }
     }
-}
 }
