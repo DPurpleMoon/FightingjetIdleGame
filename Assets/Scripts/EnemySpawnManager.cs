@@ -46,7 +46,7 @@ public class EnemySpawnManager : MonoBehaviour {
         _cancellationTokenSource.Dispose();
     }
 
-    public IEnumerator SpawnEnemy(int enemyamount, float distance, List<List<object>> route, string EnemyName, float Speed, List<object> stats, bool finalwave)
+    public IEnumerator SpawnEnemy(int enemyamount, float distance, List<List<object>> route, string EnemyName, float Speed, List<object> stats, bool finalwave, bool boss)
     {
         string AttackType = (string)stats[0];
         float Shootrate = (float)stats[1];
@@ -84,7 +84,7 @@ public class EnemySpawnManager : MonoBehaviour {
             DupeHealth.name = $"{enemyId}HPBar";
             DupeEnemyList.Add(DupeEnemy);
             DupeEnemyHealthList.Add(DupeHealth);
-            Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Speed);
+            Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Speed, boss);
             yield return new WaitForSeconds(distance);
         }
         if (finalwave == true)
