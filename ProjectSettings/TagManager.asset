@@ -9,6 +9,7 @@ TagManager:
   - PlayerBullet
   - EnemyBullet
   - Background
+  - StageButton
   layers:
   - Default
   - TransparentFX

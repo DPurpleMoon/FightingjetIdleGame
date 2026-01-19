@@ -12,16 +12,17 @@ public class EnemySpawnController : MonoBehaviour {
     private int[] EnemyPattern;
     public StageScrollingData Data;
 
-    public void SetPath(GameObject enemy, Slider Health, List<Vector2> waypoints, float speed){
-        StartCoroutine(WaitPath(enemy, Health, waypoints, speed));
+    public void SetPath(GameObject enemy, Slider Health, List<Vector2> waypoints, float speed, bool boss){
+        StartCoroutine(WaitPath(enemy, Health, waypoints, speed, boss));
     }
 
-    IEnumerator WaitPath(GameObject enemy, Slider Health, List<Vector2> waypoints, float speed)
+    IEnumerator WaitPath(GameObject enemy, Slider Health, List<Vector2> waypoints, float speed, bool boss)
     {
         int i = 0;
         Renderer renderer = enemy.GetComponent<Renderer>();
         if (renderer == null) yield break;
         float enemyheight = renderer.bounds.size.y;
+        do {
         foreach (Vector2 coordinate in waypoints)
         {    
             Scene currentScene = SceneManager.GetActiveScene();
@@ -51,12 +52,10 @@ public class EnemySpawnController : MonoBehaviour {
             }
             i++;
             }
-            else
-            {
-                if (currentScene.name != "Stage0") yield break;
-                yield return null;
-            }
+            if (currentScene.name != "Stage0") yield break;
         }
+        }
+        while (boss == true && enemy != null);
         if (EnemySpawnManager.DupeEnemyHealthList.Contains(Health))
             {
                 EnemySpawnManager.DupeEnemyHealthList.Remove(Health);
