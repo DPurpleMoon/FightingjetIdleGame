@@ -9,11 +9,13 @@ public class BrightnessManager : MonoBehaviour
     [Header("Brightness Overlay")]
     public Image brightnessOverlay;
     
+    
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);  
         }
         else
         {
@@ -21,11 +23,18 @@ public class BrightnessManager : MonoBehaviour
             return;
         }
         
-        float savedBrightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
-        ApplyBrightness(savedBrightness);
     }
     
     void Start()
+    {
+        InitializeOverlay();
+        
+        float savedBrightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
+        ApplyBrightness(savedBrightness);
+        
+    }
+    
+    private void InitializeOverlay()
     {
         if (brightnessOverlay == null)
         {
@@ -35,12 +44,41 @@ public class BrightnessManager : MonoBehaviour
                 brightnessOverlay = overlayObj.GetComponent<Image>();
                 Debug.Log("brightnessoverlay found!");
             }
+            else
+            {
+                Debug.LogWarning("brightnessoverlay not found in scene!");
+            }
         }
+    }
+    
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        brightnessOverlay = null;
+        InitializeOverlay();
+        
+        float savedBrightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
+        ApplyBrightness(savedBrightness);
     }
     
     public void ApplyBrightness(float brightness)
     {
-        if (brightnessOverlay != null)
+        if (brightnessOverlay == null)
+        {
+            Debug.LogWarning("BrightnessManager: brightnessOverlay is null, cannot apply brightness");
+            return;
+        }
+        
+        try
         {
             Color overlayColor;
             
@@ -60,7 +98,11 @@ public class BrightnessManager : MonoBehaviour
             }
             
             brightnessOverlay.color = overlayColor;
-            Debug.Log("Brightness: " + brightness + " | Color: " + overlayColor);
+            Debug.Log("Brightness applied: " + brightness + " | Color: " + overlayColor);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Error applying brightness: " + e.Message);
         }
     }
 }

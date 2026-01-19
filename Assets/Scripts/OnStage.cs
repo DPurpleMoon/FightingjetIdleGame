@@ -23,8 +23,8 @@ public class OnStage : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)    {
-    {
+private  void OnSceneLoaded(Scene scene, LoadSceneMode mode)    {
+    
         if (scene.name == "Stage0")
         {
             List<List<object>> CoordinateList = new List<List<object>>{}; 
@@ -42,6 +42,7 @@ private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)    {
             StartCoroutine(EnemySpawn(LevelData));
         }
     }
+
 
     
     private IEnumerator EnemySpawn(List<object> Level)
@@ -104,4 +105,4 @@ private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)    {
                 }
     }
 }
-}
+
