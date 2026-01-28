@@ -27,7 +27,7 @@ public class AscensionPopupUI : MonoBehaviour
         // Just showing static warning text here, simpler for this version
         infoText.text = "<b><color=red>WARNING!</color></b>\n\n" +
                         "Buying this will <b>RESET</b> all Weapons, Money, and Stage Progress.\n\n" +
-                        "You will restart at Stage 1, but with a permanent Income & Damage boost.\n\n" +
+                        "You will restart at Stage 1, but with a permanent Income boost.\n\n" +
                         "Are you sure?";
     }
 

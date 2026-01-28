@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AscensionItem
   m_EditorClassIdentifier: Assembly-CSharp::SpecialItemData
   itemName: Ascension
-  description: Reset ALL progress to gain permanent +10% Damage & Income.
+  description: Reset ALL progress to gain permanent +15% Income.
   icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  baseCost: 10000
+  baseCost: 250000
   costMultiplier: 5

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f6ebd5d6511024a9438585e2f42cec, type: 3}
+  m_Name: SniperRail
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  weaponName: Sniper Rail
+  description: One-shot kills, very expensive.
+  icon: {fileID: 5563287343319450422, guid: f5ce42292d679dc4ab0783eb27b70c3c, type: 3}
+  baseCost: 5000
+  costMultiplier: 1.6
+  currentLevel: 0
+  baseDamage: 100
+  damageMultiplier: 15
+  fireRate: 2
+  fireForce: 100

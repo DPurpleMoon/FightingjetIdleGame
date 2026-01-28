@@ -10,39 +10,30 @@ public class WeaponData : ScriptableObject
 
     [Header("Economy Settings")]
     public double baseCost = 100;
-    public float costMultiplier = 1.2f;
-    [Tooltip("Level 0 indicates the weapon is not owned.")]
+    public float costMultiplier = 1.3f; 
     public int currentLevel = 0;
 
     [Header("Combat Stats")]
     public double baseDamage = 10;
-    public double damageMultiplier = 2;
-    [Tooltip("Time between shots in seconds.")]
-    public float fireRate = 0.5f;
-    [Tooltip("Speed of the bullet.")]
-    public float fireForce = 20f; // NEW ADDITION
+    public double damageMultiplier = 2.5; 
+    [Tooltip("Time between shots (Lower is faster)")]
+    public float fireRate = 0.5f; 
+    [Tooltip("Bullet Travel Speed")]
+    public float fireForce = 20f; 
 
-    // Calculates the cost for the next purchase or upgrade
+    // Cost = Base * (1.3 ^ Level)
     public double GetCost()
     {
         return baseCost * System.Math.Pow(costMultiplier, currentLevel);
     }
 
-    // Calculates current damage output based on level
+    // Damage = Base + ((Level-1) * 2.5)
     public double GetDamage()
     {
         if (currentLevel == 0) return 0;
-        double baseDmg = baseDamage + ((currentLevel - 1) * damageMultiplier);
-
-        // --- APPLY ASCENSION BONUS ---
-        if (AscensionManager.Instance != null)
-        {
-            baseDmg *= AscensionManager.Instance.GetAscensionMultiplier();
-        }
-        return baseDmg;
+        return baseDamage + ((currentLevel - 1) * damageMultiplier);
     }
 
-    // Increments the level of the weapon
     public void LevelUp()
     {
         currentLevel++;
