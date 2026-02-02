@@ -22,42 +22,53 @@ public class StageList : MonoBehaviour
     public GameObject StageButton;
     public Transform contentParent;
     public StageScrollingData Stage; 
+    public TMP_Text StageText;
+    public StageListData Data;
     void Start()
     {
         string streamingpath = Application.streamingAssetsPath;
         string[] filePaths = Directory.GetFiles($"{streamingpath}/levellist/", "*.json", SearchOption.AllDirectories);
+        Data.stagenum = 0;
+        StageText.text = $"Stage {Data.stagenum}";
         foreach (string filepath in filePaths)
         {
-            
         string fileName = Path.GetFileName(filepath);
+        
         int index = fileName.IndexOf(".json");
         if (index >= 0)
             {
                 fileName = fileName.Substring(0, index);
             }
-        
-        int stagenum = int.Parse(fileName.Substring(5));
-        string JsonString = File.ReadAllText(filepath);
-        string[] levels = JsonHelper.FromJsonArray(JsonString);
-            foreach (string level in levels)
+        Data.maxstagenum = int.Parse(fileName.Substring(5));
+        if (fileName == $"level{Data.stagenum}")
             {
-                GameObject newButton = Instantiate(StageButton, contentParent);
-                newButton.name = level;
-                
-                // Set the text (Assumes prefab has a TMP_Text component)
-                newButton.GetComponentInChildren<TMP_Text>().text = level;
+            string JsonString = File.ReadAllText(filepath);
+            string[] levels = JsonHelper.FromJsonArray(JsonString);
+                foreach (string level in levels)
+                {
+                    GameObject newButton = Instantiate(StageButton, contentParent);
+                    newButton.name = level;
+                    
+                    // Set the text (Assumes prefab has a TMP_Text component)
+                    newButton.GetComponentInChildren<TMP_Text>().text = level.Substring(5);
 
-                // Add a click listener
-                newButton.GetComponent<Button>().onClick.AddListener(() => {
-                    Stage.StageName = gameObject.name;
-                    SceneManager.LoadScene("Stage0");
-                });
+                    // Add a click listener
+                    newButton.GetComponent<Button>().onClick.AddListener(() => {
+                        Stage.StageName = gameObject.name;
+                        SceneManager.LoadScene("Stage0");
+                    });
+                }
             }
         }
     }
 
     public void ShopOpen()
     {
-        SceneManager.LoadScene("Kuben");
+        SceneManager.LoadScene("Shop");
+    }
+        
+    public void StartMenu()
+    {
+        SceneManager.LoadScene("startmenu");
     }
 }

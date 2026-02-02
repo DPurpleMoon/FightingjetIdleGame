@@ -27,7 +27,7 @@ public class StartMenu : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("Stage0");
+        SceneManager.LoadScene("StageList");
 
          if (AudioManager.Instance != null)
     {
