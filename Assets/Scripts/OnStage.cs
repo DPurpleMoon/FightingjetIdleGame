@@ -31,7 +31,7 @@ public class OnStage : MonoBehaviour
             StageScript = GetComponent<StageScrollingController>();
             Read = GetComponent<StageRead>();
             StatRead = GetComponent<EnemyStatRead>();
-            List<object> LevelData = Read.FileRead(StageData.StageName);
+            List<object> LevelData = Read.FileRead(StageData.level);
                         
             StageData.ScrollCoordinate = -999999f;
             StageData.AccelerationConstant = 5.0f;
