@@ -164,6 +164,10 @@ public class optionmenu : MonoBehaviour
     {
         pausePanel.SetActive(true);
     }
+    if (pauseSettingsPanel != null)
+    {
+        pauseSettingsPanel.SetActive(false);
+    }
     
     if (Data != null)
     {
