@@ -40,7 +40,7 @@ public class IdleManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); LoadIdleData(); }
+        if (Instance == null) { Instance = this; LoadIdleData(); }
         else Destroy(gameObject);
     }
 
