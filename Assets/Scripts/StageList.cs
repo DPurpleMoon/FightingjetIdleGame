@@ -31,7 +31,7 @@ public class StageList : MonoBehaviour
         string[] filePaths = Directory.GetFiles($"{streamingpath}/levellist/", "*.json", SearchOption.AllDirectories);
         Data.stagenum = 0;
         StageText.text = $"Stage {Data.stagenum}";
-        CurrentStageNum = Data.stagenum;
+        CurrentStageNum = 0;
         foreach (string filepath in filePaths)
         {
         string fileName = Path.GetFileName(filepath);
@@ -72,6 +72,10 @@ public class StageList : MonoBehaviour
             string[] filePaths = Directory.GetFiles($"{streamingpath}/levellist/", "*.json", SearchOption.AllDirectories);
             StageText.text = $"Stage {Data.stagenum}";
             CurrentStageNum = Data.stagenum;
+            foreach (Transform child in contentParent)
+            {
+                Destroy(child.gameObject);
+            }
             foreach (string filepath in filePaths)
             {
             string fileName = Path.GetFileName(filepath);
