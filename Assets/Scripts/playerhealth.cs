@@ -147,10 +147,7 @@ namespace jetfighter.movement
             {
                 AudioManager.Instance.PlayPlayerDeath();
             }
- main
             Destroy(gameObject);
-            
-            
         }
         
          

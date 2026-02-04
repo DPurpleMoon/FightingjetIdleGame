@@ -7,6 +7,7 @@ namespace jetfighter.movement
     {
         [Header("Movement Settings")]
         [SerializeField] private float movementSpeed = 20f;
+        [SerializeField] private LayerMask wallLayer;
 
         private Rigidbody2D body;
         private Vector2 moveInput;
@@ -39,7 +40,16 @@ namespace jetfighter.movement
 
         private void FixedUpdate()
         {
-            body.linearVelocity = moveInput * movementSpeed;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, moveInput.normalized, 15f, wallLayer);
+        
+            if (hit.collider == null)
+            {
+                body.linearVelocity = moveInput * movementSpeed;
+            }    
+            else
+            {
+                body.linearVelocity = Vector2.zero;
+            }
             
             bool isMoving = moveInput.magnitude > 0;
             
