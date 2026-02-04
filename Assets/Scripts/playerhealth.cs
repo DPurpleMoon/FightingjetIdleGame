@@ -81,10 +81,10 @@ namespace jetfighter.movement
         
         {
             Debug.Log("Player Died!");
-        if (AudioManager.Instance != null)
-{
-    AudioManager.Instance.PlayPlayerDeath();
-}
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayPlayerDeath();
+            }
             Destroy(gameObject);
         }
     }
