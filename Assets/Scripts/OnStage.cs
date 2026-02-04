@@ -27,13 +27,14 @@ public class OnStage : MonoBehaviour
     {
         if (scene.name == "Stage0")
         {
+            Time.timeScale = 1;
             List<List<object>> CoordinateList = new List<List<object>>{}; 
             StageScript = GetComponent<StageScrollingController>();
             Read = GetComponent<StageRead>();
             StatRead = GetComponent<EnemyStatRead>();
-            List<object> LevelData = Read.FileRead("level0-1");
+            List<object> LevelData = Read.FileRead(StageData.level);
                         
-            StageData.ScrollCoordinate = -3000f;
+            StageData.ScrollCoordinate = -999999f;
             StageData.AccelerationConstant = 5.0f;
             StageData.MaxVelocity = 100f;
             StageData.StageName = (string)LevelData[0];
@@ -92,7 +93,7 @@ public class OnStage : MonoBehaviour
                             }
                             else
                             {
-                                yield return null;
+                                yield return new WaitUntil(() => Time.timeScale > 0);
                             }
                             List<object> Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};  
                             CoordinateList.Add(Paths);
@@ -106,7 +107,7 @@ public class OnStage : MonoBehaviour
                         i++;
                         continue;
                     }
-                yield return null;
+                yield return new WaitUntil(() => Time.timeScale > 0);
                 }
     }
 }

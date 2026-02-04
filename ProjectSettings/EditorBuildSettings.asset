@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/StageLIst.unity
     guid: dacb082c415421b43b38696e168c658a
   - enabled: 1
-    path: Assets/Scenes/Kuben.unity
+    path: Assets/Scenes/Shop.unity
     guid: df7e7fed3b0829847b7ca5f46335fc13
   - enabled: 1
     path: Assets/Scenes/CoinsUI.unity

@@ -4,6 +4,7 @@ using UnityEngine;
 public class StageScrollingData : ScriptableObject
 {
     public string StageName;
+    public string level;
     public float ScrollCoordinate;
     public bool inStage;
     public float AccelerationConstant;
