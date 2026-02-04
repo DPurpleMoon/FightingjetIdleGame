@@ -92,7 +92,7 @@ public class OnStage : MonoBehaviour
                             }
                             else
                             {
-                                yield return null;
+                                yield return new WaitUntil(() => Time.timeScale > 0);
                             }
                             List<object> Paths = new List<object>{MovementType, StartPoint, EndPoint, MidPoint};  
                             CoordinateList.Add(Paths);
@@ -106,7 +106,7 @@ public class OnStage : MonoBehaviour
                         i++;
                         continue;
                     }
-                yield return null;
+                yield return new WaitUntil(() => Time.timeScale > 0);
                 }
     }
 }

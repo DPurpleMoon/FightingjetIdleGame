@@ -16,6 +16,8 @@ public class optionmenu : MonoBehaviour
     public Slider musicVolumeSlider;  
     public Slider sfxVolumeSlider;
     public StageScrollingData Data; 
+    public GameObject ScrollGameObject;
+    public StageScrollingController Stage;
 
     void Start()
     {
@@ -334,12 +336,7 @@ public void ResumeGame()
 
     public void QuitGame()
     {
-        Debug.Log("QuitGame called");
-        
-        Application.Quit();
-        
-        #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-        #endif
+        StageScrollingController Stage = ScrollGameObject.GetComponent<StageScrollingController>();
+        Stage.LeaveStage();
     }
 }
