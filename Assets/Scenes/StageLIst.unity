@@ -978,6 +978,7 @@ MonoBehaviour:
   Stage: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
   StageText: {fileID: 1060768841}
   Data: {fileID: 11400000, guid: a86c57bdb27bda342a408e4aa91a1e32, type: 2}
+  CurrentStageNum: 0
 --- !u!4 &964753381
 Transform:
   m_ObjectHideFlags: 0
@@ -1157,7 +1158,6 @@ GameObject:
   - component: {fileID: 1408831841}
   - component: {fileID: 1408831840}
   - component: {fileID: 1408831843}
-  - component: {fileID: 1408831842}
   m_Layer: 0
   m_Name: leftarrow
   m_TagString: Untagged
@@ -1238,19 +1238,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!114 &1408831842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408831839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f77a5ac264507854c91ba35f7e5b185b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Stagellisteft
-  Data: {fileID: 11400000, guid: a86c57bdb27bda342a408e4aa91a1e32, type: 2}
 --- !u!61 &1408831843
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1508,6 +1495,53 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &1580641507
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1580641509}
+  - component: {fileID: 1580641508}
+  m_Layer: 0
+  m_Name: ArrowManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1580641508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580641507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77a5ac264507854c91ba35f7e5b185b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageListArrow
+  Data: {fileID: 11400000, guid: a86c57bdb27bda342a408e4aa91a1e32, type: 2}
+  leftbutton: {fileID: 1408831839}
+  rightbutton: {fileID: 1899302494}
+--- !u!4 &1580641509
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580641507}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1619737129
 GameObject:
   m_ObjectHideFlags: 0
@@ -1853,7 +1887,6 @@ GameObject:
   - component: {fileID: 1899302497}
   - component: {fileID: 1899302496}
   - component: {fileID: 1899302495}
-  - component: {fileID: 1899302498}
   m_Layer: 0
   m_Name: rightarrow
   m_TagString: Untagged
@@ -1980,19 +2013,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
---- !u!114 &1899302498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1899302494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0df7644dfc8e1c945abc70b1c240bba3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StageListRight
-  Data: {fileID: 11400000, guid: a86c57bdb27bda342a408e4aa91a1e32, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2003,3 +2023,4 @@ SceneRoots:
   - {fileID: 626090875}
   - {fileID: 1408831841}
   - {fileID: 1899302497}
+  - {fileID: 1580641509}
