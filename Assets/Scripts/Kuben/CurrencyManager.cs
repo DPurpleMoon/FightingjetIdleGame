@@ -12,7 +12,7 @@ public class CurrencyManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); LoadCurrency(); }
+        if (Instance == null) { Instance = this; LoadCurrency(); }
         else Destroy(gameObject);
     }
 
