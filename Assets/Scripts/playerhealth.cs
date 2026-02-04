@@ -117,12 +117,11 @@ namespace jetfighter.movement
  
         private void Die()
         {
-             if (isDead) return;
+            if (isDead) return;
             
             isDead = true;
             
             Debug.Log("Player Died!");
-feature/player
             
              if (AudioManager.Instance != null)
             {
@@ -148,10 +147,7 @@ feature/player
             {
                 AudioManager.Instance.PlayPlayerDeath();
             }
- main
             Destroy(gameObject);
-            
-            
         }
         
          
