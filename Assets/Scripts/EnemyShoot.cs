@@ -57,12 +57,12 @@ public class EnemyShoot : MonoBehaviour
                 }
                 timer = 0f;
                 i++;
-                yield return null;
+                yield return new WaitUntil(() => Time.timeScale > 0);
             }
             else
             {
                 timer += Time.deltaTime;
-                yield return null;
+                yield return new WaitUntil(() => Time.timeScale > 0);
             }
             if (i >= attackpattern.Count)
             {
