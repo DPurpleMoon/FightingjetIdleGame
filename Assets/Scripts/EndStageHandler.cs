@@ -6,17 +6,17 @@ using System.Threading;
 using System.Threading.Tasks;
 
 public class EndStageHandler : MonoBehaviour{
-    public StageScrollingController Stage;
+    public ResultScreen Result;
     public IEnumerator EndStageCheck()
     {
-        Stage = GetComponent<StageScrollingController>();
         if (EnemySpawnManager.DupeEnemyList.All(item => item == null) != true)
         {
             yield return new WaitUntil(() => Time.timeScale > 0);
         }
-        else 
+        else
         {
-            Stage.LeaveStage();
+            Result = GetComponent<ResultScreen>();
+            Result.ShowResultScreen();
             yield break;
         }
     }

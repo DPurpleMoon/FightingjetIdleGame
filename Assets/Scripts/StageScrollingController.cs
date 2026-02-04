@@ -241,7 +241,7 @@ public class StageScrollingController : MonoBehaviour {
         {
             Destroy(DupeStage);
         }
-        
+        isExiting = false;
         SceneManager.LoadSceneAsync("StageList");
     }
     
