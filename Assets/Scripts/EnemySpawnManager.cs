@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 public class EnemySpawnManager : MonoBehaviour {
     public static EnemySpawnManager Instance { get; private set; } 
     public EnemySpawnController Controller;
-    public EndStageHandler Handler;
+    public GameObject EndingManager;
     public List<GameObject> enemyPrefabs;
     private Dictionary<string, GameObject> _prefabMap = new Dictionary<string, GameObject>();
     public EnemyData Data; 
@@ -89,7 +89,7 @@ public class EnemySpawnManager : MonoBehaviour {
         }
         if (finalwave == true)
         {
-            Handler = GetComponent<EndStageHandler>();
+            EndStageHandler Handler = EndingManager.GetComponent<EndStageHandler>();
             StartCoroutine(Handler.EndStageCheck());
         }
     }
@@ -100,7 +100,10 @@ public class EnemySpawnManager : MonoBehaviour {
         List<string> EnemyList = new List<string>();
         foreach (GameObject go in DupeEnemyList)
         {
+            if (go != null)
+            {
             EnemyList.Add(go.name);
+            }
         }
         while (true)
         {

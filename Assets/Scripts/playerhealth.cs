@@ -122,6 +122,7 @@ namespace jetfighter.movement
             isDead = true;
             
             Debug.Log("Player Died!");
+feature/player
             
              if (AudioManager.Instance != null)
             {
@@ -142,6 +143,12 @@ namespace jetfighter.movement
                 gunScript.enabled = false;
             }
             
+
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayPlayerDeath();
+            }
+ main
             Destroy(gameObject);
             
             
