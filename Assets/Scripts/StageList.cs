@@ -56,7 +56,7 @@ public class StageList : MonoBehaviour
 
                     // Add a click listener
                     newButton.GetComponent<Button>().onClick.AddListener(() => {
-                        Stage.level = gameObject.name;
+                        Stage.level = newButton.name;
                         SceneManager.LoadScene("Stage0");
                     });
                 }
