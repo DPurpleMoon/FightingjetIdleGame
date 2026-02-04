@@ -32,25 +32,20 @@ public class StageScrollingController : MonoBehaviour {
         
         while (Mathf.Abs(ActualLocation.y - TargetPosition.y) > 0.01f && Stage.inStage)
         {
-            // CRITICAL: Only update when not paused
             if (!Stage.isPaused)
             {
-                // Validate BGHeight before using it
                 if (BGHeight <= 0 || float.IsNaN(BGHeight) || float.IsInfinity(BGHeight))
                 {
                     Debug.LogWarning("BGHeight is invalid during scroll, using SafeBGHeight");
                     BGHeight = SafeBGHeight;
                 }
-                
-                // If still invalid, skip this frame
                 if (BGHeight <= 0)
                 {
                     Debug.LogError("BGHeight is still 0! Skipping frame...");
-                    yield return null;
+                    yield return new WaitUntil(() => Time.timeScale > 0);
+                    
                     continue;
                 }
-                
-                // Acceleration method
                 if (Multiplier < Stage.MaxVelocity)
                 {
                     Multiplier = Multiplier * Stage.AccelerationConstant; 
@@ -95,7 +90,8 @@ public class StageScrollingController : MonoBehaviour {
                 if (float.IsNaN(yOffset) || float.IsInfinity(yOffset))
                 {
                     Debug.LogError("Invalid yOffset calculated!");
-                    yield return null;
+                    yield return new WaitUntil(() => Time.timeScale > 0);
+                    
                     continue;
                 }
                 
@@ -106,7 +102,8 @@ public class StageScrollingController : MonoBehaviour {
                 if (!IsValidPosition(currentPos) || !IsValidPosition(dupePos))
                 {
                     Debug.LogError("Invalid positions calculated! Skipping frame...");
-                    yield return null;
+                    yield return new WaitUntil(() => Time.timeScale > 0);
+                    
                     continue;
                 }
                 
@@ -121,8 +118,8 @@ public class StageScrollingController : MonoBehaviour {
                     DupeStage.transform.position = dupePos;
                 }
             }
+            yield return new WaitUntil(() => Time.timeScale > 0);
             
-            yield return null;
         }
         
         ActualLocation = TargetPosition;
@@ -164,9 +161,7 @@ public class StageScrollingController : MonoBehaviour {
 
     private IEnumerator InitializeWithDelay()
     {
-        // Wait one frame for renderer to initialize
-        yield return null;
-        
+        yield return new WaitUntil(() => Time.timeScale > 0);
         Renderer renderer = CurrentStage.GetComponent<Renderer>();
         
         if (renderer == null)
@@ -186,7 +181,8 @@ public class StageScrollingController : MonoBehaviour {
             if (BGHeight <= 0)
             {
                 retries++;
-                yield return null; // Wait another frame
+                yield return new WaitUntil(() => Time.timeScale > 0);
+                 // Wait another frame
             }
         }
         

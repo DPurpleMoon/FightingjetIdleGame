@@ -32,41 +32,6 @@ public class BulletSelfDestruct : MonoBehaviour
     public void BulInitialize(Vector2 startingVelocity, bool startPaused)
     {
         savedVelocity = startingVelocity;
-        
-        if (startPaused)
-        {
-            rb.linearVelocity = Vector2.zero;
-        }
-        else
-        {
-            rb.linearVelocity = startingVelocity;
-        }
-    }
-
-    public void PauseBullet()
-    {
-        if (rb != null)
-        {
-            if (rb.linearVelocity != Vector2.zero)
-            {
-                savedVelocity = rb.linearVelocity;
-                savedAngularVelocity = rb.angularVelocity;
-                rb.linearVelocity = Vector2.zero;
-                rb.angularVelocity = 0f;
-            }
-        }
-    }
-
-    public void ResumeBullet()
-    {
-        if (rb != null)
-        {
-            rb.linearVelocity = savedVelocity;
-            rb.angularVelocity = savedAngularVelocity;
-            if (rb.linearVelocity == Vector2.zero)
-            {
-                Destroy(gameObject);
-            }
-        }
+        rb.linearVelocity = startingVelocity;
     }
 }

@@ -12,7 +12,7 @@ public class EndStageHandler : MonoBehaviour{
         Stage = GetComponent<StageScrollingController>();
         if (EnemySpawnManager.DupeEnemyList.All(item => item == null) != true)
         {
-            yield return null;
+            yield return new WaitUntil(() => Time.timeScale > 0);
         }
         else 
         {
