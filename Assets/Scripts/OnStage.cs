@@ -27,6 +27,7 @@ public class OnStage : MonoBehaviour
     {
         if (scene.name == "Stage0")
         {
+            Time.timeScale = 1;
             List<List<object>> CoordinateList = new List<List<object>>{}; 
             StageScript = GetComponent<StageScrollingController>();
             Read = GetComponent<StageRead>();
