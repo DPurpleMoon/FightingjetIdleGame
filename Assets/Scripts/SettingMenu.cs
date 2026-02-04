@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class SettingsMenu : MonoBehaviour
     public Slider musicVolumeSlider; 
     public Slider sfxVolumeSlider;   
     public GameObject settingsPanel;
+    
+    [Header("Save/Load UI (Optional)")]
+    public Button saveButton;
+    public Button loadButton;
+    public TextMeshProUGUI statusText;
 
     void Start()
     {
@@ -43,6 +49,16 @@ public class SettingsMenu : MonoBehaviour
         if (sfxVolumeSlider != null)
         {
             sfxVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
+        }
+        
+        if (saveButton != null)
+        {
+            saveButton.onClick.AddListener(SaveGame);
+        }
+        
+        if (loadButton != null)
+        {
+            loadButton.onClick.AddListener(LoadGame);
         }
     }
 
@@ -83,6 +99,67 @@ public class SettingsMenu : MonoBehaviour
         }
         
         Debug.Log("SFX volume set to: " + volume);
+    }
+    
+    public void SaveGame()
+    {
+        if (SaveLoadManager.Instance != null)
+        {
+            SaveLoadManager.Instance.SaveGame();
+            ShowStatus("Game Saved!");
+        }
+        else
+        {
+            Debug.LogError("SaveLoadManager not found!");
+            ShowStatus("Save Failed!");
+        }
+    }
+    
+    public void LoadGame()
+    {
+        if (SaveLoadManager.Instance != null)
+        {
+            SaveLoadManager.Instance.LoadGame();
+            
+            float brightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
+            if (brightnessSlider != null)
+                brightnessSlider.value = brightness;
+                
+            float music = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
+            if (musicVolumeSlider != null)
+                musicVolumeSlider.value = music;
+                
+            float sfx = PlayerPrefs.GetFloat("SFXVolume", 0.7f);
+            if (sfxVolumeSlider != null)
+                sfxVolumeSlider.value = sfx;
+            
+            ShowStatus("Game Loaded!");
+        }
+        else
+        {
+            Debug.LogError("SaveLoadManager not found!");
+            ShowStatus("Load Failed!");
+        }
+    }
+    
+    void ShowStatus(string message)
+    {
+        Debug.Log(message);
+        
+        if (statusText != null)
+        {
+            statusText.text = message;
+            StartCoroutine(ClearStatusAfterDelay(2f));
+        }
+    }
+    
+    IEnumerator ClearStatusAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (statusText != null)
+        {
+            statusText.text = "";
+        }
     }
 
     public void CloseSettings()

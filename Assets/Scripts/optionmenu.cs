@@ -5,6 +5,7 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 
+ 
 public class optionmenu : MonoBehaviour
 {
     [Header("Menu Panels")]
@@ -15,6 +16,15 @@ public class optionmenu : MonoBehaviour
     public Slider brightnessSlider;
     public Slider musicVolumeSlider;  
     public Slider sfxVolumeSlider;
+    
+    [Header("Save/Load UI (Optional)")]
+    [Tooltip("Button to save game - optional")]
+    public Button saveButton;
+    [Tooltip("Button to load game - optional")]
+    public Button loadButton;
+    [Tooltip("Text to show save/load status - optional")]
+    public TextMeshProUGUI statusText;
+    
     public StageScrollingData Data; 
 
     void Start()
@@ -23,19 +33,16 @@ public class optionmenu : MonoBehaviour
         
         try
         {
-            Debug.Log("1. Checking Data...");
-            if (Data == null)
+             if (Data == null)
             {
                 Debug.LogError("Data is NULL!");
                 enabled = false;
                 return;
             }
             
-            Debug.Log("2. Setting isPaused to false...");
-            Data.isPaused = false;
+             Data.isPaused = false;
             
-            Debug.Log("3. Deactivating panels...");
-            if (pausePanel != null)
+             if (pausePanel != null)
             {
                 pausePanel.SetActive(false);
             }
@@ -45,29 +52,33 @@ public class optionmenu : MonoBehaviour
                 pauseSettingsPanel.SetActive(false);
             }
 
-            Debug.Log("4. Calling ResumeGameplay...");
-            ResumeGameplay();
+             ResumeGameplay();
             
-            Debug.Log("5. Loading settings...");
-            LoadSettings();
+             LoadSettings();
 
-            Debug.Log("6. Adding slider listeners...");
-            if (brightnessSlider != null)
+             if (brightnessSlider != null)
             {
                 brightnessSlider.onValueChanged.AddListener(SetBrightness);
-                Debug.Log("   - Brightness listener added");
             }
 
             if (musicVolumeSlider != null)
             {
                 musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
-                Debug.Log("   - Music listener added");
             }
 
             if (sfxVolumeSlider != null)
             {
                 sfxVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
-                Debug.Log("   - SFX listener added");
+            }
+            
+             if (saveButton != null)
+            {
+                saveButton.onClick.AddListener(SaveGame);
+            }
+            
+            if (loadButton != null)
+            {
+                loadButton.onClick.AddListener(LoadGame);
             }
             
             Debug.Log("=== OPTIONMENU START COMPLETE ===");
@@ -83,10 +94,8 @@ public class optionmenu : MonoBehaviour
     {
         if (Data == null) return;
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("ESC pressed. isPaused: " + Data.isPaused);
-            
             if (Data.isPaused)
             {
                 if (pauseSettingsPanel != null && pauseSettingsPanel.activeSelf)
@@ -105,111 +114,139 @@ public class optionmenu : MonoBehaviour
         }
     }
 
+    
     void LoadSettings()
     {
-        Debug.Log("LoadSettings: START");
-        
         try
         {
-            float savedBrightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
-            Debug.Log("LoadSettings: Brightness = " + savedBrightness);
-            
+             float savedBrightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
             if (brightnessSlider != null)
             {
                 brightnessSlider.SetValueWithoutNotify(savedBrightness);
             }
-            
-            Debug.Log("LoadSettings: Calling SetBrightness...");
             SetBrightness(savedBrightness);
-            Debug.Log("LoadSettings: SetBrightness complete");
 
-            float savedMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
-            Debug.Log("LoadSettings: Music volume = " + savedMusicVolume);
-            
+             float savedMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
             if (musicVolumeSlider != null)
             {
                 musicVolumeSlider.SetValueWithoutNotify(savedMusicVolume);
             }
-            
-            Debug.Log("LoadSettings: Calling SetMusicVolume...");
             SetMusicVolume(savedMusicVolume);
-            Debug.Log("LoadSettings: SetMusicVolume complete");
 
-            float savedSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 0.7f);
-            Debug.Log("LoadSettings: SFX volume = " + savedSFXVolume);
-            
+             float savedSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 0.7f);
             if (sfxVolumeSlider != null)
             {
                 sfxVolumeSlider.SetValueWithoutNotify(savedSFXVolume);
             }
-            
-            Debug.Log("LoadSettings: Calling SetSFXVolume...");
             SetSFXVolume(savedSFXVolume);
-            Debug.Log("LoadSettings: SetSFXVolume complete");
             
-            Debug.Log("LoadSettings: COMPLETE");
+            Debug.Log("Settings loaded successfully");
         }
         catch (System.Exception e)
         {
             Debug.LogError("EXCEPTION IN LoadSettings: " + e.Message);
-            Debug.LogError("Stack trace: " + e.StackTrace);
+        }
+    }
+
+     
+    public void SaveGame()
+    {
+        if (SaveLoadManager.Instance != null)
+        {
+            SaveLoadManager.Instance.SaveGame();
+            ShowStatus("Game Saved!");
+        }
+        else
+        {
+            Debug.LogError("SaveLoadManager not found!");
+            ShowStatus("Save Failed!");
+        }
+    }
+    
+    
+    public void LoadGame()
+    {
+        if (SaveLoadManager.Instance != null)
+        {
+            SaveLoadManager.Instance.LoadGame();
+            LoadSettings(); 
+            ShowStatus("Game Loaded!");
+        }
+        else
+        {
+            Debug.LogError("SaveLoadManager not found!");
+            ShowStatus("Load Failed!");
+        }
+    }
+    
+    void ShowStatus(string message)
+    {
+        Debug.Log(message);
+        
+        if (statusText != null)
+        {
+            statusText.text = message;
+            StartCoroutine(ClearStatusAfterDelay(2f));
+        }
+    }
+    
+     
+    IEnumerator ClearStatusAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (statusText != null)
+        {
+            statusText.text = "";
         }
     }
 
     public void PauseGame()
-{
-    Debug.Log("PauseGame called");
-    
-    if (pausePanel != null)
     {
-        pausePanel.SetActive(true);
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(true);
+        }
+        
+        if (Data != null)
+        {
+            Data.isPaused = true;
+        }
+        
+        PauseGameplay();
     }
-    
-    if (Data != null)
-    {
-        Data.isPaused = true;
-    }
-    
-    PauseGameplay();
-}
 
-public void ResumeGame()
-{
-    Debug.Log("ResumeGame called");
-    
-    if (pausePanel != null)
+    public void ResumeGame()
     {
-        pausePanel.SetActive(false);
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(false);
+        }
+        
+        if (pauseSettingsPanel != null)
+        {
+            pauseSettingsPanel.SetActive(false);
+        }
+        
+        ResumeGameplay();
+        
+        if (Data != null)
+        {
+            Data.isPaused = false;
+        }
     }
-    
-    if (pauseSettingsPanel != null)
-    {
-        pauseSettingsPanel.SetActive(false);
-    }
-    
-    ResumeGameplay();
-    
-    if (Data != null)
-    {
-        Data.isPaused = false;
-    }
-}
+
     void PauseGameplay()
     {
         Time.timeScale = 0f;
-        Debug.Log("Game Paused - Time.timeScale = 0");
     }
 
     void ResumeGameplay()
     {
         Time.timeScale = 1f;
-        Debug.Log("Game Resumed - Time.timeScale = 1");
     }
 
     public void OpenPauseSettings()
     {
-        Debug.Log("OpenPauseSettings called");
-        
         if (pausePanel != null)
         {
             pausePanel.SetActive(false);
@@ -223,8 +260,6 @@ public void ResumeGame()
 
     public void ClosePauseSettings()
     {
-        Debug.Log("ClosePauseSettings called");
-        
         if (pauseSettingsPanel != null)
         {
             pauseSettingsPanel.SetActive(false);
@@ -238,37 +273,24 @@ public void ResumeGame()
 
     public void SetBrightness(float brightness)
     {
-        Debug.Log("SetBrightness called with value: " + brightness);
-        
         try
         {
             PlayerPrefs.SetFloat("Brightness", brightness);
             PlayerPrefs.Save();
             
-            Debug.Log("SetBrightness: Checking BrightnessManager...");
-            
             if (BrightnessManager.Instance != null)
             {
-                Debug.Log("SetBrightness: BrightnessManager exists, applying...");
                 BrightnessManager.Instance.ApplyBrightness(brightness);
-                Debug.Log("SetBrightness: Applied successfully");
-            }
-            else
-            {
-                Debug.LogWarning("SetBrightness: BrightnessManager.Instance is null");
             }
         }
         catch (System.Exception e)
         {
             Debug.LogError("EXCEPTION in SetBrightness: " + e.Message);
-            Debug.LogError("Stack trace: " + e.StackTrace);
         }
     }
 
     public void SetMusicVolume(float volume)
     {
-        Debug.Log("SetMusicVolume called with value: " + volume);
-        
         try
         {
             PlayerPrefs.SetFloat("MusicVolume", volume);
@@ -277,10 +299,6 @@ public void ResumeGame()
             if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.SetMusicVolume(volume);
-            }
-            else
-            {
-                Debug.LogWarning("AudioManager.Instance is null");
             }
         }
         catch (System.Exception e)
@@ -291,8 +309,6 @@ public void ResumeGame()
 
     public void SetSFXVolume(float volume)
     {
-        Debug.Log("SetSFXVolume called with value: " + volume);
-        
         try
         {
             PlayerPrefs.SetFloat("SFXVolume", volume);
@@ -301,10 +317,6 @@ public void ResumeGame()
             if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.SetSFXVolume(volume);
-            }
-            else
-            {
-                Debug.LogWarning("AudioManager.Instance is null");
             }
         }
         catch (System.Exception e)
@@ -315,10 +327,8 @@ public void ResumeGame()
 
     public void LoadMainMenu()
     {
-        Debug.Log("LoadMainMenu called");
-        
-        Time.timeScale = 1f;  
-        ResumeGameplay(); 
+        Time.timeScale = 1f;
+        ResumeGameplay();
         
         if (AudioManager.Instance != null)
         {
@@ -330,7 +340,10 @@ public void ResumeGame()
 
     public void QuitGame()
     {
-        Debug.Log("QuitGame called");
+        if (SaveLoadManager.Instance != null)
+        {
+            SaveLoadManager.Instance.SaveGame();
+        }
         
         Application.Quit();
         
