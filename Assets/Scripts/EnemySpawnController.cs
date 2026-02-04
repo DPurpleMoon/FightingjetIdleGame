@@ -14,7 +14,7 @@ public class EnemySpawnController : MonoBehaviour {
 
     void OnDestroy()
     {
-        Debug.Log(System.Environment.StackTrace);
+        //Debug.Log(System.Environment.StackTrace);
     }
 
     public void SetPath(GameObject enemy, Slider Health, List<Vector2> waypoints, float speed, bool boss){
