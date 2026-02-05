@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace jetfighter.movement
 { 
-        public class PlayerHealth : MonoBehaviour
+    public class PlayerHealth : MonoBehaviour
     {
         [Header("Health Settings")]
         [SerializeField] private int maxHealth = 7; 
@@ -11,9 +11,10 @@ namespace jetfighter.movement
         [Header("Invincibility Settings")]
         [SerializeField] private float invTime = 1.5f;
         
-         private int currentHealth;
+        private int currentHealth;
         private float invFrame;
         private bool isDead = false;  
+        public GameObject DeathPanel;
         
         private void Start()
         {
@@ -57,16 +58,16 @@ namespace jetfighter.movement
          
         public void TakeDamage(int damage)
         {
-             if (isDead) return;
+            if (isDead) return;
             
             currentHealth -= damage;
             
-             if (currentHealth < 0)
+            if (currentHealth < 0)
                 currentHealth = 0;
 
             Debug.Log("Player took " + damage + " damage! Health: " + currentHealth + "/" + maxHealth);
 
-             if (currentHealth <= 0)
+            if (currentHealth <= 0)
             {
                 Die();
             }
@@ -75,9 +76,9 @@ namespace jetfighter.movement
          
         public void Heal(int amount)
         {
-             if (isDead) return;
+            if (isDead) return;
             
-             if (currentHealth >= maxHealth)
+            if (currentHealth >= maxHealth)
             {
                 Debug.Log("Health already full!");
                 return;
@@ -85,9 +86,10 @@ namespace jetfighter.movement
 
             currentHealth += amount;
             
-             if (currentHealth > maxHealth)
+            if (currentHealth > maxHealth)
+            {
                 currentHealth = maxHealth;
-            
+            }
             Debug.Log("Player healed! Health: " + currentHealth + "/" + maxHealth);
         }
 
@@ -147,6 +149,8 @@ namespace jetfighter.movement
             {
                 AudioManager.Instance.PlayPlayerDeath();
             }
+            Time.timeScale = 0f;
+            DeathPanel.SetActive(true);
             Destroy(gameObject);
         }
         

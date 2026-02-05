@@ -27,6 +27,7 @@ public class StageList : MonoBehaviour
     public int CurrentStageNum;
     void Start()
     {
+        Time.timeScale = 1f;
         string streamingpath = Application.streamingAssetsPath;
         string[] filePaths = Directory.GetFiles($"{streamingpath}/levellist/", "*.json", SearchOption.AllDirectories);
         Data.stagenum = 0;
@@ -83,7 +84,7 @@ public class StageList : MonoBehaviour
             int index = fileName.IndexOf(".json");
             if (index >= 0)
                 {
-                    fileName = fileName.Substring(0, index);
+                fileName = fileName.Substring(0, index);
                 }
             Data.maxstagenum = int.Parse(fileName.Substring(5));
             if (fileName == $"level{Data.stagenum}")
