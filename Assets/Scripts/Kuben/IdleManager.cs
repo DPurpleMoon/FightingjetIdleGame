@@ -105,6 +105,10 @@ public class IdleManager : MonoBehaviour
         {
             logTime = DateTime.Now.ToBinary().ToString();
         }
+        if (!long.TryParse(logTime, out long temp))
+        {
+            logTime = DateTime.Now.ToBinary().ToString();
+        }
         DateTime lastLogout = DateTime.FromBinary(Convert.ToInt64(logTime));
         double secondsPassed = (DateTime.Now - lastLogout).TotalSeconds;
 
@@ -114,9 +118,9 @@ public class IdleManager : MonoBehaviour
         // Only show if away for more than 1 minute (60s)
         if (secondsPassed > 60)
         {
+            SaveLoad.SaveGame("LogTime", DateTime.Now.ToBinary().ToString());
             DistributeReward(secondsPassed);
         }
-        SaveLoad.SaveGame("LogTime", DateTime.Now.ToBinary().ToString());
     }
 
     private void DistributeReward(double seconds)
