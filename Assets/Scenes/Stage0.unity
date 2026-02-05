@@ -8214,6 +8214,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
+--- !u!1 &2061466193 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 447104523345196546, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
+  m_PrefabInstance: {fileID: 2061466192}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2077407207
 GameObject:
   m_ObjectHideFlags: 0
@@ -8683,6 +8688,7 @@ MonoBehaviour:
   EndingManager: {fileID: 1731216611}
   enemyPrefabs:
   - {fileID: 338932750}
+  - {fileID: 2061466193}
   Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
   HealthBar: {fileID: 1552311437}
   HealthCanvas: {fileID: 1923270011}
