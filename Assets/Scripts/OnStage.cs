@@ -39,6 +39,16 @@ public class OnStage : MonoBehaviour
             StageData.AccelerationConstant = 5.0f;
             StageData.MaxVelocity = 100f;
             StageData.StageName = (string)LevelData[0];
+            GameObject parentObj = GameObject.Find("BackgroundList");
+            if (parentObj != null)
+            {
+                foreach (Transform Background in parentObj.transform)
+                {
+                    Background.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                }
+            }
+            GameObject CurrentStageImage = GameObject.Find(StageData.StageName);
+            CurrentStageImage.GetComponent<SpriteRenderer>().enabled = true;
             StageScript.Initiate();
             float multiplier = float.Parse((string)LevelData[1]);
             StartCoroutine(EnemySpawn(LevelData));

@@ -18,14 +18,6 @@ public class StageScrollingController : MonoBehaviour {
 
     public StageScrollingData Stage; 
 
-    public void Scroll()
-    {
-        if (gameObject.name == Stage.StageName)
-        {
-            StartCoroutine(StageScrolling());
-        }
-    }
-
     private IEnumerator StageScrolling()
     {
         Multiplier = Stage.StartingVelocity;
@@ -141,8 +133,6 @@ public class StageScrollingController : MonoBehaviour {
             Debug.LogError("CurrentStage not found: " + Stage.StageName);
             return;
         }
-        
-        CurrentStage.SetActive(true);
         
         if (_scrollRoutine != null)
         {
