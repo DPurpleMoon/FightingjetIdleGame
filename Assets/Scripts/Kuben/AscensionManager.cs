@@ -71,13 +71,18 @@ public class AscensionManager : MonoBehaviour
 
     public void SaveAscension()
     {
-        PlayerPrefs.SetInt(TokenKey, ascensionTokens);
-        PlayerPrefs.Save();
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        SaveLoad.SaveGame("Ascension", ascensionTokens);
     }
 
     public void LoadAscension()
     {
-        ascensionTokens = PlayerPrefs.GetInt(TokenKey, 0);
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        ascensionTokens = (int)SaveLoad.LoadGame("Ascension");
+        if (ascensionTokens == null)
+        {
+            ascensionTokens = 0;
+        }
     }
 
     [ContextMenu("Reset Ascension")]

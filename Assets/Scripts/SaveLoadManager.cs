@@ -65,6 +65,10 @@ public class SaveLoadManager : MonoBehaviour
             {
                 Savedata.levelScore = (string[])objectdata;
             }
+            else if (DataType == "Ascension")
+            {
+                Savedata.AscensionLevel = (int)objectdata;
+            }
             else
             {
                 Debug.LogError("Wrong DataType argument given!");
@@ -136,6 +140,10 @@ public class SaveLoadManager : MonoBehaviour
             {
                 return Savedata.levelScore;
             }
+            else if (DataType == "Ascension")
+            {
+                return Savedata.AscensionLevel;
+            }
             else
             {
                 Debug.LogError("Wrong DataType argument given!");
@@ -183,8 +191,9 @@ public class GameData
     public float musicVolume; // yes
     public float sfxVolume; // yes
     public double currency; // yes
-    public int equippedWeaponName;
-    public object[] purchasedWeapons = new string[]{};
+    public int equippedWeaponName; // yes
+    public int AscensionLevel;
+    public object[] purchasedWeapons = new string[]{}; // yes
     public int[] stageCompleted = new int[]{};
     public string[] levelScore = new string[]{};
 }
