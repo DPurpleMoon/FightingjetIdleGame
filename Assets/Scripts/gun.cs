@@ -13,8 +13,9 @@ namespace jetfighter.movement
         [Header("References")]
         [SerializeField] private Transform firePoint;
         
-        private float nextFireTime = 1f;
+        public float FireTime;
         private Collider2D playerCollider;
+        public WeaponData currentWeapon;
 
         private void Start()
         {
@@ -24,12 +25,11 @@ namespace jetfighter.movement
             {
                 playerCollider = GetComponentInChildren<Collider2D>();
             }
-        
+            currentWeapon = null;
         }
         private void Update()
         {
             // 1. Get the current weapon from Kuben's Shop
-            WeaponData currentWeapon = null;
             if (ShopManager.Instance != null)
             {
                 currentWeapon = ShopManager.Instance.equippedWeapon;
@@ -37,8 +37,12 @@ namespace jetfighter.movement
 
             // 2. Determine Fire Rate (Use Weapon Data or Default)
             float effectiveFireRate = (currentWeapon != null) ? currentWeapon.fireRate : defaultFireRate;
-
-            
+            if (Input.GetKey(KeyCode.Space) && Time.time >= FireTime && Time.timeScale == 1f)
+            {
+                Debug.Log(currentWeapon);
+                Fire(currentWeapon);
+                FireTime = Time.time + effectiveFireRate;
+            }
         }
 
         void Fire(WeaponData weaponData)
@@ -79,10 +83,8 @@ namespace jetfighter.movement
 
             if (AudioManager.Instance != null)
             {
-        AudioManager.Instance.PlayPlayerShoot();
+                AudioManager.Instance.PlayPlayerShoot();
             }
         }
-
-       
     }
 }
