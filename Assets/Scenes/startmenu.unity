@@ -3855,6 +3855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80a68f14a9bb7c2418ae5283e702c8b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  manObj: {fileID: 1172940088}
   musicSource: {fileID: 363430902}
   sfxSource: {fileID: 1999351131}
   movementLoopSource: {fileID: 0}

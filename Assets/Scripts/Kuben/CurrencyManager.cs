@@ -6,8 +6,8 @@ public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager Instance;
     public double Currency { get; private set; } = 0;
+    public GameObject manObj;
 
-    private const string CurrencyKey = "PlayerCurrency";
     public event Action<double> OnCurrencyChanged;
 
     private void Awake()
@@ -45,13 +45,18 @@ public class CurrencyManager : MonoBehaviour
 
     public void SaveCurrency()
     {
-        PlayerPrefs.SetString(CurrencyKey, Currency.ToString());
-        PlayerPrefs.Save();
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        SaveLoad.SaveGame("Currency", Currency);
     }
 
     public void LoadCurrency()
     {
-        string s = PlayerPrefs.GetString(CurrencyKey, "0");
-        Currency = double.TryParse(s, out double result) ? result : 0;
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        double s = (double)SaveLoad.LoadGame("Currency");
+        if (s == null)
+        {
+            s = 0;
+        }
+        Currency = s;
     }
 }

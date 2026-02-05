@@ -19,6 +19,8 @@ public class optionmenu : MonoBehaviour
     public GameObject ScrollGameObject;
     public StageScrollingController Stage;
 
+    public GameObject manObj;
+
     void Start()
     {
         Debug.Log("=== OPTIONMENU START BEGIN ===");
@@ -113,7 +115,13 @@ public class optionmenu : MonoBehaviour
         
         try
         {
-            float savedBrightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
+            SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+            float savedBrightness = (float)SaveLoad.LoadGame("Brightness");
+            if (savedBrightness == null)
+            {
+                savedBrightness = 0.7f;
+                SaveLoad.SaveGame("Brightness", 0.7f);
+            }
             Debug.Log("LoadSettings: Brightness = " + savedBrightness);
             
             if (brightnessSlider != null)
@@ -124,8 +132,12 @@ public class optionmenu : MonoBehaviour
             Debug.Log("LoadSettings: Calling SetBrightness...");
             SetBrightness(savedBrightness);
             Debug.Log("LoadSettings: SetBrightness complete");
-
-            float savedMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
+            float savedMusicVolume = (float)SaveLoad.LoadGame("MusicVolume");
+            if (savedMusicVolume == null)
+            {
+                savedMusicVolume = 0.5f;
+                SaveLoad.SaveGame("MusicVolume", 0.5f);
+            }
             Debug.Log("LoadSettings: Music volume = " + savedMusicVolume);
             
             if (musicVolumeSlider != null)
@@ -137,7 +149,12 @@ public class optionmenu : MonoBehaviour
             SetMusicVolume(savedMusicVolume);
             Debug.Log("LoadSettings: SetMusicVolume complete");
 
-            float savedSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 0.7f);
+            float savedSFXVolume = (float)SaveLoad.LoadGame("SFXVolume");
+            if (savedSFXVolume == null)
+            {
+                savedSFXVolume = 0.7f;
+                SaveLoad.SaveGame("SFXVolume", 0.7f);
+            }
             Debug.Log("LoadSettings: SFX volume = " + savedSFXVolume);
             
             if (sfxVolumeSlider != null)
@@ -248,8 +265,8 @@ public void ResumeGame()
         
         try
         {
-            PlayerPrefs.SetFloat("Brightness", brightness);
-            PlayerPrefs.Save();
+            SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+            SaveLoad.SaveGame("Brightness", brightness);
             
             Debug.Log("SetBrightness: Checking BrightnessManager...");
             
@@ -277,9 +294,8 @@ public void ResumeGame()
         
         try
         {
-            PlayerPrefs.SetFloat("MusicVolume", volume);
-            PlayerPrefs.Save();
-            
+            SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+            SaveLoad.SaveGame("MusicVolume", volume);
             if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.SetMusicVolume(volume);
@@ -301,8 +317,8 @@ public void ResumeGame()
         
         try
         {
-            PlayerPrefs.SetFloat("SFXVolume", volume);
-            PlayerPrefs.Save();
+            SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+            SaveLoad.SaveGame("SFXVolume", volume);
             
             if (AudioManager.Instance != null)
             {

@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 [DefaultExecutionOrder(-50)]
 public class ShopManager : MonoBehaviour
 {
     public static ShopManager Instance;
+    public GameObject manObj;
 
     [Header("Configuration")]
     public List<WeaponData> availableWeapons;
@@ -86,20 +88,36 @@ public class ShopManager : MonoBehaviour
 
     public void SaveShop()
     {
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        object[] WeaponUnlocked = new object[] {};
+        object[] WeaponDetails = new object[] {};
         foreach (WeaponData weapon in availableWeapons)
-            PlayerPrefs.SetInt("Shop_" + weapon.name, weapon.currentLevel);
+            WeaponDetails = new object[] {weapon.name, weapon.currentLevel};
+            WeaponUnlocked = WeaponUnlocked.Append(WeaponDetails).ToArray();
+        SaveLoad.SaveGame("PurchasedWeapons", WeaponUnlocked);
 
         int index = (equippedWeapon != null) ? availableWeapons.IndexOf(equippedWeapon) : -1;
-        PlayerPrefs.SetInt("Shop_Equipped_Index", index);
-        PlayerPrefs.Save();
+        SaveLoad.SaveGame("EquipWeapon", index);
     }
 
     public void LoadShop()
     {
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        object[] WeaponUnlocked = (object[])SaveLoad.LoadGame("PurchasedWeapons");
         foreach (WeaponData weapon in availableWeapons)
-            weapon.currentLevel = PlayerPrefs.GetInt("Shop_" + weapon.name, 0);
+            foreach (object[] WeaponDetails in WeaponUnlocked)
+            {
+                if (WeaponDetails[0] == weapon.name)
+                {
+                    weapon.currentLevel = (int)WeaponDetails[1];
+                }
+            }
 
-        int indexToLoad = PlayerPrefs.GetInt("Shop_Equipped_Index", -1);
+        int indexToLoad = (int)SaveLoad.LoadGame("EquipWeapon");
+        if (indexToLoad == null)
+        {
+            indexToLoad = -1;
+        }
         if (indexToLoad != -1 && indexToLoad < availableWeapons.Count)
             equippedWeapon = availableWeapons[indexToLoad];
 
