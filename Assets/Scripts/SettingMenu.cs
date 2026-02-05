@@ -107,6 +107,7 @@ public class SettingsMenu : MonoBehaviour
         {
             SaveLoadManager.Instance.SaveGame();
             ShowStatus("Game Saved!");
+ 
         }
         else
         {
