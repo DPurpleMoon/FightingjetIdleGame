@@ -7,16 +7,16 @@ public class SaveLoadManager : MonoBehaviour
 {
     public static SaveLoadManager Instance;
     
-     private string saveFilePath;
+    private string saveFilePath;
     
     void Awake()
     {
-         if (Instance == null)
+        if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
             
-             saveFilePath = Path.Combine(Application.persistentDataPath, "gamedata.json");
+            saveFilePath = Path.Combine(Application.persistentDataPath, "gamedata.json");
             Debug.Log("Save file location: " + saveFilePath);
         }
         else
@@ -30,24 +30,20 @@ public class SaveLoadManager : MonoBehaviour
     {
         try
         {
-             GameData data = new GameData();
+            GameData data = new GameData();
             
-             data.brightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
+            data.brightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
             data.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
             data.sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 0.7f);
             
-            
-            
-
-            
-             if (StageScore.Instance != null)
+            if (StageScore.Instance != null)
             {
                 data.highScore = StageScore.Instance.CurrentScore;
             }
             
-             string json = JsonUtility.ToJson(data, true);  
+            string json = JsonUtility.ToJson(data, true);  
             
-             File.WriteAllText(saveFilePath, json);
+            File.WriteAllText(saveFilePath, json);
             
             Debug.Log("Game saved successfully to: " + saveFilePath);
             Debug.Log("Saved data: " + json);
@@ -63,15 +59,15 @@ public class SaveLoadManager : MonoBehaviour
     {
         try
         {
-             if (!File.Exists(saveFilePath))
+            if (!File.Exists(saveFilePath))
             {
                 Debug.Log("No save file found. Starting new game.");
                 return;
             }
             
-             string json = File.ReadAllText(saveFilePath);
+            string json = File.ReadAllText(saveFilePath);
             
-             GameData data = JsonUtility.FromJson<GameData>(json);
+            GameData data = JsonUtility.FromJson<GameData>(json);
             
             if (data == null)
             {
@@ -79,17 +75,17 @@ public class SaveLoadManager : MonoBehaviour
                 return;
             }
             
-             PlayerPrefs.SetFloat("Brightness", data.brightness);
+            PlayerPrefs.SetFloat("Brightness", data.brightness);
             PlayerPrefs.SetFloat("MusicVolume", data.musicVolume);
             PlayerPrefs.SetFloat("SFXVolume", data.sfxVolume);
             PlayerPrefs.Save();
             
-             if (BrightnessManager.Instance != null)
+            if (BrightnessManager.Instance != null)
             {
                 BrightnessManager.Instance.ApplyBrightness(data.brightness);
             }
             
-             if (AudioManager.Instance != null)
+            if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.SetMusicVolume(data.musicVolume);
                 AudioManager.Instance.SetSFXVolume(data.sfxVolume);
