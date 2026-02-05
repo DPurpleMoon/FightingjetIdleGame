@@ -1,0 +1,1 @@
+0.8 singleshot 40 3 1
