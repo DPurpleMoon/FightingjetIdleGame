@@ -9,6 +9,19 @@ public class SaveLoadManager : MonoBehaviour
     
     private string saveFilePath;
     
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
     public void SaveGame(string DataType, object objectdata)
     {
         try
@@ -34,15 +47,15 @@ public class SaveLoadManager : MonoBehaviour
             }
             else if (DataType == "Currency")
             {
-                Savedata.currency = (int)objectdata;
+                Savedata.currency = (double)objectdata;
             }
             else if (DataType == "EquipWeapon")
             {
-                Savedata.equippedWeaponName = (string)objectdata;
+                Savedata.equippedWeaponName = (int)objectdata;
             }
             else if (DataType == "PurchasedWeapons")
             {
-                Savedata.purchasedWeapons = (string[])objectdata;
+                Savedata.purchasedWeapons = (object[])objectdata;
             }
             else if (DataType == "CompleteStages")
             {
@@ -166,12 +179,12 @@ public class SaveLoadManager : MonoBehaviour
 [Serializable]
 public class GameData
 {
-    public float brightness;
-    public float musicVolume;
-    public float sfxVolume;
-    public int currency;
-    public string equippedWeaponName;
-    public string[] purchasedWeapons = new string[]{};
+    public float brightness; // yes
+    public float musicVolume; // yes
+    public float sfxVolume; // yes
+    public double currency; // yes
+    public int equippedWeaponName;
+    public object[] purchasedWeapons = new string[]{};
     public int[] stageCompleted = new int[]{};
     public string[] levelScore = new string[]{};
 }

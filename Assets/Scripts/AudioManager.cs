@@ -4,6 +4,7 @@ using System.Collections;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
+    public GameObject manObj;
 
     [Header("Audio Sources")]
     [SerializeField] private AudioSource musicSource;
@@ -42,9 +43,27 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
-        sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 0.7f);
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        object temp = SaveLoad.LoadGame("MusicVolume");
+        if (temp != null)
+        {
+            musicVolume = (float)SaveLoad.LoadGame("MusicVolume");
+        }
+        else
+        {
+            musicVolume = 0.5f;
+            SaveLoad.SaveGame("MusicVolume", musicVolume);
+        }
+        
+        if (sfxVolume != null)
+        {
+            sfxVolume = (float)SaveLoad.LoadGame("SFXVolume");
+        }
+        else
+        {
+            sfxVolume = 0.5f;
+            SaveLoad.SaveGame("SFXVolume", sfxVolume);
+        }
 
         if (musicSource != null)
         {

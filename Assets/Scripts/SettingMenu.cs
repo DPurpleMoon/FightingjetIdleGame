@@ -105,7 +105,6 @@ public class SettingsMenu : MonoBehaviour
     {
         if (SaveLoadManager.Instance != null)
         {
-            SaveLoadManager.Instance.SaveGame();
             ShowStatus("Game Saved!");
  
         }
@@ -119,9 +118,7 @@ public class SettingsMenu : MonoBehaviour
     public void LoadGame()
     {
         if (SaveLoadManager.Instance != null)
-        {
-            SaveLoadManager.Instance.LoadGame();
-            
+        {   
             float brightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
             if (brightnessSlider != null)
                 brightnessSlider.value = brightness;
@@ -170,7 +167,7 @@ public class SettingsMenu : MonoBehaviour
             settingsPanel.SetActive(false);
         }
 
-        StartMenu startMenu = FindFirstObjectByType<StartMenu>();
+        StartMenu startMenu = FindFirstObjectByType<StartMenu>(FindObjectsInactive.Include);
         if (startMenu != null)
         {
             startMenu.CloseSettings();
