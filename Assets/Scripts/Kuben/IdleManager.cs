@@ -37,6 +37,7 @@ public class IdleManager : MonoBehaviour
     private float incomeTimer = 0f;
 
     public event Action OnIdleStatsChanged;
+    public GameObject manObj;
 
     private void Awake()
     {
@@ -97,20 +98,23 @@ public class IdleManager : MonoBehaviour
 
     private void CalculateOfflineEarnings()
     {
-        if (PlayerPrefs.HasKey(LogoutKey))
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        string logTime = (string)SaveLoad.LoadGame("LogTime");
+        if (logTime == null)
         {
-            long temp = Convert.ToInt64(PlayerPrefs.GetString(LogoutKey));
-            DateTime lastLogout = DateTime.FromBinary(temp);
-            double secondsPassed = (DateTime.Now - lastLogout).TotalSeconds;
+            logTime = DateTime.Now.ToBinary().ToString();
+        }
+        DateTime lastLogout = DateTime.FromBinary(Convert.ToInt64(logTime));
+        double secondsPassed = (DateTime.Now - lastLogout).TotalSeconds;
 
-            // Cap at 24 hours (86400s)
-            if (secondsPassed > 86400) secondsPassed = 86400;
-
-            // Only show if away for more than 1 minute (60s)
-            if (secondsPassed > 60)
-            {
-                DistributeReward(secondsPassed);
-            }
+        // Cap at 24 hours (86400s)
+        if (secondsPassed > 86400) secondsPassed = 86400;
+  
+        // Only show if away for more than 1 minute (60s)
+        if (secondsPassed > 60)
+        {
+            DistributeReward(secondsPassed);
         }
     }
 
@@ -170,8 +174,9 @@ public class IdleManager : MonoBehaviour
     private void OnApplicationQuit() 
     { 
         SaveIdleData(); 
-        PlayerPrefs.SetString(LogoutKey, DateTime.Now.ToBinary().ToString()); 
-        PlayerPrefs.Save(); 
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        SaveLoad.SaveGame("LogTime", DateTime.Now.ToBinary().ToString());
     }
     
     private void OnApplicationPause(bool pause) 

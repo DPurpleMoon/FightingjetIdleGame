@@ -69,6 +69,14 @@ public class SaveLoadManager : MonoBehaviour
             {
                 Savedata.AscensionLevel = (int)objectdata;
             }
+            else if (DataType == "LogTime")
+            {
+                Savedata.logoutTime = (string)objectdata;
+            }
+            else if (DataType == "IdleLevel")
+            {
+                Savedata.idleLevel = (int)objectdata;
+            }
             else
             {
                 Debug.LogError("Wrong DataType argument given!");
@@ -92,14 +100,13 @@ public class SaveLoadManager : MonoBehaviour
     {
         try
         {
+            saveFilePath = Path.Combine(Application.persistentDataPath, "gamedata.json");
             if (!File.Exists(saveFilePath))
             {
                 Debug.Log("No save file found. Starting new game.");
                 return null;
             }
-            saveFilePath = Path.Combine(Application.persistentDataPath, "gamedata.json");
             string json = File.ReadAllText(saveFilePath);
-            
             GameData Savedata = JsonUtility.FromJson<GameData>(json);
             
             if (Savedata == null)
@@ -143,6 +150,14 @@ public class SaveLoadManager : MonoBehaviour
             else if (DataType == "Ascension")
             {
                 return Savedata.AscensionLevel;
+            }
+            else if (DataType == "LogTime")
+            {
+                return Savedata.logoutTime;
+            }
+            else if (DataType == "IdleLevel")
+            {
+                return Savedata.idleLevel;
             }
             else
             {
@@ -192,8 +207,10 @@ public class GameData
     public float sfxVolume; // yes
     public double currency; // yes
     public int equippedWeaponName; // yes
-    public int AscensionLevel;
-    public object[] purchasedWeapons = new string[]{}; // yes
+    public int AscensionLevel; // yes
+    public string logoutTime;
+    public int idleLevel;
+    public object[] purchasedWeapons = new object[]{}; 
     public int[] stageCompleted = new int[]{};
     public string[] levelScore = new string[]{};
 }
