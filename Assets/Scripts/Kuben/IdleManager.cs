@@ -116,6 +116,7 @@ public class IdleManager : MonoBehaviour
         {
             DistributeReward(secondsPassed);
         }
+        SaveLoad.SaveGame("LogTime", DateTime.Now.ToBinary().ToString());
     }
 
     private void DistributeReward(double seconds)
@@ -152,15 +153,6 @@ public class IdleManager : MonoBehaviour
         UpdateStageMultiplier();
         SaveIdleData();
         NotifyUI();
-
-        // Load the actual Scene
-        // Assumption: Scenes are named "Stage0", "Stage1"... index starts at 0.
-        // currentStage 1 = "Stage0"
-        string sceneName = "Stage" + (currentStage - 1);
-        if (Application.CanStreamedLevelBeLoaded(sceneName))
-        {
-            SceneManager.LoadScene(sceneName);
-        }
     }
 
     [ContextMenu("Reset Idle")]
@@ -186,15 +178,26 @@ public class IdleManager : MonoBehaviour
 
     public void SaveIdleData()
     {
-        PlayerPrefs.SetInt(UpgradeKey, idleUpgradeLevel);
-        PlayerPrefs.SetInt(StageKey, currentStage);
-        PlayerPrefs.Save();
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        SaveLoad.SaveGame("IdleLevel", idleUpgradeLevel);
+        SaveLoad.SaveGame("CurrentStage", currentStage);
     }
 
     public void LoadIdleData()
     {
-        idleUpgradeLevel = PlayerPrefs.GetInt(UpgradeKey, 0);
-        currentStage = PlayerPrefs.GetInt(StageKey, 1);
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        idleUpgradeLevel = SaveLoad.LoadGame("IdleLevel");
+        if (idleUpgradeLevel == null)
+        {
+            idleUpgradeLevel = 0;
+        }
+        currentStage = SaveLoad.LoadGame("CurrentStage");
+        if (currentStage == null)
+        {
+            currentStage = 1;
+        }
     }
 
     private void NotifyUI() => OnIdleStatsChanged?.Invoke();

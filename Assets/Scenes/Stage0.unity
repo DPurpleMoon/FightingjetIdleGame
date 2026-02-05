@@ -2228,6 +2228,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -3938918822449633212, guid: eb6d85be9da1e2145a10ba834f3bf4ab, type: 3}
+    - target: {fileID: 2355476731400658848, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4612983834544826892, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
       propertyPath: CurrentStage
       value: 
@@ -5968,6 +5972,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -3938918822449633212, guid: eb6d85be9da1e2145a10ba834f3bf4ab, type: 3}
+    - target: {fileID: 2355476731400658848, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4612983834544826892, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
       propertyPath: CurrentStage
       value: 

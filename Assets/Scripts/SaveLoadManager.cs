@@ -77,6 +77,10 @@ public class SaveLoadManager : MonoBehaviour
             {
                 Savedata.idleLevel = (int)objectdata;
             }
+            else if (DataType == "CurrentStage")
+            {
+                Savedata.CurrentStage = (int)objectdata;
+            }
             else
             {
                 Debug.LogError("Wrong DataType argument given!");
@@ -159,6 +163,10 @@ public class SaveLoadManager : MonoBehaviour
             {
                 return Savedata.idleLevel;
             }
+            else if (DataType == "CurrentStage")
+            {
+                return Savedata.CurrentStage;
+            }
             else
             {
                 Debug.LogError("Wrong DataType argument given!");
@@ -210,6 +218,7 @@ public class GameData
     public int AscensionLevel; // yes
     public string logoutTime;
     public int idleLevel;
+    public int CurrentStage;
     public object[] purchasedWeapons = new object[]{}; 
     public int[] stageCompleted = new int[]{};
     public string[] levelScore = new string[]{};
