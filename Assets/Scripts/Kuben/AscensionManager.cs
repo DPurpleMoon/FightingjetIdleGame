@@ -71,7 +71,6 @@ public class AscensionManager : MonoBehaviour
 
     public void SaveAscension()
     {
-        "AscensionTokens"
         PlayerPrefs.SetInt(TokenKey, ascensionTokens);
         PlayerPrefs.Save();
     }
