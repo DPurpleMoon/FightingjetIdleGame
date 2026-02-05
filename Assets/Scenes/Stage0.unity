@@ -968,27 +968,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 447104523345196546, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
   m_PrefabInstance: {fileID: 126429630872899117}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &338932751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 338932750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3eac7c8edbfb9c46bdb0def2383da47, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyShoot
-  Controller: {fileID: 0}
-  Pattern: {fileID: 0}
-  EnemyBulletObject: {fileID: 340181174}
-  SelectedEnemy: {fileID: 0}
-  ShootRate: 0
-  bulletspeed: 0
-  spawndistance: 0
-  AttackType: 
-  Data: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
 --- !u!4 &338932758 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8927536285969150340, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
@@ -8149,6 +8128,14 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2045534144880008301, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
+      propertyPath: EnemyBulletObject
+      value: 
+      objectReference: {fileID: 340181174}
+    - target: {fileID: 3889279613673045437, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
+      propertyPath: EnemyBulletObject
+      value: 
+      objectReference: {fileID: 340181174}
     - target: {fileID: 6297495522651124099, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
       propertyPath: Data
       value: 
@@ -8896,6 +8883,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3889279613673045437, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
+      propertyPath: EnemyBulletObject
+      value: 
+      objectReference: {fileID: 340181174}
     - target: {fileID: 6297495522651124099, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
       propertyPath: Data
       value: 
@@ -8956,13 +8947,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2045534144880008301, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 447104523345196546, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 338932751}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5fbfc09490b7f340bb35e2a89aad05f, type: 3}
 --- !u!212 &128754822809017628
 SpriteRenderer:

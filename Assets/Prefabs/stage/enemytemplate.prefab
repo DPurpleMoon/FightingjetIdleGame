@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6297495522651124099}
   - component: {fileID: 7665711103545316008}
   - component: {fileID: 3532591837524366291}
+  - component: {fileID: 3889279613673045437}
   m_Layer: 0
   m_Name: enemytemplate
   m_TagString: Untagged
@@ -180,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a861a29c0dbd7df489410d326714550e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnController
-  Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
+  Data: {fileID: 0}
 --- !u!114 &7665711103545316008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +195,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthController
   healthSlider: {fileID: 0}
+  MaxHealth: 0
+  EnemyName: 
   Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
   Controller: {fileID: 0}
   invEnemyTime: 1.5
@@ -209,3 +212,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3d14fa202db264688575afaeb739d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackPattern
+--- !u!114 &3889279613673045437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447104523345196546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3eac7c8edbfb9c46bdb0def2383da47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyShoot
+  Controller: {fileID: 0}
+  Pattern: {fileID: 0}
+  EnemyBulletObject: {fileID: 0}
+  SelectedEnemy: {fileID: 0}
+  ShootRate: 0
+  bulletspeed: 0
+  spawndistance: 0
+  AttackType: 
+  Data: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
