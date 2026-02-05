@@ -15,12 +15,14 @@ public class AscensionManager : MonoBehaviour
 
     private double pendingCost = 0;
     public event Action OnAscensionChanged;
-    private const string TokenKey = "Ascension_Tokens";
+
+    public GameObject manObj;
 
     private void Awake()
     {
         if (Instance == null) { Instance = this; LoadAscension(); }
         else Destroy(gameObject);
+        manObj = GameObject.Find("SaveLoadManager");
     }
 
     // Multiplier = 1.0 + (Tokens * 0.10)
@@ -69,6 +71,7 @@ public class AscensionManager : MonoBehaviour
 
     public void SaveAscension()
     {
+        "AscensionTokens"
         PlayerPrefs.SetInt(TokenKey, ascensionTokens);
         PlayerPrefs.Save();
     }

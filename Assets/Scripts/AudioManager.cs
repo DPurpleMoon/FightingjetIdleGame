@@ -44,7 +44,8 @@ public class AudioManager : MonoBehaviour
             return;
         }
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
-        if ((float)SaveLoad.LoadGame("MusicVolume") != null)
+        object temp = SaveLoad.LoadGame("MusicVolume");
+        if (temp != null)
         {
             musicVolume = (float)SaveLoad.LoadGame("MusicVolume");
         }

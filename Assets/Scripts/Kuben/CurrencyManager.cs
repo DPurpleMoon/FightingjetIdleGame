@@ -45,12 +45,14 @@ public class CurrencyManager : MonoBehaviour
 
     public void SaveCurrency()
     {
+        manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
         SaveLoad.SaveGame("Currency", Currency);
     }
 
     public void LoadCurrency()
     {
+        manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
         double s = (double)SaveLoad.LoadGame("Currency");
         if (s == null)

@@ -167,7 +167,7 @@ public class SettingsMenu : MonoBehaviour
             settingsPanel.SetActive(false);
         }
 
-        StartMenu startMenu = FindFirstObjectByType<StartMenu>();
+        StartMenu startMenu = FindFirstObjectByType<StartMenu>(FindObjectsInactive.Include);
         if (startMenu != null)
         {
             startMenu.CloseSettings();

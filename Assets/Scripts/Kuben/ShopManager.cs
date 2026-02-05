@@ -22,6 +22,7 @@ public class ShopManager : MonoBehaviour
     {
         if (Instance == null) { Instance = this;}
         else Destroy(gameObject);
+        manObj = GameObject.Find("SaveLoadManager");
     }
 
     private void Start()

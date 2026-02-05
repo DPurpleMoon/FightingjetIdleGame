@@ -24,6 +24,7 @@ public class optionmenu : MonoBehaviour
     void Start()
     {
         Debug.Log("=== OPTIONMENU START BEGIN ===");
+        manObj = GameObject.Find("SaveLoadManager");
         
         try
         {
