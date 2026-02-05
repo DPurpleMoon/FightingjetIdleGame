@@ -22,7 +22,6 @@ public class AscensionManager : MonoBehaviour
     {
         if (Instance == null) { Instance = this; LoadAscension(); }
         else Destroy(gameObject);
-        manObj = GameObject.Find("SaveLoadManager");
     }
 
     // Multiplier = 1.0 + (Tokens * 0.10)
@@ -71,12 +70,14 @@ public class AscensionManager : MonoBehaviour
 
     public void SaveAscension()
     {
+        manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
         SaveLoad.SaveGame("Ascension", ascensionTokens);
     }
 
     public void LoadAscension()
     {
+        manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
         ascensionTokens = (int)SaveLoad.LoadGame("Ascension");
         if (ascensionTokens == null)
