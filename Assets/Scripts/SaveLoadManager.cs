@@ -9,39 +9,55 @@ public class SaveLoadManager : MonoBehaviour
     
     private string saveFilePath;
     
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            
-            saveFilePath = Path.Combine(Application.persistentDataPath, "gamedata.json");
-            Debug.Log("Save file location: " + saveFilePath);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-    
-    
-    public void SaveGame()
+    public void SaveGame(string DataType, object objectdata)
     {
         try
         {
-            GameData data = new GameData();
-            
-            data.brightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
-            data.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
-            data.sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 0.7f);
-            
-            if (StageScore.Instance != null)
+            GameData Savedata = new GameData();
+            saveFilePath = Path.Combine(Application.persistentDataPath, "gamedata.json");
+            if (File.Exists(saveFilePath))
             {
-                data.highScore = StageScore.Instance.CurrentScore;
+                string jsonString = File.ReadAllText(saveFilePath);
+                Savedata = JsonUtility.FromJson<GameData>(jsonString);
             }
-            
-            string json = JsonUtility.ToJson(data, true);  
+            if (DataType == "Brightness")
+            {
+                Savedata.brightness = (float)objectdata;
+            }
+            else if (DataType == "MusicVolume")
+            {
+                Savedata.musicVolume = (float)objectdata;
+            }
+            else if (DataType == "SFXVolume")
+            {
+                Savedata.sfxVolume = (float)objectdata;
+            }
+            else if (DataType == "Currency")
+            {
+                Savedata.currency = (int)objectdata;
+            }
+            else if (DataType == "EquipWeapon")
+            {
+                Savedata.equippedWeaponName = (string)objectdata;
+            }
+            else if (DataType == "PurchasedWeapons")
+            {
+                Savedata.purchasedWeapons = (string[])objectdata;
+            }
+            else if (DataType == "CompleteStages")
+            {
+                Savedata.stageCompleted = (int[])objectdata;
+            }
+            else if (DataType == "LevelScore")
+            {
+                Savedata.levelScore = (string[])objectdata;
+            }
+            else
+            {
+                Debug.LogError("Wrong DataType argument given!");
+            }
+
+            string json = JsonUtility.ToJson(Savedata, true);  
             
             File.WriteAllText(saveFilePath, json);
             
@@ -55,50 +71,70 @@ public class SaveLoadManager : MonoBehaviour
     }
     
     
-    public void LoadGame()
+    public object LoadGame(string DataType)
     {
         try
         {
             if (!File.Exists(saveFilePath))
             {
                 Debug.Log("No save file found. Starting new game.");
-                return;
+                return null;
             }
-            
+            saveFilePath = Path.Combine(Application.persistentDataPath, "gamedata.json");
             string json = File.ReadAllText(saveFilePath);
             
-            GameData data = JsonUtility.FromJson<GameData>(json);
+            GameData Savedata = JsonUtility.FromJson<GameData>(json);
             
-            if (data == null)
+            if (Savedata == null)
             {
                 Debug.LogError("Failed to parse save data!");
-                return;
+                return null;
             }
             
-            PlayerPrefs.SetFloat("Brightness", data.brightness);
-            PlayerPrefs.SetFloat("MusicVolume", data.musicVolume);
-            PlayerPrefs.SetFloat("SFXVolume", data.sfxVolume);
-            PlayerPrefs.Save();
-            
-            if (BrightnessManager.Instance != null)
+            if (DataType == "Brightness")
             {
-                BrightnessManager.Instance.ApplyBrightness(data.brightness);
+                return Savedata.brightness;
             }
-            
-            if (AudioManager.Instance != null)
+            else if (DataType == "MusicVolume")
             {
-                AudioManager.Instance.SetMusicVolume(data.musicVolume);
-                AudioManager.Instance.SetSFXVolume(data.sfxVolume);
+                return Savedata.musicVolume;
             }
-            
-           
-            
+            else if (DataType == "SFXVolume")
+            {
+                return Savedata.sfxVolume;
+            }
+            else if (DataType == "Currency")
+            {
+                return Savedata.currency;
+            }
+            else if (DataType == "EquipWeapon")
+            {
+                return Savedata.equippedWeaponName;
+            }
+            else if (DataType == "PurchasedWeapons")
+            {
+                return Savedata.purchasedWeapons;
+            }
+            else if (DataType == "CompleteStages")
+            {
+                return Savedata.stageCompleted;
+            }
+            else if (DataType == "LevelScore")
+            {
+                return Savedata.levelScore;
+            }
+            else
+            {
+                Debug.LogError("Wrong DataType argument given!");
+            }
             Debug.Log("Game loaded successfully!");
             Debug.Log("Loaded data: " + json);
+            return null;
         }
         catch (Exception e)
         {
             Debug.LogError("Failed to load game: " + e.Message);
+            return null;
         }
     }
     
@@ -130,17 +166,12 @@ public class SaveLoadManager : MonoBehaviour
 [Serializable]
 public class GameData
 {
-     public float brightness = 1.0f;
-    public float musicVolume = 0.5f;
-    public float sfxVolume = 0.7f;
-    
-     public int maxHealth = 3;
-    public int currentHealth = 3;
-    
-     public int currency = 0;
-    public string equippedWeaponName = "";
-    public string[] purchasedWeapons = new string[0];
-    
-     public int highScore = 0;
-    public string[] completedStages = new string[0];
+    public float brightness;
+    public float musicVolume;
+    public float sfxVolume;
+    public int currency;
+    public string equippedWeaponName;
+    public string[] purchasedWeapons = new string[]{};
+    public int[] stageCompleted = new int[]{};
+    public string[] levelScore = new string[]{};
 }
