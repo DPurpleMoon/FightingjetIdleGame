@@ -77,7 +77,7 @@ public class StageRead : MonoBehaviour
         
         if (!System.IO.File.Exists(FilePath))
         {
-            Debug.LogError($"[StageRead] Level file not found: {name}.lvl. Defaulting to 1.0 multiplier.");
+            Debug.Log($"[StageRead] Level file not found: {name}.lvl. Defaulting to 1.0 multiplier.");
             return 1.0f;
         }
 

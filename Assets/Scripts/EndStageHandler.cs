@@ -11,7 +11,7 @@ public class EndStageHandler : MonoBehaviour{
     {
         if (EnemySpawnManager.DupeEnemyList.All(item => item == null) != true)
         {
-            yield return new WaitUntil(() => Time.timeScale > 0);
+            yield return null;
         }
         else
         {
