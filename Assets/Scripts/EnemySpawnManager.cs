@@ -85,9 +85,12 @@ public class EnemySpawnManager : MonoBehaviour {
             DupeEnemyList.Add(DupeEnemy);
             DupeEnemyHealthList.Add(DupeHealth);
             Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Speed, boss);
+            if (i == enemyamount - 1)
+            {
             yield return new WaitForSeconds(distance);
+            }
         }
-        if (finalwave == true)
+        if (finalwave)
         {
             EndStageHandler Handler = EndingManager.GetComponent<EndStageHandler>();
             StartCoroutine(Handler.EndStageCheck());

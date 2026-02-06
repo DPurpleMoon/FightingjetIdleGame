@@ -111,9 +111,7 @@ public class StageScrollingController : MonoBehaviour {
                 }
             }
             yield return new WaitUntil(() => Time.timeScale > 0);
-            
         }
-        
         ActualLocation = TargetPosition;
         yield break;
     }
