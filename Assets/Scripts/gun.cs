@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace jetfighter.movement
 {
@@ -42,10 +44,7 @@ namespace jetfighter.movement
             float effectiveFireRate = (currentWeapon != null) ? currentWeapon.fireRate : defaultFireRate;
             if (Input.GetKey(KeyCode.Space) && Time.time >= FireTime && Time.timeScale == 1f)
             {
-                Debug.Log(currentWeapon);
                 Fire(currentWeapon);
-                
-                GameObject bulletObj = Instantiate(defaultBulletPrefab, firePoint.position, firePoint.rotation);
                 FireTime = Time.time + effectiveFireRate;
             }
         }
@@ -66,7 +65,26 @@ namespace jetfighter.movement
             if (bulletScript != null)
             {
                 // Get damage from Shop, or use default 10
-                double damageVal = (weaponData != null) ? weaponData.GetDamage() : 10;
+                SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+                string WeaponUnlockedString = (string)SaveLoad.LoadGame("PurchasedWeapons");
+                if (string.IsNullOrEmpty(WeaponUnlockedString))
+                {
+                    WeaponUnlockedString = "{\"weaponList\": [{\"WeaponName\": \"Basic Blaster\", \"WeaponLevel\": 1}]}";
+                }
+                JsonNode jsonNode = JsonNode.Parse(WeaponUnlockedString);
+                JsonArray WeaponDataList = jsonNode?["weaponList"]?.AsArray();
+                if (WeaponDataList != null)
+                foreach (WeaponData weapon in availableWeapons)
+                {
+                    foreach (var WeaponDetails in WeaponDataList)
+                    {
+                        if ((string)WeaponDetails?["WeaponName"] == (string)weapon.name)
+                        {
+                            weapon.currentLevel = (int)WeaponDetails?["WeaponLevel"] ;
+                        }
+                    }
+                }
+                double damageVal = (weaponData != null) ? weaponData.baseDamage + ((weaponData.currentLevel - 1) * weaponData.damageMultiplier) : 10;
                 bulletScript.SetDamage((int)damageVal);
             }
 
@@ -83,7 +101,7 @@ namespace jetfighter.movement
             {
                 // Use weapon's force if available, otherwise default
                 float force = (weaponData != null) ? weaponData.fireForce : defaultFireForce;
-                rbp.AddForce(firePoint.up * force, ForceMode2D.Impulse);
+                rbp.AddForce(firePoint.up * force * 5, ForceMode2D.Impulse);
             }
 
             if (AudioManager.Instance != null)
