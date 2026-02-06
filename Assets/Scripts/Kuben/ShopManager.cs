@@ -109,6 +109,10 @@ public class ShopManager : MonoBehaviour
     {
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
         string WeaponUnlockedString = (string)SaveLoad.LoadGame("PurchasedWeapons");
+        if (string.IsNullOrEmpty(WeaponUnlockedString))
+        {
+            WeaponUnlockedString = "{\"weaponList\": [{\"WeaponName\": \"Basic Blaster\", \"WeaponLevel\": 1}]}";
+        }
         JsonNode jsonNode = JsonNode.Parse(WeaponUnlockedString);
         JsonArray WeaponDataList = jsonNode?["weaponList"]?.AsArray();
         if (WeaponDataList != null)

@@ -55,7 +55,7 @@ public class SaveLoadManager : MonoBehaviour
             }
             else if (DataType == "PurchasedWeapons")
             {
-                Savedata.purchasedWeapons = (string)objectdata;
+                Savedata.purchasedWeapon = (string)objectdata;
             }
             else if (DataType == "CompleteStages")
             {
@@ -141,7 +141,7 @@ public class SaveLoadManager : MonoBehaviour
             }
             else if (DataType == "PurchasedWeapons")
             {
-                return Savedata.purchasedWeapons;
+                return Savedata.purchasedWeapon;
             }
             else if (DataType == "CompleteStages")
             {

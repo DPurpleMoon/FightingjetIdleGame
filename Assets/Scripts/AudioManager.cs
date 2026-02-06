@@ -43,6 +43,7 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
         object temp = SaveLoad.LoadGame("MusicVolume");
         if (temp != null)
