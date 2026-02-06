@@ -57,10 +57,6 @@ public class SaveLoadManager : MonoBehaviour
             {
                 Savedata.purchasedWeapon = (string)objectdata;
             }
-            else if (DataType == "CompleteStages")
-            {
-                Savedata.stageCompleted = (int[])objectdata;
-            }
             else if (DataType == "LevelScore")
             {
                 Savedata.levelScore = (string)objectdata;
@@ -143,10 +139,6 @@ public class SaveLoadManager : MonoBehaviour
             {
                 return Savedata.purchasedWeapon;
             }
-            else if (DataType == "CompleteStages")
-            {
-                return Savedata.stageCompleted;
-            }
             else if (DataType == "LevelScore")
             {
                 return Savedata.levelScore;
@@ -221,5 +213,4 @@ public class GameData
     public string purchasedWeapon; // json // yes
     public string levelScore; // json
     public int CurrentStage;
-    public int[] stageCompleted = new int[]{};
 }

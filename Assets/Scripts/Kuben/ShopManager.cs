@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-
 [DefaultExecutionOrder(-50)]
 public class ShopManager : MonoBehaviour
 {
