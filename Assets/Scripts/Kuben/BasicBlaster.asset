@@ -15,10 +15,10 @@ MonoBehaviour:
   weaponName: Basic Blaster
   description: Reliable, cheap upgrades
   icon: {fileID: 3334214750745791373, guid: 5742e2d8447818c48a7fe0ac3369deaf, type: 3}
-  baseCost: 50
-  costMultiplier: 1.2
-  currentLevel: 1
-  baseDamage: 10
+  baseCost: 28
+  costMultiplier: 2
+  currentLevel: 5
+  baseDamage: 5
   damageMultiplier: 2
-  fireRate: 0.4
+  fireRate: 0.5
   fireForce: 20

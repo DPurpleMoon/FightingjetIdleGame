@@ -1,1 +1,1 @@
-0.2 bubblespread 1200 4 3
+0.2 bubblespread 360000 4 3

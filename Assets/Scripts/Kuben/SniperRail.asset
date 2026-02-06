@@ -15,10 +15,10 @@ MonoBehaviour:
   weaponName: Sniper Rail
   description: One-shot kills, very expensive.
   icon: {fileID: 5563287343319450422, guid: f5ce42292d679dc4ab0783eb27b70c3c, type: 3}
-  baseCost: 5000
-  costMultiplier: 1.6
+  baseCost: 8000
+  costMultiplier: 1.1
   currentLevel: 0
-  baseDamage: 100
-  damageMultiplier: 15
-  fireRate: 2
+  baseDamage: 120000
+  damageMultiplier: 2
+  fireRate: 1
   fireForce: 100

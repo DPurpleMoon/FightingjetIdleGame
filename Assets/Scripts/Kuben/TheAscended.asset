@@ -17,8 +17,8 @@ MonoBehaviour:
   icon: {fileID: -7981520819882890074, guid: 2df28a9eb2257f14cbf7b71bc3118f11, type: 3}
   baseCost: 50000
   costMultiplier: 2
-  currentLevel: 0
-  baseDamage: 50
-  damageMultiplier: 25
-  fireRate: 0.2
+  currentLevel: 8
+  baseDamage: 30000
+  damageMultiplier: 800
+  fireRate: 0.0625
   fireForce: 40
