@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+
 
 [DefaultExecutionOrder(-50)]
 public class ShopManager : MonoBehaviour
@@ -90,12 +93,13 @@ public class ShopManager : MonoBehaviour
     public void SaveShop()
     {
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
-        object[] WeaponUnlocked = new object[] {};
-        object[] WeaponDetails = new object[] {};
+        var weaponList = new JsonObject();
+        var weaponBuyDetail = new JsonArray();
         foreach (WeaponData weapon in availableWeapons)
-            WeaponDetails = new object[] {weapon.name, weapon.currentLevel};
-            WeaponUnlocked = WeaponUnlocked.Append(WeaponDetails).ToArray();
-        SaveLoad.SaveGame("PurchasedWeapons", WeaponUnlocked);
+            weaponBuyDetail.Add(new JsonObject { ["WeaponName"] = weapon.name, ["WeaponLevel"] = weapon.currentLevel});
+        weaponList["weaponList"] = weaponBuyDetail;
+        string weaponListString = JsonSerializer.Serialize(weaponList);
+        SaveLoad.SaveGame("PurchasedWeapons", weaponListString);
 
         int index = (equippedWeapon != null) ? availableWeapons.IndexOf(equippedWeapon) : -1;
         SaveLoad.SaveGame("EquipWeapon", index);
@@ -104,15 +108,24 @@ public class ShopManager : MonoBehaviour
     public void LoadShop()
     {
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
-        object[] WeaponUnlocked = (object[])SaveLoad.LoadGame("PurchasedWeapons");
+        string WeaponUnlockedString = (string)SaveLoad.LoadGame("PurchasedWeapons");
+        if (string.IsNullOrEmpty(WeaponUnlockedString))
+        {
+            WeaponUnlockedString = "{\"weaponList\": [{\"WeaponName\": \"Basic Blaster\", \"WeaponLevel\": 1}]}";
+        }
+        JsonNode jsonNode = JsonNode.Parse(WeaponUnlockedString);
+        JsonArray WeaponDataList = jsonNode?["weaponList"]?.AsArray();
+        if (WeaponDataList != null)
         foreach (WeaponData weapon in availableWeapons)
-            foreach (object[] WeaponDetails in WeaponUnlocked)
+        {
+            foreach (var WeaponDetails in WeaponDataList)
             {
-                if (WeaponDetails[0] == weapon.name)
+                if ((string)WeaponDetails?["WeaponName"] == (string)weapon.name)
                 {
-                    weapon.currentLevel = (int)WeaponDetails[1];
+                    weapon.currentLevel = (int)WeaponDetails?["WeaponLevel"] ;
                 }
             }
+        }
 
         int indexToLoad = (int)SaveLoad.LoadGame("EquipWeapon");
         if (indexToLoad == null)

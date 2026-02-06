@@ -3,11 +3,11 @@ using UnityEngine;
 public class bullet : MonoBehaviour
 {
     public int damage = 10; // Default
-    public float destructionYBoundary = 200f;
+    public float destructionYBoundary;
 
     void Start()
     {
-        destructionYBoundary = 200f;
+        destructionYBoundary = 700f;
     }
 
     // NEW FUNCTION: Called by gun.cs immediately after spawning

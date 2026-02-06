@@ -55,7 +55,7 @@ public class SaveLoadManager : MonoBehaviour
             }
             else if (DataType == "PurchasedWeapons")
             {
-                Savedata.purchasedWeapons = (object[])objectdata;
+                Savedata.purchasedWeapon = (string)objectdata;
             }
             else if (DataType == "CompleteStages")
             {
@@ -63,7 +63,7 @@ public class SaveLoadManager : MonoBehaviour
             }
             else if (DataType == "LevelScore")
             {
-                Savedata.levelScore = (string[])objectdata;
+                Savedata.levelScore = (string)objectdata;
             }
             else if (DataType == "Ascension")
             {
@@ -76,6 +76,10 @@ public class SaveLoadManager : MonoBehaviour
             else if (DataType == "IdleLevel")
             {
                 Savedata.idleLevel = (int)objectdata;
+            }
+            else if (DataType == "CurrentStage")
+            {
+                Savedata.CurrentStage = (int)objectdata;
             }
             else
             {
@@ -137,7 +141,7 @@ public class SaveLoadManager : MonoBehaviour
             }
             else if (DataType == "PurchasedWeapons")
             {
-                return Savedata.purchasedWeapons;
+                return Savedata.purchasedWeapon;
             }
             else if (DataType == "CompleteStages")
             {
@@ -158,6 +162,10 @@ public class SaveLoadManager : MonoBehaviour
             else if (DataType == "IdleLevel")
             {
                 return Savedata.idleLevel;
+            }
+            else if (DataType == "CurrentStage")
+            {
+                return Savedata.CurrentStage;
             }
             else
             {
@@ -208,9 +216,10 @@ public class GameData
     public double currency; // yes
     public int equippedWeaponName; // yes
     public int AscensionLevel; // yes
-    public string logoutTime;
-    public int idleLevel;
-    public object[] purchasedWeapons = new object[]{}; 
+    public string logoutTime; // yes
+    public int idleLevel; // yes
+    public string purchasedWeapon; // json // yes
+    public string levelScore; // json
+    public int CurrentStage;
     public int[] stageCompleted = new int[]{};
-    public string[] levelScore = new string[]{};
 }

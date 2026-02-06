@@ -105,6 +105,10 @@ public class IdleManager : MonoBehaviour
         {
             logTime = DateTime.Now.ToBinary().ToString();
         }
+        if (!long.TryParse(logTime, out long temp))
+        {
+            logTime = DateTime.Now.ToBinary().ToString();
+        }
         DateTime lastLogout = DateTime.FromBinary(Convert.ToInt64(logTime));
         double secondsPassed = (DateTime.Now - lastLogout).TotalSeconds;
 
@@ -114,6 +118,7 @@ public class IdleManager : MonoBehaviour
         // Only show if away for more than 1 minute (60s)
         if (secondsPassed > 60)
         {
+            SaveLoad.SaveGame("LogTime", DateTime.Now.ToBinary().ToString());
             DistributeReward(secondsPassed);
         }
     }
@@ -152,15 +157,6 @@ public class IdleManager : MonoBehaviour
         UpdateStageMultiplier();
         SaveIdleData();
         NotifyUI();
-
-        // Load the actual Scene
-        // Assumption: Scenes are named "Stage0", "Stage1"... index starts at 0.
-        // currentStage 1 = "Stage0"
-        string sceneName = "Stage" + (currentStage - 1);
-        if (Application.CanStreamedLevelBeLoaded(sceneName))
-        {
-            SceneManager.LoadScene(sceneName);
-        }
     }
 
     [ContextMenu("Reset Idle")]
@@ -186,15 +182,26 @@ public class IdleManager : MonoBehaviour
 
     public void SaveIdleData()
     {
-        PlayerPrefs.SetInt(UpgradeKey, idleUpgradeLevel);
-        PlayerPrefs.SetInt(StageKey, currentStage);
-        PlayerPrefs.Save();
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        SaveLoad.SaveGame("IdleLevel", idleUpgradeLevel);
+        SaveLoad.SaveGame("CurrentStage", currentStage);
     }
 
     public void LoadIdleData()
     {
-        idleUpgradeLevel = PlayerPrefs.GetInt(UpgradeKey, 0);
-        currentStage = PlayerPrefs.GetInt(StageKey, 1);
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        idleUpgradeLevel = (int)SaveLoad.LoadGame("IdleLevel");
+        if (idleUpgradeLevel == null)
+        {
+            idleUpgradeLevel = 0;
+        }
+        currentStage = (int)SaveLoad.LoadGame("CurrentStage");
+        if (currentStage == null)
+        {
+            currentStage = 1;
+        }
     }
 
     private void NotifyUI() => OnIdleStatsChanged?.Invoke();
