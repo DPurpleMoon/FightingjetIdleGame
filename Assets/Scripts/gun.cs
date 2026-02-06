@@ -6,16 +6,20 @@ namespace jetfighter.movement
     public class gun : MonoBehaviour
     {
         [Header("Default Settings (If Shop is Empty)")]
-        [SerializeField] private GameObject defaultBulletPrefab;
         [SerializeField] private float defaultFireForce = 20f;
         [SerializeField] private float defaultFireRate = 0.2f;
 
         [Header("References")]
-        [SerializeField] private Transform firePoint;
+        [SerializeField] public GameObject defaultBulletPrefab;
+        [SerializeField] public Transform firePoint;
+
+        [Header("Configuration")]
+        public List<WeaponData> availableWeapons;
         
         public float FireTime;
         private Collider2D playerCollider;
         public WeaponData currentWeapon;
+        public GameObject manObj;
 
         private void Start()
         {
@@ -29,11 +33,10 @@ namespace jetfighter.movement
         }
         private void Update()
         {
-            // 1. Get the current weapon from Kuben's Shop
-            if (ShopManager.Instance != null)
-            {
-                currentWeapon = ShopManager.Instance.equippedWeapon;
-            }
+            // 1. Get the current weapon from savefile
+            manObj = GameObject.Find("SaveLoadManager");
+            SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+            currentWeapon = availableWeapons[(int)SaveLoad.LoadGame("EquipWeapon")];
 
             // 2. Determine Fire Rate (Use Weapon Data or Default)
             float effectiveFireRate = (currentWeapon != null) ? currentWeapon.fireRate : defaultFireRate;
@@ -41,6 +44,8 @@ namespace jetfighter.movement
             {
                 Debug.Log(currentWeapon);
                 Fire(currentWeapon);
+                
+                GameObject bulletObj = Instantiate(defaultBulletPrefab, firePoint.position, firePoint.rotation);
                 FireTime = Time.time + effectiveFireRate;
             }
         }

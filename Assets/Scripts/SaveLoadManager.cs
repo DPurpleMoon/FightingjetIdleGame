@@ -55,7 +55,7 @@ public class SaveLoadManager : MonoBehaviour
             }
             else if (DataType == "PurchasedWeapons")
             {
-                Savedata.purchasedWeapons = (object[])objectdata;
+                Savedata.purchasedWeapons = (string)objectdata;
             }
             else if (DataType == "CompleteStages")
             {
@@ -63,7 +63,7 @@ public class SaveLoadManager : MonoBehaviour
             }
             else if (DataType == "LevelScore")
             {
-                Savedata.levelScore = (string[])objectdata;
+                Savedata.levelScore = (string)objectdata;
             }
             else if (DataType == "Ascension")
             {
@@ -216,10 +216,10 @@ public class GameData
     public double currency; // yes
     public int equippedWeaponName; // yes
     public int AscensionLevel; // yes
-    public string logoutTime;
-    public int idleLevel;
+    public string logoutTime; // yes
+    public int idleLevel; // yes
     public int CurrentStage;
-    public object[] purchasedWeapons = new object[]{}; 
+    public string purchasedWeapon; // json
     public int[] stageCompleted = new int[]{};
-    public string[] levelScore = new string[]{};
+    public string levelScore; // json
 }

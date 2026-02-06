@@ -9009,7 +9009,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.37254903, g: 0.37254903, b: 0.37254903, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -9222,12 +9222,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19d45e48c9d74ce4db1df9fa9b7f3022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::jetfighter.movement.gun
-  defaultBulletPrefab: {fileID: 558535905808874892}
   defaultFireForce: 1
   defaultFireRate: 2
+  defaultBulletPrefab: {fileID: 558535905808874892}
   firePoint: {fileID: 4305421751615246228}
+  availableWeapons:
+  - {fileID: 11400000, guid: 262904bf8ba923546bc4f6abbe4c1057, type: 2}
+  - {fileID: 11400000, guid: 5ec3046fb006fd84599da14f4ee92134, type: 2}
+  - {fileID: 11400000, guid: ba918e982557eeb46a50350dc3f9ea0d, type: 2}
+  - {fileID: 11400000, guid: 7313f3cf0ccd8c840835425a604ee763, type: 2}
+  - {fileID: 11400000, guid: d8c26bde7b1bc2046a98b8518e49b40b, type: 2}
   FireTime: 0
   currentWeapon: {fileID: 0}
+  manObj: {fileID: 0}
 --- !u!114 &2659217138170209482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9253,11 +9260,11 @@ Transform:
   m_GameObject: {fileID: 558535905808874892}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 199.99998, y: 200, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 0}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 150, y: 150, z: -10}
+  m_LocalScale: {x: 30, y: 30, z: 0}
+  m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 7838956706474901612}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3428410880017713642
 MonoBehaviour:
@@ -9507,7 +9514,7 @@ Transform:
   m_GameObject: {fileID: 224616516375625844}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.23, y: 13.15, z: 0}
+  m_LocalPosition: {x: -0.23, y: 13.15, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9526,7 +9533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::bullet
   damage: 5
-  destructionYBoundary: 150
+  destructionYBoundary: 700
 --- !u!50 &5862158196013902205
 Rigidbody2D:
   serializedVersion: 5
@@ -9695,7 +9702,6 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4303187818010620830}
-  - {fileID: 2789914129020454169}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8345608082118630433
@@ -9736,6 +9742,7 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 7838956706474901612}
+  - {fileID: 2789914129020454169}
   - {fileID: 2079322969}
   - {fileID: 2097574370}
   - {fileID: 1923270011}

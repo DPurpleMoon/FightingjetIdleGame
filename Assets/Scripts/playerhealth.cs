@@ -26,14 +26,14 @@ namespace jetfighter.movement
 
         void OnTriggerEnter2D(Collider2D collision)
         {
-             if (isDead) return;
+            if (isDead) return;
             
-             bool isEnemyBullet = collision.gameObject.CompareTag("EnemyBullet");
+            bool isEnemyBullet = collision.gameObject.CompareTag("EnemyBullet");
             bool isEnemy = collision.gameObject.CompareTag("Enemy");
             
             if ((isEnemyBullet || isEnemy) && Time.time >= invFrame)
             {
-                 Collider2D PlayerCollider = gameObject.GetComponent<Collider2D>();
+                Collider2D PlayerCollider = gameObject.GetComponent<Collider2D>();
                 Physics2D.IgnoreCollision(PlayerCollider, collision);
                 
                  if (AudioManager.Instance != null)
@@ -41,9 +41,9 @@ namespace jetfighter.movement
                     AudioManager.Instance.PlayPlayerTakeDamage();
                 }
                 
-                 TakeDamage(1);
+                TakeDamage(1);
                 
-                 if (isEnemyBullet && collision.gameObject != null)
+                if (isEnemyBullet && collision.gameObject != null)
                 {
                     Destroy(collision.gameObject);
                 }
