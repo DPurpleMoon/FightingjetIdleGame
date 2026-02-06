@@ -218,8 +218,8 @@ public class GameData
     public int AscensionLevel; // yes
     public string logoutTime; // yes
     public int idleLevel; // yes
-    public int CurrentStage;
-    public string purchasedWeapon; // json
-    public int[] stageCompleted = new int[]{};
+    public string purchasedWeapon; // json // yes
     public string levelScore; // json
+    public int CurrentStage;
+    public int[] stageCompleted = new int[]{};
 }
