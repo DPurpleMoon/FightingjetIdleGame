@@ -15,6 +15,7 @@ public class ResultScreen : MonoBehaviour
     public GameObject manObj;
     public void ShowResultScreen()
     {
+        Time.timeScale = 0;
         ResultPanel.SetActive(true);
         ScoreText.text = $"Score: {StageScore.Instance.CurrentScore}";
     }

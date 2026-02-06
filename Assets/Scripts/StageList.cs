@@ -25,14 +25,24 @@ public class StageList : MonoBehaviour
     public TMP_Text StageText;
     public StageListData Data;
     public int CurrentStageNum;
+    public GameObject manObj;
     void Start()
     {
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
         Time.timeScale = 1f;
         string streamingpath = Application.streamingAssetsPath;
         string[] filePaths = Directory.GetFiles($"{streamingpath}/levellist/", "*.json", SearchOption.AllDirectories);
-        Data.stagenum = 0;
+        
+
+        CurrentStageNum = (int)SaveLoad.LoadGame("CurrentStage");;
+        if (CurrentStageNum == null)
+        {
+            CurrentStageNum = 0;
+        }
+        Data.stagenum = CurrentStageNum;
         StageText.text = $"Stage {Data.stagenum}";
-        CurrentStageNum = 0;
+
         foreach (string filepath in filePaths)
         {
         string fileName = Path.GetFileName(filepath);
@@ -69,10 +79,13 @@ public class StageList : MonoBehaviour
     {
         if (Data.stagenum != CurrentStageNum)
         {
+            manObj = GameObject.Find("SaveLoadManager");
+            SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
             string streamingpath = Application.streamingAssetsPath;
             string[] filePaths = Directory.GetFiles($"{streamingpath}/levellist/", "*.json", SearchOption.AllDirectories);
             StageText.text = $"Stage {Data.stagenum}";
             CurrentStageNum = Data.stagenum;
+            SaveLoad.SaveGame("CurrentStage", CurrentStageNum);
             foreach (Transform child in contentParent)
             {
                 Destroy(child.gameObject);

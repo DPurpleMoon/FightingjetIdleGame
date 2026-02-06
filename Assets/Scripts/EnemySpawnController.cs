@@ -14,7 +14,7 @@ public class EnemySpawnController : MonoBehaviour {
 
     void OnDestroy()
     {
-        //Debug.Log(System.Environment.StackTrace);
+        Debug.Log(System.Environment.StackTrace);
     }
 
     public void SetPath(GameObject enemy, Slider Health, List<Vector2> waypoints, float speed, bool boss){
@@ -28,49 +28,58 @@ public class EnemySpawnController : MonoBehaviour {
         if (renderer == null) yield break;
         float enemyheight = renderer.bounds.size.y;
         do {
-        foreach (Vector2 coordinate in waypoints)
-        {    
-            Scene currentScene = SceneManager.GetActiveScene();
-            if (!Data.isPaused)
-            { 
-            if (enemy == null) yield break;
-            Vector3 target = new Vector3(coordinate.x, coordinate.y, -20f);
-            // Set health y position to current location of enemy + height of enemy/2 + 5f and x position to current location of enemy + 1.5f
-            Vector3 HealthTarget = new Vector3(coordinate.x + 1.5f, coordinate.y + (enemyheight / 2) + 5f, 0f);
-            if (i == 0)
-            {
-                enemy.transform.position = target;
-                Health.transform.position = HealthTarget;
-            }
-            else 
-            {
-                while (Vector3.Distance(enemy.transform.position, target) > 0.05f)
+            int n;
+            foreach (Vector2 coordinate in waypoints)
+            {   
+                n = 0;
+                Scene currentScene = SceneManager.GetActiveScene();
+                if (enemy == null) yield break;
+                Vector3 target = new Vector3(coordinate.x, coordinate.y, -20f);
+                // Set health y position to current location of enemy + height of enemy/2 + 5f and x position to current location of enemy + 1.5f
+                Vector3 HealthTarget = new Vector3(coordinate.x + 1.5f, coordinate.y + (enemyheight / 2) + 5f, 0f);
+                if (i == 0)
                 {
-                    if (enemy == null) yield break;
-                    enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
-                    Health.transform.position = Vector3.MoveTowards(Health.transform.position, HealthTarget, speed * Time.deltaTime);
+                    enemy.transform.position = target;
+                    Health.transform.position = HealthTarget;
                 }
+                else 
+                {
+                    while (Vector3.Distance(enemy.transform.position, target) > 0.05f)
+                    {
+                        if (enemy == null) yield break;
+                        enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
+                        Health.transform.position = Vector3.MoveTowards(Health.transform.position, HealthTarget, speed * Time.deltaTime);
+                        if (Time.timeScale == 0) 
+                        {
+                            yield return null;
+                            n = 5;
+                        }
+                        if (Time.timeScale == 1 && n != 0) 
+                        {
+                            yield return null;
+                            n--;
+                        }
+                    }
+                }
+                if (i % speed == 0)
+                {
+                    yield return new WaitUntil(() => Time.timeScale > 0);;
+                }
+                i++;
+                if (currentScene.name != "Stage0") yield break;
             }
-            if (i % speed == 0)
-            {
-                yield return new WaitUntil(() => Time.timeScale > 0);
-            }
-            i++;
-            }
-            if (currentScene.name != "Stage0") yield break;
-        }
-        }
-        while (boss == true && enemy != null);
+        } while (boss == true && enemy != null);
         if (EnemySpawnManager.DupeEnemyHealthList.Contains(Health))
-            {
-                EnemySpawnManager.DupeEnemyHealthList.Remove(Health);
-            }
+        {
+            EnemySpawnManager.DupeEnemyHealthList.Remove(Health);
+        }
         if (EnemySpawnManager.DupeEnemyList.Contains(enemy))
-            {
-                EnemySpawnManager.DupeEnemyList.Remove(enemy);
-            }
+        {
+            EnemySpawnManager.DupeEnemyList.Remove(enemy);
+        }
         if (Health.gameObject != null) Destroy(Health.gameObject);
         if (enemy != null) Destroy(enemy);
+        
     }
 
 
