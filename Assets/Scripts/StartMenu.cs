@@ -7,6 +7,7 @@ public class StartMenu : MonoBehaviour
     [Header("Menu Panels")]
     public GameObject startMenuPanel;
     public GameObject settingsPanel;
+    public GameObject creditPanel;
 
     public GameObject manObj;
     public Button ContinueButton;
@@ -24,6 +25,11 @@ public class StartMenu : MonoBehaviour
         {
             settingsPanel.SetActive(false);
         }
+        
+        if (creditPanel != null)
+        {
+            creditPanel.SetActive(false);
+        }
 
         if (AudioManager.Instance != null)
         {
@@ -39,11 +45,27 @@ public class StartMenu : MonoBehaviour
         }
     }
 
+    public void OpenCredits()
+    {
+        startMenuPanel.SetActive(false);
+        creditPanel.SetActive(true);
+    }
+
+    public void CloseCredits()
+    {
+        startMenuPanel.SetActive(true);
+        creditPanel.SetActive(false);
+    }
+
     public void NewGame()
     {
         manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
         SaveLoad.NewSave();
+        SaveLoad.SaveGame("CurrentStage", 1);
+        SaveLoad.SaveGame("Brightness", 1f);
+        SaveLoad.SaveGame("MusicVolume", 0.7f);
+        SaveLoad.SaveGame("SFXVolume", 0.5f);
         SceneManager.LoadScene("StageList");
 
         if (AudioManager.Instance != null)

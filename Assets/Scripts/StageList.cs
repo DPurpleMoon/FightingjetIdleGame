@@ -38,7 +38,7 @@ public class StageList : MonoBehaviour
         CurrentStageNum = (int)SaveLoad.LoadGame("CurrentStage");;
         if (CurrentStageNum == null)
         {
-            CurrentStageNum = 0;
+            CurrentStageNum = 1;
         }
         Data.stagenum = CurrentStageNum;
         StageText.text = $"Stage {Data.stagenum}";
