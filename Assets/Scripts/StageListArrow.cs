@@ -30,7 +30,7 @@ public class StageListArrow : MonoBehaviour
                 {Data.stagenum++;}
             }
         }
-        if (Data.stagenum == 0)
+        if (Data.stagenum == 1)
         {
             leftbutton.SetActive(false);
             rightbutton.SetActive(true);

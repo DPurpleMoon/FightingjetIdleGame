@@ -27,13 +27,6 @@ public class IdleManager : MonoBehaviour
     public int upgradeBaseCost = 1800;
     public float upgradeCostMultiplier = 1.3f; // Slightly steeper curve
 
-    [Header("UI References")]
-    public GameObject welcomePanel;
-    public TextMeshProUGUI welcomeText;
-
-    private const string LogoutKey = "Idle_LogoutTime";
-    private const string UpgradeKey = "Idle_UpgradeLevel";
-    private const string StageKey = "Idle_CurrentStage";
     private float incomeTimer = 0f;
 
     public event Action OnIdleStatsChanged;
@@ -47,6 +40,7 @@ public class IdleManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("test");
         UpdateStageMultiplier();
         CalculateOfflineEarnings();
     }
@@ -127,12 +121,6 @@ public class IdleManager : MonoBehaviour
     {
         double totalEarned = seconds * GetCoinsPerSecond();
         CurrencyManager.Instance.AddCurrency(totalEarned);
-
-        if (welcomePanel != null && welcomeText != null && totalEarned > 0)
-        {
-            welcomePanel.SetActive(true);
-            welcomeText.text = $"Welcome Back!\nTime Away: {seconds / 60:F0} mins\nEARNED: ${totalEarned:N0}";
-        }
     }
 
     public double GetUpgradeCost()
@@ -172,7 +160,6 @@ public class IdleManager : MonoBehaviour
         SaveIdleData(); 
         manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
-        SaveLoad.SaveGame("LogTime", DateTime.Now.ToBinary().ToString());
     }
     
     private void OnApplicationPause(bool pause) 
@@ -185,7 +172,6 @@ public class IdleManager : MonoBehaviour
         manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
         SaveLoad.SaveGame("IdleLevel", idleUpgradeLevel);
-        SaveLoad.SaveGame("CurrentStage", currentStage);
     }
 
     public void LoadIdleData()

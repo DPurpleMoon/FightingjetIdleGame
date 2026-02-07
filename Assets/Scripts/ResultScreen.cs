@@ -74,12 +74,16 @@ public class ResultScreen : MonoBehaviour
         SaveLoad.SaveGame("LevelScore", StageScoreParentListString);
         ResultPanel.SetActive(false);
         StageScrollingController Stage = manager.GetComponent<StageScrollingController>();
+        StageData.stageReadEnd = false;
+        StageData.enemySpawnEnd = false;
         Stage.LeaveStage();
     }
     public void returnStageListDeath()
     {
         DeathPanel.SetActive(false);
         StageScrollingController Stage = manager.GetComponent<StageScrollingController>();
+        StageData.stageReadEnd = false;
+        StageData.enemySpawnEnd = false;
         Stage.LeaveStage();
     }
 }

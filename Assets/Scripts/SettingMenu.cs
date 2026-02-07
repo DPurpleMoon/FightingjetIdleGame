@@ -16,9 +16,17 @@ public class SettingsMenu : MonoBehaviour
     public Button loadButton;
     public TextMeshProUGUI statusText;
 
+    public GameObject manObj;
+
     void Start()
     {
-        float savedBrightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        float savedBrightness = (float)SaveLoad.LoadGame("Brightness");
+        if (savedBrightness == null)
+        {
+            savedBrightness = 1f;
+        }
         if (brightnessSlider != null)
         {
             brightnessSlider.value = savedBrightness;
@@ -29,7 +37,11 @@ public class SettingsMenu : MonoBehaviour
             brightnessSlider.onValueChanged.AddListener(SetBrightness);
         }
 
-        float savedMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
+        float savedMusicVolume = (float)SaveLoad.LoadGame("MusicVolume");
+        if (savedMusicVolume == null)
+        {
+            savedMusicVolume = 0.5f;
+        }
         if (musicVolumeSlider != null)
         {
             musicVolumeSlider.value = savedMusicVolume;
@@ -40,7 +52,11 @@ public class SettingsMenu : MonoBehaviour
             musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
         }
 
-        float savedSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 0.7f);
+        float savedSFXVolume = (float)SaveLoad.LoadGame("SFXVolume");
+        if (savedSFXVolume == null)
+        {
+            savedSFXVolume = 0.7f;
+        }
         if (sfxVolumeSlider != null)
         {
             sfxVolumeSlider.value = savedSFXVolume;
@@ -64,8 +80,9 @@ public class SettingsMenu : MonoBehaviour
 
     public void SetBrightness(float brightness)
     {
-        PlayerPrefs.SetFloat("Brightness", brightness);
-        PlayerPrefs.Save();
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        SaveLoad.SaveGame("Brightness", brightness);
         
         if (BrightnessManager.Instance != null)
         {
@@ -77,9 +94,10 @@ public class SettingsMenu : MonoBehaviour
 
     public void SetMusicVolume(float volume)
     {
-        PlayerPrefs.SetFloat("MusicVolume", volume);
-        PlayerPrefs.Save();
-        
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        SaveLoad.SaveGame("MusicVolume", volume);
+
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.SetMusicVolume(volume);
@@ -90,8 +108,9 @@ public class SettingsMenu : MonoBehaviour
 
     public void SetSFXVolume(float volume)
     {
-        PlayerPrefs.SetFloat("SFXVolume", volume);
-        PlayerPrefs.Save();
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        SaveLoad.SaveGame("SFXVolume", volume);
         
         if (AudioManager.Instance != null)
         {
@@ -117,27 +136,37 @@ public class SettingsMenu : MonoBehaviour
     
     public void LoadGame()
     {
-        if (SaveLoadManager.Instance != null)
-        {   
-            float brightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
-            if (brightnessSlider != null)
-                brightnessSlider.value = brightness;
-                
-            float music = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
-            if (musicVolumeSlider != null)
-                musicVolumeSlider.value = music;
-                
-            float sfx = PlayerPrefs.GetFloat("SFXVolume", 0.7f);
-            if (sfxVolumeSlider != null)
-                sfxVolumeSlider.value = sfx;
-            
-            ShowStatus("Game Loaded!");
-        }
-        else
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        float Brightness = (float)SaveLoad.LoadGame("Brightness");
+        if (Brightness == null)
         {
-            Debug.LogError("SaveLoadManager not found!");
-            ShowStatus("Load Failed!");
+            Brightness = 1f;
         }
+        if (brightnessSlider != null)
+        {
+            brightnessSlider.value = Brightness;
+        }
+        float music = (float)SaveLoad.LoadGame("MusicVolume");
+        if (music == null)
+        {
+            music = 0.5f;
+        }
+        if (musicVolumeSlider != null)
+        {
+            musicVolumeSlider.value = music;
+        }
+        
+        float sfx = (float)SaveLoad.LoadGame("SFXVolume");
+        if (sfx == null)
+        {
+            sfx = 0.7f;
+        }
+        if (sfxVolumeSlider != null)
+        {
+            sfxVolumeSlider.value = sfx;    
+        }
+        ShowStatus("Game Loaded!");
     }
     
     void ShowStatus(string message)

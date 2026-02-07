@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 8639377253196420021, guid: de3c1457803c70344b2df96a92f60bd6, type: 3}
+  m_Sprite: {fileID: -6136655737044896783, guid: dc2d318b3cef1fc49bfc4d7eac0bbd91, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,5 +103,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d85020632d44d749b63ba6035454fbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  TargetPosition: {x: 0, y: 0}
+  ActualLocation: {x: 0, y: 0}
+  StageCloned: 0
+  CurrentStage: {fileID: 0}
   DupeStage: {fileID: 0}
+  BGHeight: 0
   Stage: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}

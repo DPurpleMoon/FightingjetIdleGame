@@ -190,7 +190,15 @@ public class SaveLoadManager : MonoBehaviour
             Debug.LogError("Failed to delete save: " + e.Message);
         }
     }
-    
+
+    public void NewSave()
+    {
+        GameData Savedata = new GameData();
+        saveFilePath = Path.Combine(Application.persistentDataPath, "gamedata.json");
+        string json = JsonUtility.ToJson(Savedata, true);   
+        File.WriteAllText(saveFilePath, json);
+
+    }
      
     public bool SaveExists()
     {

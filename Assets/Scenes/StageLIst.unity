@@ -890,7 +890,7 @@ MonoBehaviour:
   m_Content: {fileID: 1534529274}
   m_Horizontal: 1
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -979,6 +979,7 @@ MonoBehaviour:
   StageText: {fileID: 1060768841}
   Data: {fileID: 11400000, guid: a86c57bdb27bda342a408e4aa91a1e32, type: 2}
   CurrentStageNum: 0
+  manObj: {fileID: 0}
 --- !u!4 &964753381
 Transform:
   m_ObjectHideFlags: 0

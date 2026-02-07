@@ -27,6 +27,8 @@ public class OnStage : MonoBehaviour
     {
         if (scene.name == "Stage0")
         {
+            StageData.stageReadEnd = false;
+            StageData.enemySpawnEnd = false;
             Time.timeScale = 1;
             List<List<object>> CoordinateList = new List<List<object>>{}; 
             StageScript = GetComponent<StageScrollingController>();
@@ -60,10 +62,10 @@ public class OnStage : MonoBehaviour
     private IEnumerator EnemySpawn(List<object> Level)
     {
             int i = 2;
-            bool finalwave = false;
             bool boss = false;
             while (i < Level.Count)
                 {
+                    StageData.enemySpawnEnd = false;
                     List<object> EnemyDetails = (List<object>)Level[i];
                     if (-StageScript.ActualLocation.y >= (float)EnemyDetails[0])
                     {
@@ -110,15 +112,13 @@ public class OnStage : MonoBehaviour
                             CoordinateList.Add(Paths);
                         }
                         // x (-188 > 188), y (-110, 110)
-                        if (i == Level.Count - 1)
-                        {
-                            finalwave = true;
-                        }
-                        StartCoroutine(EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList, EnemyName, Speed, stats, finalwave, boss));
+                        StartCoroutine(EnemySpawnManager.Instance.SpawnEnemy((int)EnemyDetails[3], (float)EnemyDetails[4], CoordinateList, EnemyName, Speed, stats, false, boss));
                         i++;
                         continue;
                     }
                 yield return new WaitUntil(() => Time.timeScale > 0);
                 }
+                Debug.Log("yeesyess");
+                StageData.stageReadEnd = true;
     }
 }

@@ -11,4 +11,6 @@ public class StageScrollingData : ScriptableObject
     public float StartingVelocity;
     public float MaxVelocity;
     public bool isPaused = false;
+    public bool stageReadEnd = false;
+    public bool enemySpawnEnd = false;
 }

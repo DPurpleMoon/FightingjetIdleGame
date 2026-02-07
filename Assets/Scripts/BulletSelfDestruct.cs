@@ -29,9 +29,4 @@ public class BulletSelfDestruct : MonoBehaviour
             return;
         }
     }
-    public void BulInitialize(Vector2 startingVelocity, bool startPaused)
-    {
-        savedVelocity = startingVelocity;
-        rb.linearVelocity = startingVelocity;
-    }
 }

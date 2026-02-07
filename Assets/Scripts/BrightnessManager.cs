@@ -8,8 +8,9 @@ public class BrightnessManager : MonoBehaviour
     
     [Header("Brightness Overlay")]
     public Image brightnessOverlay;
-    
-    
+
+    public GameObject manObj;
+
     void Awake()
     {
         if (Instance == null)
@@ -29,7 +30,13 @@ public class BrightnessManager : MonoBehaviour
     {
         InitializeOverlay();
         
-        float savedBrightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        float savedBrightness = (float)SaveLoad.LoadGame("Brightness");
+        if (savedBrightness == null)
+        {
+            savedBrightness = 0.3f;
+        }
         ApplyBrightness(savedBrightness);
         
     }
@@ -66,7 +73,13 @@ public class BrightnessManager : MonoBehaviour
         brightnessOverlay = null;
         InitializeOverlay();
         
-        float savedBrightness = PlayerPrefs.GetFloat("Brightness", 1.0f);
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        float savedBrightness = (float)SaveLoad.LoadGame("Brightness");
+        if (savedBrightness == null)
+        {
+            savedBrightness = 0.3f;
+        }
         ApplyBrightness(savedBrightness);
     }
     
