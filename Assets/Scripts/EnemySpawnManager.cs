@@ -13,7 +13,8 @@ public class EnemySpawnManager : MonoBehaviour {
     public GameObject EndingManager;
     public List<GameObject> enemyPrefabs;
     private Dictionary<string, GameObject> _prefabMap = new Dictionary<string, GameObject>();
-    public EnemyData Data; 
+    public EnemyData Data;
+    public StageScrollingData StageData; 
     public GameObject HealthBar;
     public Transform HealthCanvas;
     public static List<GameObject> DupeEnemyList = new List<GameObject>();
@@ -36,7 +37,7 @@ public class EnemySpawnManager : MonoBehaviour {
         // Build the dictionary once at the start of the scene
         foreach (GameObject prefab in enemyPrefabs)
         {
-            _prefabMap.Add(prefab.name, prefab);
+            _prefabMap[prefab.name] = prefab;
         }
     }
 
@@ -84,16 +85,13 @@ public class EnemySpawnManager : MonoBehaviour {
             DupeHealth.name = $"{enemyId}HPBar";
             DupeEnemyList.Add(DupeEnemy);
             DupeEnemyHealthList.Add(DupeHealth);
-            Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Speed, boss);
+            Controller.SetPath(DupeEnemy, DupeHealth, Waypoints, Speed, boss);  
             if (i == enemyamount - 1)
             {
-            yield return new WaitForSeconds(distance);
+                Debug.Log("yesyesyes");
+                StageData.enemySpawnEnd = true;
             }
-        }
-        if (finalwave)
-        {
-            EndStageHandler Handler = EndingManager.GetComponent<EndStageHandler>();
-            StartCoroutine(Handler.EndStageCheck());
+            yield return new WaitForSeconds(distance);
         }
     }
 

@@ -9021,6 +9021,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EndStageHandler
   Result: {fileID: 0}
+  StageData: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
 --- !u!1 &1840668880
 GameObject:
   m_ObjectHideFlags: 0
@@ -10440,6 +10441,7 @@ MonoBehaviour:
   - {fileID: 165792635}
   - {fileID: 593414415}
   Data: {fileID: 11400000, guid: 3fe04303e73031647882df6d1121763c, type: 2}
+  StageData: {fileID: 11400000, guid: 97446308acda08940a65647a72106352, type: 2}
   HealthBar: {fileID: 1552311437}
   HealthCanvas: {fileID: 1923270011}
 --- !u!114 &2097574369
