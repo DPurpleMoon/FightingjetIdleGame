@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponName: Sniper Rail
   description: One-shot kills, very expensive.
-  icon: {fileID: 5563287343319450422, guid: f5ce42292d679dc4ab0783eb27b70c3c, type: 3}
+  icon: {fileID: 7226234606577313192, guid: b8585432f17d3ab4d8b5210c97658345, type: 3}
   baseCost: 8000
   costMultiplier: 1.1
   currentLevel: 0

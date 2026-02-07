@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponName: Basic Blaster
   description: Reliable, cheap upgrades
-  icon: {fileID: 3334214750745791373, guid: 5742e2d8447818c48a7fe0ac3369deaf, type: 3}
+  icon: {fileID: 4178979622760016952, guid: 3078a18af2626a94c8f5b316795e3d30, type: 3}
   baseCost: 28
   costMultiplier: 2
-  currentLevel: 5
+  currentLevel: 1
   baseDamage: 5
   damageMultiplier: 2
   fireRate: 0.5
