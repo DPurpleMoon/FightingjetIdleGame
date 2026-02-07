@@ -15,10 +15,10 @@ MonoBehaviour:
   weaponName: Rapid Gatling
   description: Shreds weak enemies, expensive to maintain.
   icon: {fileID: 7549911578179725259, guid: 31133d620020d7c48806345deb1b7317, type: 3}
-  baseCost: 500
-  costMultiplier: 1.4
-  currentLevel: 0
-  baseDamage: 4
-  damageMultiplier: 1
-  fireRate: 0.1
+  baseCost: 1200
+  costMultiplier: 1.2
+  currentLevel: 8
+  baseDamage: 50
+  damageMultiplier: 20
+  fireRate: 0.125
   fireForce: 25

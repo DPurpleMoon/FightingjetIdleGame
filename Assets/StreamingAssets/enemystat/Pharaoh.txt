@@ -1,1 +1,1 @@
-0.2 bossspin 500 4 2
+0.2 bossspin 180 4 2
