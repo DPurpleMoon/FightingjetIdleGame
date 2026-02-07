@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -22,7 +23,15 @@ public class SettingsMenu : MonoBehaviour
     {
         manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
-        float savedBrightness = (float)SaveLoad.LoadGame("Brightness");
+        float savedBrightness;
+        try 
+        {
+            savedBrightness = (float)SaveLoad.LoadGame("Brightness");
+        }
+        catch (Exception ex)
+        {
+            savedBrightness = 0.5f;
+        }
         if (savedBrightness == null)
         {
             savedBrightness = 1f;
@@ -36,8 +45,15 @@ public class SettingsMenu : MonoBehaviour
         {
             brightnessSlider.onValueChanged.AddListener(SetBrightness);
         }
-
-        float savedMusicVolume = (float)SaveLoad.LoadGame("MusicVolume");
+        float savedMusicVolume;
+        try 
+        {
+            savedMusicVolume = (float)SaveLoad.LoadGame("MusicVolume");
+        }
+        catch (Exception ex)
+        {
+            savedMusicVolume = 0.5f;
+        }
         if (savedMusicVolume == null)
         {
             savedMusicVolume = 0.5f;
@@ -51,8 +67,15 @@ public class SettingsMenu : MonoBehaviour
         {
             musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
         }
-
-        float savedSFXVolume = (float)SaveLoad.LoadGame("SFXVolume");
+        float savedSFXVolume;
+        try
+        {
+            savedSFXVolume = (float)SaveLoad.LoadGame("SFXVolume");
+        }
+        catch (Exception ex)
+        {
+            savedSFXVolume = 0.7f;  
+        }
         if (savedSFXVolume == null)
         {
             savedSFXVolume = 0.7f;
@@ -138,7 +161,15 @@ public class SettingsMenu : MonoBehaviour
     {
         manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
-        float Brightness = (float)SaveLoad.LoadGame("Brightness");
+        float Brightness;
+        try
+        {
+            Brightness = (float)SaveLoad.LoadGame("Brightness");
+        }
+        catch 
+        {
+            Brightness = 1f;
+        }
         if (Brightness == null)
         {
             Brightness = 1f;
@@ -147,7 +178,15 @@ public class SettingsMenu : MonoBehaviour
         {
             brightnessSlider.value = Brightness;
         }
-        float music = (float)SaveLoad.LoadGame("MusicVolume");
+        float music;
+        try
+        {
+            music = (float)SaveLoad.LoadGame("MusicVolume");
+        }
+        catch (Exception ex)
+        {
+            music = 0.5f;
+        }
         if (music == null)
         {
             music = 0.5f;
@@ -156,8 +195,15 @@ public class SettingsMenu : MonoBehaviour
         {
             musicVolumeSlider.value = music;
         }
-        
-        float sfx = (float)SaveLoad.LoadGame("SFXVolume");
+        float sfx; 
+        try
+        {
+            sfx = (float)SaveLoad.LoadGame("SFXVolume");
+        }
+        catch (Exception ex)
+        {
+            sfx = 0.7f;
+        }
         if (sfx == null)
         {
             sfx = 0.7f;

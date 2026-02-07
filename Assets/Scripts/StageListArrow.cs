@@ -30,6 +30,10 @@ public class StageListArrow : MonoBehaviour
                 {Data.stagenum++;}
             }
         }
+        if (Data.stagenum < 1)
+        {
+            Data.stagenum = 1;
+        }
         if (Data.stagenum == 1 && Data.stagenum != Data.maxstagenum)
         {
             leftbutton.SetActive(false);

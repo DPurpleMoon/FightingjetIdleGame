@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class AudioManager : MonoBehaviour
 {
@@ -45,15 +46,26 @@ public class AudioManager : MonoBehaviour
         }
         manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
-        
+        try {
         musicVolume = (float)SaveLoad.LoadGame("MusicVolume");
+        }
+        catch (Exception ex)
+        {
+            musicVolume = 0.5f;
+        }
         if (musicVolume == null)
         {
             musicVolume = 0.5f;
             SaveLoad.SaveGame("MusicVolume", musicVolume);
         }
         
+        try {
         sfxVolume = (float)SaveLoad.LoadGame("SFXVolume");
+        }
+        catch (Exception ex)
+        {
+            sfxVolume = 0.5f;
+        }
         if (sfxVolume == null)
         {
             sfxVolume = 0.5f;

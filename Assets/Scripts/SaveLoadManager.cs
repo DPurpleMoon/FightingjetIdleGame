@@ -197,7 +197,6 @@ public class SaveLoadManager : MonoBehaviour
         saveFilePath = Path.Combine(Application.persistentDataPath, "gamedata.json");
         string json = JsonUtility.ToJson(Savedata, true);   
         File.WriteAllText(saveFilePath, json);
-
     }
      
     public bool SaveExists()
