@@ -50,18 +50,18 @@ public class StageList : MonoBehaviour
         
         int index = fileName.IndexOf(".json");
         if (index >= 0)
-            {
-                fileName = fileName.Substring(0, index);
-            }
-        Data.maxstagenum = int.Parse(fileName.Substring(5));
+        {
+            fileName = fileName.Substring(0, index);
+        }
         if (fileName == $"level{Data.stagenum}")
             {
             string JsonString = File.ReadAllText(filepath);
             string[] levels = JsonHelper.FromJsonArray(JsonString);
+            int notClearCounter = 0;
+            bool isStageCleared = false;
                 foreach (string level in levels)
                 {
-                    GameObject newButton = Instantiate(StageButton, contentParent);
-                    newButton.name = level;
+                    isStageCleared = false;
                     string StageScoreSave = (string)SaveLoad.LoadGame("LevelScore");
                     int Highscore = 0;
                     if (string.IsNullOrEmpty(StageScoreSave))
@@ -75,17 +75,33 @@ public class StageList : MonoBehaviour
                         if ((string)item?["Name"] == level)
                         {
                             Highscore = (int)item?["Score"];
+                            isStageCleared = true;
                         }
                     }
-                    // Set the text (Assumes prefab has a TMP_Text component)
-                    newButton.GetComponentInChildren<TMP_Text>().text = $"{level.Substring(5)}\nScore:\n{Highscore}";
+                    if (!isStageCleared)
+                    {
+                        notClearCounter++;
+                        Data.maxstagenum = CurrentStageNum;
+                    }
+                    if (notClearCounter < 2)
+                    {
+                        GameObject newButton = Instantiate(StageButton, contentParent);
+                        newButton.name = level;
 
-                    // Add a click listener
-                    newButton.GetComponent<Button>().onClick.AddListener(() => {
-                        Stage.level = level;
-                        SceneManager.LoadScene("Stage0");
-                    });
+                        // Set the text (Assumes prefab has a TMP_Text component)
+                        newButton.GetComponentInChildren<TMP_Text>().text = $"{level.Substring(5)}\nScore:\n{Highscore}";
+
+                        // Add a click listener
+                        newButton.GetComponent<Button>().onClick.AddListener(() => {
+                            Stage.level = level;
+                            SceneManager.LoadScene("Stage0");
+                        });
+                    }
                 }
+            if (notClearCounter == 0)
+            {    
+                Data.maxstagenum = int.Parse(fileName.Substring(5));
+            }
             }
         }
     }
@@ -111,18 +127,18 @@ public class StageList : MonoBehaviour
             
             int index = fileName.IndexOf(".json");
             if (index >= 0)
-                {
+            {
                 fileName = fileName.Substring(0, index);
-                }
-            Data.maxstagenum = int.Parse(fileName.Substring(5));
+            }
             if (fileName == $"level{Data.stagenum}")
-                {
+            {
                 string JsonString = File.ReadAllText(filepath);
                 string[] levels = JsonHelper.FromJsonArray(JsonString);
+                int notClearCounter = 0;
+                bool isStageCleared = false;
                     foreach (string level in levels)
                     {
-                        GameObject newButton = Instantiate(StageButton, contentParent);
-                        newButton.name = level;
+                        isStageCleared = false;
                         string StageScoreSave = (string)SaveLoad.LoadGame("LevelScore");
                         int Highscore = 0;
                         if (string.IsNullOrEmpty(StageScoreSave))
@@ -136,16 +152,32 @@ public class StageList : MonoBehaviour
                             if ((string)item?["Name"] == level)
                             {
                                 Highscore = (int)item?["Score"];
+                                isStageCleared = true;
                             }
                         }
-                        // Set the text (Assumes prefab has a TMP_Text component)
-                        newButton.GetComponentInChildren<TMP_Text>().text = $"{level.Substring(5)}\nScore:\n{Highscore}";
+                        if (!isStageCleared)
+                        {
+                            notClearCounter++;
+                            Data.maxstagenum = CurrentStageNum;
+                        }
+                        if (notClearCounter < 2)
+                        {
+                            GameObject newButton = Instantiate(StageButton, contentParent);
+                            newButton.name = level;
 
-                        // Add a click listener
-                        newButton.GetComponent<Button>().onClick.AddListener(() => {
-                            Stage.level = level;
-                            SceneManager.LoadScene("Stage0");
-                        });
+                            // Set the text (Assumes prefab has a TMP_Text component)
+                            newButton.GetComponentInChildren<TMP_Text>().text = $"{level.Substring(5)}\nScore:\n{Highscore}";
+
+                            // Add a click listener
+                            newButton.GetComponent<Button>().onClick.AddListener(() => {
+                                Stage.level = level;
+                                SceneManager.LoadScene("Stage0");
+                            });
+                        }
+                    }
+                    if (notClearCounter == 0)
+                    {    
+                        Data.maxstagenum = int.Parse(fileName.Substring(5));
                     }
                 }
             }
