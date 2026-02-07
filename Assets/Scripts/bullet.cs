@@ -18,9 +18,6 @@ public class bullet : MonoBehaviour
 
     void Update()
     {
-        // Removed the Statsmanger dependency. 
-        // Logic handles movement/destruction only.
-
         if (gameObject.name != "bullet")
         {
             float currentY = gameObject.transform.position.y;

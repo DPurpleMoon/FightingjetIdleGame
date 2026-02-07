@@ -1412,7 +1412,7 @@ SpriteRenderer:
   m_Size: {x: 5, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &340181176
@@ -2721,16 +2721,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2355476731400658848, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
       propertyPath: m_Size.x
-      value: 3.89
+      value: 19.2
       objectReference: {fileID: 0}
     - target: {fileID: 2355476731400658848, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
       propertyPath: m_Size.y
-      value: 7.14
+      value: 10.8
       objectReference: {fileID: 0}
     - target: {fileID: 2355476731400658848, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 9085546173938197295, guid: 3c4858fb89cdd484e95d088da044ac38, type: 3}
+      objectReference: {fileID: -3938918822449633212, guid: eb6d85be9da1e2145a10ba834f3bf4ab, type: 3}
     - target: {fileID: 2355476731400658848, guid: 58355e8a56510084bb1c4f8c5bfdb38b, type: 3}
       propertyPath: m_SortingOrder
       value: -10
@@ -10750,7 +10750,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4303187818010620830}
   - component: {fileID: 5957769438680069674}
-  - component: {fileID: 8345608082118630433}
   m_Layer: 0
   m_Name: body
   m_TagString: Untagged
@@ -10815,8 +10814,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.14, y: 0.21}
-    newSize: {x: 0.14, y: 0.21}
+    oldSize: {x: 0.15, y: 0.61}
+    newSize: {x: 5, y: 5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -10873,7 +10872,7 @@ Transform:
   m_GameObject: {fileID: 558535905808874892}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 150, y: 150, z: -10}
+  m_LocalPosition: {x: 3000, y: 300, z: -10}
   m_LocalScale: {x: 30, y: 30, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -11004,12 +11003,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3134857476595058934, guid: 4426154f4829963468a0243507e1e97a, type: 3}
+  m_Sprite: {fileID: 5276917087677721518, guid: 1f94bed9da6424c419f40e589c88630d, type: 3}
   m_Color: {r: 0.81886786, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.14, y: 0.21}
+  m_Size: {x: 5, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -11146,7 +11145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::bullet
   damage: 5
-  destructionYBoundary: 700
+  destructionYBoundary: 1000
 --- !u!50 &5862158196013902205
 Rigidbody2D:
   serializedVersion: 5
@@ -11221,12 +11220,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -8130462282066511763, guid: df58c864dd85c6145a15844ef88fa488, type: 3}
+  m_Sprite: {fileID: 4334783836991956000, guid: 834abb7cd9b8ddc408e02161b89b067c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.42, y: 0.42}
+  m_Size: {x: 0.99, y: 1.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -11317,36 +11316,6 @@ Transform:
   - {fileID: 4303187818010620830}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8345608082118630433
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2026116283725121135}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 85e5ff7c389eaf34eb7fe998a91cfe74, type: 3}
-  m_NotificationBehavior: 3
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

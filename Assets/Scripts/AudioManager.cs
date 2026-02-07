@@ -45,22 +45,16 @@ public class AudioManager : MonoBehaviour
         }
         manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
-        object temp = SaveLoad.LoadGame("MusicVolume");
-        if (temp != null)
-        {
-            musicVolume = (float)SaveLoad.LoadGame("MusicVolume");
-        }
-        else
+        
+        musicVolume = (float)SaveLoad.LoadGame("MusicVolume");
+        if (musicVolume == null)
         {
             musicVolume = 0.5f;
             SaveLoad.SaveGame("MusicVolume", musicVolume);
         }
         
-        if (sfxVolume != null)
-        {
-            sfxVolume = (float)SaveLoad.LoadGame("SFXVolume");
-        }
-        else
+        sfxVolume = (float)SaveLoad.LoadGame("SFXVolume");
+        if (sfxVolume == null)
         {
             sfxVolume = 0.5f;
             SaveLoad.SaveGame("SFXVolume", sfxVolume);

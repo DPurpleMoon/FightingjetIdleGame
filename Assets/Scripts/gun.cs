@@ -45,15 +45,22 @@ namespace jetfighter.movement
             if (Input.GetKey(KeyCode.Space) && Time.time >= FireTime && Time.timeScale == 1f)
             {
                 Fire(currentWeapon);
+                Debug.Log("Shot");
                 FireTime = Time.time + effectiveFireRate;
             }
         }
 
         void Fire(WeaponData weaponData)
         {
-            if (defaultBulletPrefab == null || firePoint == null)
+            if (defaultBulletPrefab == null)
             {
-                Debug.LogWarning("Gun Error: Bullet Prefab or Fire Point missing!");
+                Debug.LogWarning("Gun Error: Bullet Prefab missing!");
+                defaultBulletPrefab = GameObject.Find("bullet");
+                return;
+            }
+            if (firePoint == null)
+            {
+                Debug.LogWarning("Gun Error: Fire Point missing!");
                 return;
             }
 
@@ -65,6 +72,10 @@ namespace jetfighter.movement
             if (bulletScript != null)
             {
                 // Get damage from Shop, or use default 10
+                if (manObj == null)
+                {
+                    manObj = GameObject.Find("SaveLoadManager");
+                }
                 SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
                 string WeaponUnlockedString = (string)SaveLoad.LoadGame("PurchasedWeapons");
                 if (string.IsNullOrEmpty(WeaponUnlockedString))

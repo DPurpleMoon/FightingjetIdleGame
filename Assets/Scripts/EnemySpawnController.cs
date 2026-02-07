@@ -12,11 +12,6 @@ public class EnemySpawnController : MonoBehaviour {
     private int[] EnemyPattern;
     public StageScrollingData Data;
 
-    void OnDestroy()
-    {
-        Debug.Log(System.Environment.StackTrace);
-    }
-
     public void SetPath(GameObject enemy, Slider Health, List<Vector2> waypoints, float speed, bool boss){
         StartCoroutine(WaitPath(enemy, Health, waypoints, speed, boss));
     }
