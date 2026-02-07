@@ -66,6 +66,8 @@ public class StartMenu : MonoBehaviour
         SaveLoad.SaveGame("Brightness", 1f);
         SaveLoad.SaveGame("MusicVolume", 0.7f);
         SaveLoad.SaveGame("SFXVolume", 0.5f);
+        string logTime = DateTime.Now.ToBinary().ToString();
+        SaveLoad.SaveGame("LogTime", logTime);
         SceneManager.LoadScene("StageList");
 
         if (AudioManager.Instance != null)
