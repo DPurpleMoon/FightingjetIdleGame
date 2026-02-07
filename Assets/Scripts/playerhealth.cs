@@ -15,6 +15,7 @@ namespace jetfighter.movement
         private float invFrame;
         private bool isDead = false;  
         public GameObject DeathPanel;
+        public GameObject ResultPanel;
         public GameObject Body;
         
         private void Start()

@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class OnStage : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class OnStage : MonoBehaviour
     public StageScrollingController StageScript;
     public StageRead Read;
     public EnemyStatRead StatRead;
+    public GameObject player;
     void Awake()
     {
         // Subscribe to the event
@@ -51,13 +53,20 @@ public class OnStage : MonoBehaviour
             }
             GameObject CurrentStageImage = GameObject.Find(StageData.StageName);
             CurrentStageImage.GetComponent<SpriteRenderer>().enabled = true;
+            await OpeningAnimation();
             StageScript.Initiate();
-            
             float multiplier = float.Parse((string)LevelData[1]);
             StartCoroutine(EnemySpawn(LevelData));
         }
     }
 
+    async Task OpeningAnimation() {
+        player.transform.position = new Vector3(0, -140, 0);
+        while (Vector3.Distance(player.transform.position, Vector3.zero) > 0.01f) {
+            player.transform.position = Vector3.MoveTowards(player.transform.position, Vector3.zero, 100 * Time.deltaTime);
+            await Task.Yield();
+        }
+    }
 
     
     private IEnumerator EnemySpawn(List<object> Level)

@@ -33,9 +33,8 @@ public class StageList : MonoBehaviour
         Time.timeScale = 1f;
         string streamingpath = Application.streamingAssetsPath;
         string[] filePaths = Directory.GetFiles($"{streamingpath}/levellist/", "*.json", SearchOption.AllDirectories);
-        
 
-        CurrentStageNum = (int)SaveLoad.LoadGame("CurrentStage");;
+        CurrentStageNum = (int)SaveLoad.LoadGame("CurrentStage");
         if (CurrentStageNum == null)
         {
             CurrentStageNum = 1;
@@ -61,9 +60,9 @@ public class StageList : MonoBehaviour
                 {
                     GameObject newButton = Instantiate(StageButton, contentParent);
                     newButton.name = level;
-                    
+                    (int)SaveLoad.LoadGame("LevelScore");
                     // Set the text (Assumes prefab has a TMP_Text component)
-                    newButton.GetComponentInChildren<TMP_Text>().text = level.Substring(5);
+                    newButton.GetComponentInChildren<TMP_Text>().text = $"{level.Substring(5)}\n";
 
                     // Add a click listener
                     newButton.GetComponent<Button>().onClick.AddListener(() => {

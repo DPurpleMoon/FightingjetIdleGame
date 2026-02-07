@@ -9096,6 +9096,7 @@ MonoBehaviour:
   StageScript: {fileID: 0}
   Read: {fileID: 0}
   StatRead: {fileID: 0}
+  player: {fileID: 3759844018252434837}
 --- !u!114 &2079322971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10275,6 +10276,7 @@ MonoBehaviour:
   maxHealth: 3
   invTime: 3
   DeathPanel: {fileID: 92048934}
+  ResultPanel: {fileID: 1065578179}
   Body: {fileID: 2026116283725121135}
 --- !u!4 &7838956706474901612
 Transform:
