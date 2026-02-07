@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class StartMenu : MonoBehaviour
 {
@@ -7,8 +8,13 @@ public class StartMenu : MonoBehaviour
     public GameObject startMenuPanel;
     public GameObject settingsPanel;
 
+    public GameObject manObj;
+    public Button ContinueButton;
+
     void Start()
     {
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
         if (startMenuPanel != null)
         {
             startMenuPanel.SetActive(true);
@@ -22,6 +28,27 @@ public class StartMenu : MonoBehaviour
         if (AudioManager.Instance != null)
         {
         AudioManager.Instance.PlayStartMenuMusic();
+        }
+        if (!SaveLoad.SaveExists())
+        {
+            ContinueButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            ContinueButton.gameObject.SetActive(true);
+        }
+    }
+
+    public void NewGame()
+    {
+        manObj = GameObject.Find("SaveLoadManager");
+        SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
+        SaveLoad.NewSave();
+        SceneManager.LoadScene("StageList");
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayGameplayMusic();
         }
     }
 
