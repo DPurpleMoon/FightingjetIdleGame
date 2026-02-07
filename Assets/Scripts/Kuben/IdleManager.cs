@@ -185,7 +185,6 @@ public class IdleManager : MonoBehaviour
         manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
         SaveLoad.SaveGame("IdleLevel", idleUpgradeLevel);
-        SaveLoad.SaveGame("CurrentStage", currentStage);
     }
 
     public void LoadIdleData()

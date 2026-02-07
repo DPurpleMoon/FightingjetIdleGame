@@ -109,8 +109,22 @@ public class ShopManager : MonoBehaviour
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
         string WeaponUnlockedString = (string)SaveLoad.LoadGame("PurchasedWeapons");
         if (string.IsNullOrEmpty(WeaponUnlockedString))
-        {
-            WeaponUnlockedString = "{\"weaponList\": [{\"WeaponName\": \"Basic Blaster\", \"WeaponLevel\": 1}]}";
+        {            
+            var weaponList = new JsonObject();
+            var weaponDetail = new JsonArray();
+            foreach (WeaponData weapon in availableWeapons)
+            {
+                if (weapon.name != "BasicBlaster")
+                {
+                    weaponDetail.Add(new JsonObject { ["WeaponName"] = weapon.name, ["WeaponLevel"] = 0});
+                }
+                else
+                {
+                    weaponDetail.Add(new JsonObject { ["WeaponName"] = weapon.name, ["WeaponLevel"] = 1});
+                }
+            }       
+            weaponList["weaponList"] = weaponDetail;
+            WeaponUnlockedString = JsonSerializer.Serialize(weaponList);
         }
         JsonNode jsonNode = JsonNode.Parse(WeaponUnlockedString);
         JsonArray WeaponDataList = jsonNode?["weaponList"]?.AsArray();
@@ -132,8 +146,13 @@ public class ShopManager : MonoBehaviour
             indexToLoad = -1;
         }
         if (indexToLoad != -1 && indexToLoad < availableWeapons.Count)
+        {
             equippedWeapon = availableWeapons[indexToLoad];
-
+        }
+        else
+        {
+            equippedWeapon = availableWeapons[0];
+        }
         NotifyUI();
     }
 
@@ -142,7 +161,6 @@ public class ShopManager : MonoBehaviour
     {
         foreach (WeaponData weapon in availableWeapons) weapon.currentLevel = 0;
         equippedWeapon = null;
-        SaveShop();
         NotifyUI();
     }
 }
