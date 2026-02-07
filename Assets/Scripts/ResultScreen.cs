@@ -24,7 +24,7 @@ public class ResultScreen : MonoBehaviour
             ResultPanel.SetActive(false);
         }
     }
-    public void returnStageList()
+    public void returnStageList()  
     {
         manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();

@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 public static class JsonHelper {
     public static string[] FromJsonArray(string json) {
@@ -60,9 +62,23 @@ public class StageList : MonoBehaviour
                 {
                     GameObject newButton = Instantiate(StageButton, contentParent);
                     newButton.name = level;
-                    (int)SaveLoad.LoadGame("LevelScore");
+                    string StageScoreSave = (string)SaveLoad.LoadGame("LevelScore");
+                    int Highscore = 0;
+                    if (string.IsNullOrEmpty(StageScoreSave))
+                    {
+                        StageScoreSave = "{\"StageScore\": [{\"Name\": \"NotStage\", \"Score\": 0}]}";
+                    }
+                    JsonNode jsonNode = JsonNode.Parse(StageScoreSave);
+                    JsonArray StageScoreListJson = jsonNode?["StageScore"]?.AsArray();
+                    foreach (var item in StageScoreListJson)
+                    {
+                        if ((string)item?["Name"] == level)
+                        {
+                            Highscore = (int)item?["Score"];
+                        }
+                    }
                     // Set the text (Assumes prefab has a TMP_Text component)
-                    newButton.GetComponentInChildren<TMP_Text>().text = $"{level.Substring(5)}\n";
+                    newButton.GetComponentInChildren<TMP_Text>().text = $"{level.Substring(5)}\nScore:\n{Highscore}";
 
                     // Add a click listener
                     newButton.GetComponent<Button>().onClick.AddListener(() => {
@@ -107,9 +123,23 @@ public class StageList : MonoBehaviour
                     {
                         GameObject newButton = Instantiate(StageButton, contentParent);
                         newButton.name = level;
-                        
+                        string StageScoreSave = (string)SaveLoad.LoadGame("LevelScore");
+                        int Highscore = 0;
+                        if (string.IsNullOrEmpty(StageScoreSave))
+                        {
+                            StageScoreSave = "{\"StageScore\": [{\"Name\": \"NotStage\", \"Score\": 0}]}";
+                        }
+                        JsonNode jsonNode = JsonNode.Parse(StageScoreSave);
+                        JsonArray StageScoreListJson = jsonNode?["StageScore"]?.AsArray();
+                        foreach (var item in StageScoreListJson)
+                        {
+                            if ((string)item?["Name"] == level)
+                            {
+                                Highscore = (int)item?["Score"];
+                            }
+                        }
                         // Set the text (Assumes prefab has a TMP_Text component)
-                        newButton.GetComponentInChildren<TMP_Text>().text = level.Substring(5);
+                        newButton.GetComponentInChildren<TMP_Text>().text = $"{level.Substring(5)}\nScore:\n{Highscore}";
 
                         // Add a click listener
                         newButton.GetComponent<Button>().onClick.AddListener(() => {
