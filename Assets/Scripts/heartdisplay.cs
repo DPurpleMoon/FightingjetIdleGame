@@ -65,11 +65,11 @@ public class heartdisplay : MonoBehaviour
 
     void Update()
     {
-         if (playerHealth == null) return;
+        if (playerHealth == null) return;
         
-         int newHealth = playerHealth.GetCurrentHealth();
+        int newHealth = playerHealth.GetCurrentHealth();
         
-         if (newHealth != lastKnownHealth)
+        if (newHealth != lastKnownHealth)
         {
             currentHearts = newHealth;
             lastKnownHealth = newHealth;

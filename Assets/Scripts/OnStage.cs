@@ -52,6 +52,7 @@ public class OnStage : MonoBehaviour
             GameObject CurrentStageImage = GameObject.Find(StageData.StageName);
             CurrentStageImage.GetComponent<SpriteRenderer>().enabled = true;
             StageScript.Initiate();
+            
             float multiplier = float.Parse((string)LevelData[1]);
             StartCoroutine(EnemySpawn(LevelData));
         }
