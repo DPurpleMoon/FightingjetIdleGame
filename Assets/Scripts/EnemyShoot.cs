@@ -77,8 +77,9 @@ public class EnemyShoot : MonoBehaviour
         Vector3 direction = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
         Vector3 SpawnLocation = enemy.transform.position + (direction * spawndistance);
         GameObject bullet = Instantiate(EnemyBulletObject, SpawnLocation, Quaternion.Euler(0f, 0f, angle - 90f));
-        Vector2 shootDirection = direction * bulletspeed;
-        BulletSelfDestruct State = bullet.GetComponent<BulletSelfDestruct>();
-        State.BulInitialize(shootDirection, Data.isPaused);
+        if (bullet.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb))
+        {
+            rb.linearVelocity = direction * bulletspeed * 10f;
+        }
     }
 }
