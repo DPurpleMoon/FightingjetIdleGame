@@ -145,7 +145,7 @@ public class SettingsMenu : MonoBehaviour
         }
         if (brightnessSlider != null)
         {
-            brightnessSlider.value = brightness;
+            brightnessSlider.value = Brightness;
         }
         float music = (float)SaveLoad.LoadGame("MusicVolume");
         if (music == null)
