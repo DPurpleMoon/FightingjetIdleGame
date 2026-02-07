@@ -30,14 +30,19 @@ public class StageListArrow : MonoBehaviour
                 {Data.stagenum++;}
             }
         }
-        if (Data.stagenum == 1)
+        if (Data.stagenum == 1 && Data.stagenum != Data.maxstagenum)
         {
             leftbutton.SetActive(false);
             rightbutton.SetActive(true);
         }
-        else if (Data.stagenum == Data.maxstagenum)
+        else if (Data.stagenum != 1 && Data.stagenum == Data.maxstagenum)
         {
             leftbutton.SetActive(true);
+            rightbutton.SetActive(false);
+        }
+        else if (Data.stagenum == 1 && Data.stagenum == Data.maxstagenum)
+        {
+            leftbutton.SetActive(false);
             rightbutton.SetActive(false);
         }
         else

@@ -15,12 +15,15 @@ namespace jetfighter.movement
         private float invFrame;
         private bool isDead = false;  
         public GameObject DeathPanel;
+        public GameObject ResultPanel;
+        public GameObject Body;
         
         private void Start()
         {
-             currentHealth = maxHealth;
+            currentHealth = maxHealth;
             isDead = false;
-            
+            SpriteRenderer bodyRenderer = Body.GetComponent<SpriteRenderer>();
+            bodyRenderer.enabled = true;
             Debug.Log("Player Health Initialized: " + currentHealth + "/" + maxHealth);
         }
 
@@ -151,7 +154,8 @@ namespace jetfighter.movement
             }
             Time.timeScale = 0f;
             DeathPanel.SetActive(true);
-            Destroy(gameObject);
+            SpriteRenderer bodyRenderer = Body.GetComponent<SpriteRenderer>();
+            bodyRenderer.enabled = false;
         }
         
          

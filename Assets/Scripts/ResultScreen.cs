@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class ResultScreen : MonoBehaviour
 {
@@ -18,8 +19,12 @@ public class ResultScreen : MonoBehaviour
         Time.timeScale = 0;
         ResultPanel.SetActive(true);
         ScoreText.text = $"Score: {StageScore.Instance.CurrentScore}";
+        if (DeathPanel.activeInHierarchy)
+        {
+            ResultPanel.SetActive(false);
+        }
     }
-    public void returnStageList()
+    public void returnStageList()  
     {
         manObj = GameObject.Find("SaveLoadManager");
         SaveLoadManager SaveLoad = manObj.GetComponent<SaveLoadManager>();
@@ -72,6 +77,10 @@ public class ResultScreen : MonoBehaviour
         StageScoreParentList["StageScore"] = StageScoreList;
         string StageScoreParentListString = JsonSerializer.Serialize(StageScoreParentList);
         SaveLoad.SaveGame("LevelScore", StageScoreParentListString);
+        int CurrentStage = (int)SaveLoad.LoadGame("CurrentStage");
+        double CurrentCurrency = (double)SaveLoad.LoadGame("Currency");
+        double NewCurrency = (Math.Pow(3, CurrentStage - 1) * StageScore.Instance.CurrentScore) + CurrentCurrency;
+        SaveLoad.SaveGame("Currency", NewCurrency);
         ResultPanel.SetActive(false);
         StageScrollingController Stage = manager.GetComponent<StageScrollingController>();
         StageData.stageReadEnd = false;

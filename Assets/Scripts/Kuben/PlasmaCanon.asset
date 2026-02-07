@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponName: Plasma Canon
   description: Boss killer, requires aiming.
-  icon: {fileID: 5442783473788304671, guid: ef7524b84cb79b74c967a8a692f83fad, type: 3}
+  icon: {fileID: 3756560348334609898, guid: dec987e17d69e1e4b96c809303f375e5, type: 3}
   baseCost: 3600
   costMultiplier: 1.1
-  currentLevel: 8
+  currentLevel: 0
   baseDamage: 2000
   damageMultiplier: 800
   fireRate: 0.25
