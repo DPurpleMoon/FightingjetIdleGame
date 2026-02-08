@@ -44,14 +44,19 @@ public class StageList : MonoBehaviour
         Data.stagenum = CurrentStageNum;
         StageText.text = $"Stage {Data.stagenum}";
 
+        bool max = false;
+
         foreach (string filepath in filePaths)
         {
         string fileName = Path.GetFileName(filepath);
-        
         int index = fileName.IndexOf(".json");
         if (index >= 0)
         {
             fileName = fileName.Substring(0, index);
+        }
+        if (max == false)
+        {    
+            Data.maxstagenum = int.Parse(fileName.Substring(5));
         }
         if (fileName == $"level{Data.stagenum}")
             {
@@ -82,6 +87,7 @@ public class StageList : MonoBehaviour
                     {
                         notClearCounter++;
                         Data.maxstagenum = CurrentStageNum;
+                        max = true;
                     }
                     if (notClearCounter < 2)
                     {
@@ -98,11 +104,8 @@ public class StageList : MonoBehaviour
                         });
                     }
                 }
-            if (notClearCounter == 0)
-            {    
-                Data.maxstagenum = int.Parse(fileName.Substring(5));
             }
-            }
+        
         }
     }
 
@@ -121,23 +124,28 @@ public class StageList : MonoBehaviour
             {
                 Destroy(child.gameObject);
             }
+
+            bool max = false;
             foreach (string filepath in filePaths)
             {
-            string fileName = Path.GetFileName(filepath);
-            
-            int index = fileName.IndexOf(".json");
-            if (index >= 0)
-            {
-                fileName = fileName.Substring(0, index);
-            }
-            if (fileName == $"level{Data.stagenum}")
-            {
-                string JsonString = File.ReadAllText(filepath);
-                string[] levels = JsonHelper.FromJsonArray(JsonString);
-                int notClearCounter = 0;
-                bool isStageCleared = false;
+                string fileName = Path.GetFileName(filepath);  
+                int index = fileName.IndexOf(".json");
+                if (index >= 0)
+                {
+                    fileName = fileName.Substring(0, index);
+                }
+                if (max == false)
+                {    
+                    Data.maxstagenum = int.Parse(fileName.Substring(5));
+                }  
+                if (fileName == $"level{Data.stagenum}")
+                {
+                    string JsonString = File.ReadAllText(filepath);
+                    string[] levels = JsonHelper.FromJsonArray(JsonString);
+                    int notClearCounter = 0;
+                    bool isStageCleared = false;
                     foreach (string level in levels)
-                    {
+                        {
                         isStageCleared = false;
                         string StageScoreSave = (string)SaveLoad.LoadGame("LevelScore");
                         int Highscore = 0;
@@ -159,6 +167,7 @@ public class StageList : MonoBehaviour
                         {
                             notClearCounter++;
                             Data.maxstagenum = CurrentStageNum;
+                            max = true;
                         }
                         if (notClearCounter < 2)
                         {
@@ -174,10 +183,6 @@ public class StageList : MonoBehaviour
                                 SceneManager.LoadScene("Stage0");
                             });
                         }
-                    }
-                    if (notClearCounter == 0)
-                    {    
-                        Data.maxstagenum = int.Parse(fileName.Substring(5));
                     }
                 }
             }
